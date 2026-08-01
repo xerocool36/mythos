@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Table menu, reached from a QR code. Never wanted in a search index. -->
+<meta name="robots" content="noindex,nofollow">
+
+<title>Menù — Mythos Cucina Greca, Via Tuscolana 596 Roma</title>
+<meta name="description" content="Il menù di Mythos Cucina Greca, Via Tuscolana 596, Roma: pite, souvlaki, moussakà, meze e dolci greci.">
+<meta name="theme-color" content="#0B14A0">
+
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/logo-disc-sm.png">
+
+<!-- Fonts load out of the critical path: the menu paints immediately in the
+     system fallback and swaps when (if) Archivo/Newsreader arrive. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&amp;family=Newsreader:opsz,wght@6..72,300..600&amp;display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&amp;family=Newsreader:opsz,wght@6..72,300..600&amp;display=swap"></noscript>
+
+<link rel="stylesheet" href="assets/css/core.css">
+
+<style>
+/* ------------------------------------------------------------------ menu --
+   Page-specific only. Everything here leans on the tokens in core.css; the
+   shared stylesheet is owned by another file and is not touched.
+   Art direction: Minoan. Ultramarine as a structural field, plaster ground,
+   gold only as a hairline. No meander strip, no taverna letterforms.
+   -------------------------------------------------------------------- */
+
+/* The category bar pins under the header, so it has to know how tall the
+   header actually is. core.js writes --bar-h; menu.js writes --cat-h. Neither
+   is ever hard-coded: on a 360px phone the header wraps and both grow. */
+.catbar {
+  position: sticky;
+  top: var(--bar-h, 64px);
+  z-index: 40;
+  background: var(--plaster);
+  border-bottom: 1px solid var(--rule);
+}
+.catbar__in {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: .3rem var(--gut);
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.cats-wrap { position: relative; flex: 1 1 auto; min-width: 0; }
+/* A hint that the chip row keeps going — without it the clipped chip at the
+   right edge reads as a rendering fault rather than as more menu. */
+.cats-wrap::after {
+  content: "";
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 22px;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(245, 246, 248, 0), var(--plaster));
+}
+.cats {
+  display: flex;
+  gap: .3rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.cats::-webkit-scrollbar { display: none; }
+.cats a {
+  flex: 0 0 auto;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 .85rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 108%;
+  font-size: .82rem;
+  letter-spacing: .085em;
+  text-transform: uppercase;
+  color: var(--blue-deep);
+  background: transparent;
+  transition: background-color .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease);
+}
+.cats a:hover { border-color: var(--blue); color: var(--blue); }
+.cats a[aria-current="true"] {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--plaster);
+}
+
+.findbtn {
+  flex: 0 0 auto;
+  width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--blue);
+}
+.findbtn svg { width: 19px; height: 19px; display: block; }
+.findbtn:hover { border-color: var(--blue); }
+.findbtn[aria-expanded="true"] { background: var(--blue); border-color: var(--blue); color: var(--plaster); }
+
+.findrow {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  /* top padding leaves room for the input's focus ring, which would otherwise
+     draw over the chip row sitting immediately above it */
+  padding: .4rem var(--gut) .5rem;
+}
+.findrow input {
+  width: 100%;
+  min-height: 48px;
+  padding: .55rem .8rem;
+  font-size: 1rem;          /* 16px — anything smaller makes iOS zoom the page */
+  font-family: var(--f-body);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--blue-deep);
+}
+.findrow input::placeholder { color: rgba(19, 24, 81, .5); }
+.findcount { margin: .45rem 0 0; font-size: .92rem; color: rgba(19, 24, 81, .72); }
+
+/* ------------------------------------------------------------ blue band -- */
+
+.mtop { padding: clamp(1.5rem, 5vw, 2.6rem) 0 clamp(1.5rem, 5vw, 2.4rem); }
+.mtop__in { display: flex; align-items: center; gap: clamp(.9rem, 3vw, 1.5rem); }
+.mtop__disc { width: clamp(58px, 15vw, 84px); height: auto; flex: 0 0 auto; }
+.mtop__h {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 112%;
+  font-size: clamp(1.5rem, 1.05rem + 2vw, 2.3rem);
+  line-height: 1.04;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--plaster);
+  margin: 0;
+}
+.mtop__sub {
+  margin: .5rem 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--on-blue-dim);
+}
+.mtop__act { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.1rem; }
+.mtop__act .btn { flex: 1 1 auto; justify-content: center; }
+
+/* --------------------------------------------------------------- notices -- */
+
+.mnotes {
+  border-top: 2px solid var(--gold);
+  background: var(--plaster-2);
+  padding: 1rem 0 1.05rem;
+}
+.mnotes p { margin: 0 0 .35rem; font-size: 1rem; line-height: 1.5; color: var(--blue-deep); }
+.mnotes p:last-child { margin-bottom: 0; }
+.mnotes strong { font-weight: 600; }
+
+/* ------------------------------------------------------------- sections -- */
+
+.mbody { padding-block: clamp(1.6rem, 4vw, 2.6rem) clamp(2.5rem, 7vw, 4rem); }
+
+.msec {
+  /* Jumping to a section must not park its first line under two sticky bars. */
+  scroll-margin-top: calc(var(--bar-h, 64px) + var(--cat-h, 52px) + 14px);
+  padding-top: clamp(1.6rem, 4vw, 2.4rem);
+}
+.msec:first-child { padding-top: .4rem; }
+.msec[hidden] { display: none; }
+
+.msec__h {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 112%;
+  font-size: clamp(1.25rem, 1rem + 1.3vw, 1.7rem);
+  line-height: 1.1;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin: 0 0 .2rem;
+  padding-bottom: .5rem;
+  border-bottom: 2px solid var(--gold);
+}
+.msec__note {
+  margin: .7rem 0 0;
+  font-size: .98rem;
+  line-height: 1.5;
+  color: rgba(19, 24, 81, .78);
+}
+.msec__empty { margin: .9rem 0 0; font-size: 1rem; color: rgba(19, 24, 81, .72); }
+
+.items { margin: .3rem 0 0; }
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  column-gap: 1rem;
+  align-items: baseline;
+  padding: .85rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.item:last-child { border-bottom: 0; }
+.item[hidden] { display: none; }
+
+.item__t { min-width: 0; }
+
+.item__n {
+  margin: 0;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: 1.08rem;      /* ~17px — a dim room, read one-handed */
+  line-height: 1.3;
+  letter-spacing: .002em;
+  color: var(--ink);
+}
+.item__d {
+  margin: .2rem 0 0;
+  font-size: 1rem;         /* 16px floor */
+  line-height: 1.45;
+  color: rgba(19, 24, 81, .8);
+}
+
+.item__p {
+  margin: 0;
+  justify-self: end;
+  min-width: 4.9ch;
+  text-align: right;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: 1.08rem;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  color: var(--blue);
+  white-space: nowrap;
+}
+.item__cur { font-weight: 400; opacity: .62; margin-right: .18em; }
+
+.tag {
+  display: inline-block;
+  margin-left: .45em;
+  padding: .12em .5em .16em;
+  vertical-align: .1em;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .64rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #7A5A15;
+  background: rgba(196, 146, 46, .09);
+}
+
+/* ---------------------------------------------------------------- foot -- */
+
+.mfoot { padding: clamp(1.8rem, 5vw, 2.6rem) 0; }
+.mfoot__act { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.1rem; }
+.mfoot p { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.55; color: var(--on-blue-dim); }
+.mfoot p:last-child { margin-bottom: 0; }
+.mfoot a:not(.btn) { color: var(--plaster); text-underline-offset: .22em; text-decoration-color: var(--gold-lift); }
+.mfoot__name {
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-stretch: 118%;
+  font-size: 1.1rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--plaster) !important;
+  margin-bottom: .55rem !important;
+}
+
+/* --------------------------------------------------------------- print -- */
+
+@page { margin: 14mm; }
+
+@media print {
+  .nav, .catbar, .findrow, .mtop__act, .mfoot__act, .skip, .noprint { display: none !important; }
+
+  html, body { background: #fff; color: #000; }
+  body { font-size: 10.5pt; line-height: 1.4; }
+
+  .mtop { background: #fff !important; color: #000 !important; padding: 0 0 8mm; }
+  .mtop__h, .mfoot__name { color: #000 !important; }
+  .mtop__sub, .mfoot p { color: #333 !important; }
+  .mnotes { background: #fff; border-top-color: #000; padding: 0 0 6mm; }
+  .mfoot { background: #fff !important; color: #000 !important; padding: 6mm 0 0; border-top: 1px solid #000; }
+  .mfoot a:not(.btn) { color: #000; }
+
+  .wrap { padding-left: 0; padding-right: 0; max-width: none; }
+  .mbody { padding: 0; }
+
+  .msec { padding-top: 6mm; }
+  .msec__h { color: #000; border-bottom-color: #000; font-size: 13pt; break-after: avoid; }
+  .item { break-inside: avoid; padding: 1.6mm 0; border-bottom: .2pt solid #bbb; }
+  .item__n { font-size: 10.5pt; color: #000; }
+  .item__d { font-size: 9pt; color: #333; }
+  .item__p { font-size: 10.5pt; color: #000; }
+  .tag { border-color: #666; color: #444; background: none; }
+}
+
+/* -------------------------------------------------------------- motion -- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body class="is-menu">
+<a class="skip" href="#menu" data-en="Skip to the menu">Vai al menù</a>
+
+<!-- ─────────────────────────────────────────────────────────────── nav ── -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="index.html" aria-label="Mythos Cucina Greca — torna alla home">
+      <img class="brand__disc" src="assets/img/logo-disc-sm.png" width="96" height="96" alt="">
+      <span class="brand__name">Mythos</span>
+    </a>
+    <div class="nav__act">
+      <button type="button" class="langbtn" data-lang-toggle aria-label="Switch to English">EN</button>
+      <a class="btn btn-sm" href="tel:+390687774778" data-en="Call">Chiama</a>
+    </div>
+  </div>
+</header>
+
+<!-- ──────────────────────────────────────────────────── category bar ── -->
+<div class="catbar" id="catbar">
+  <div class="catbar__in">
+    <nav aria-label="Sezioni del menù" class="cats-wrap">
+      <ul class="cats" id="cats">
+        <li><a href="#antipasti" data-en="Starters">Antipasti</a></li>
+        <li><a href="#pite" data-en="Pita wraps">Pite</a></li>
+        <li><a href="#piatti" data-en="Plates">I nostri piatti</a></li>
+        <li><a href="#specialita" data-en="House specialities">Specialità della casa</a></li>
+        <li><a href="#insalate" data-en="Salads &amp; dips">Insalate e salse</a></li>
+        <li><a href="#extras" data-en="Extras">Extras</a></li>
+        <li><a href="#dolci" data-en="Desserts">Dolci della casa</a></li>
+        <li><a href="#vini" data-en="Greek wines">Vini greci</a></li>
+      </ul>
+    </nav>
+    <button type="button" class="findbtn" id="findbtn" hidden aria-expanded="false" aria-controls="findrow" aria-label="Cerca un piatto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="findrow" id="findrow" hidden>
+    <input type="search" id="find" autocomplete="off" autocapitalize="off" spellcheck="false"
+           placeholder="Cerca un piatto…" data-en-placeholder="Search the menu…"
+           aria-label="Cerca un piatto nel menù">
+    <p class="findcount" id="findcount" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────── blue band ── -->
+<section class="mtop on-blue">
+  <div class="wrap mtop__in">
+    <img class="mtop__disc" src="assets/img/logo-disc-sm.png" width="96" height="96" alt="">
+    <div>
+      <h1 class="mtop__h">Menù</h1>
+      <p class="mtop__sub"><span data-en="Greek kitchen">Cucina greca</span> · Via Tuscolana 596, Roma</p>
+      <p class="mtop__act noprint">
+        <a class="btn btn-sm" href="index.html#prenota" data-en="Book a table">Prenota un tavolo</a>
+        <a class="btn btn-sm btn-ghost" href="index.html" data-en="Home">Torna al sito</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────── notices ── -->
+<div class="mnotes">
+  <div class="wrap">
+    <p data-en="&lt;strong&gt;Allergies:&lt;/strong&gt; the printed menu carries no allergen information, so neither does this page. Please tell a member of staff about any allergy or intolerance before you order."><strong>Allergie:</strong> il menù stampato non riporta informazioni sugli allergeni e questa pagina non ne aggiunge. Segnala sempre al personale qualsiasi allergia o intolleranza prima di ordinare.</p>
+    <p data-en="Some prices are still awaiting confirmation from the restaurant and are shown without a figure. Ask a member of staff.">Alcuni prezzi sono in attesa di conferma dal ristorante e sono mostrati senza cifra. Chiedi al personale.</p>
+    <p data-en="* frozen product">* prodotto surgelato</p>
+  </div>
+</div>
+
+<!-- ───────────────────────────────────────────────────────────── menu ── -->
+<main class="mbody" id="menu">
+  <div class="wrap">
+
+  <section class="msec" id="antipasti" aria-labelledby="h-antipasti">
+    <h2 class="msec__h" id="h-antipasti" data-en="Starters">Antipasti</h2>
+    <ul class="items">
+      <li class="item" data-q="dolmades 6 involtini di riso alle erbe, salsa a scelta e pita">
+        <div class="item__t"><h3 class="item__n">Dolmades<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="6 herbed rice rolls, sauce of your choice and pita">6 involtini di riso alle erbe, salsa a scelta e pita</p></div>
+      </li>
+      <li class="item" data-q="spanakopita pasta fillo ripiena di spinaci e feta">
+        <div class="item__t"><h3 class="item__n">Spanakopita<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="filo pastry filled with spinach and feta">pasta fillo ripiena di spinaci e feta</p></div><p class="item__p"><span class="item__cur">€</span>6,00</p>
+      </li>
+      <li class="item" data-q="tiropita pasta fillo ripiena di crema di feta">
+        <div class="item__t"><h3 class="item__n">Tiropita<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="filo pastry filled with feta cream">pasta fillo ripiena di crema di feta</p></div>
+      </li>
+      <li class="item" data-q="keftes zucchine* 5 polpette di zucchine con menta, salsa a scelta">
+        <div class="item__t"><h3 class="item__n">Keftes zucchine*<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="5 courgette and mint fritters, sauce of your choice">5 polpette di zucchine con menta, salsa a scelta</p></div>
+      </li>
+      <li class="item" data-q="keftes manzo e maiale* 5 polpette di manzo e maiale, salsa a scelta">
+        <div class="item__t"><h3 class="item__n">Keftes manzo e maiale*</h3><p class="item__d" data-en="5 beef and pork meatballs, sauce of your choice">5 polpette di manzo e maiale, salsa a scelta</p></div>
+      </li>
+      <li class="item" data-q="keftes falafel* 5 polpette di ceci e patate, salsa a scelta">
+        <div class="item__t"><h3 class="item__n">Keftes falafel*<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="5 chickpea and potato fritters, sauce of your choice">5 polpette di ceci e patate, salsa a scelta</p></div>
+      </li>
+      <li class="item" data-q="keftes pomodoro* 5 polpette di pomodoro fresco, salsa a scelta">
+        <div class="item__t"><h3 class="item__n">Keftes pomodoro*<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="5 fresh tomato fritters, sauce of your choice">5 polpette di pomodoro fresco, salsa a scelta</p></div>
+      </li>
+      <li class="item" data-q="keftes melanzane* 5 polpette di melanzane ripiene di feta, salsa a scelta">
+        <div class="item__t"><h3 class="item__n">Keftes melanzane*<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="5 aubergine fritters filled with feta, sauce of your choice">5 polpette di melanzane ripiene di feta, salsa a scelta</p></div>
+      </li>
+      <li class="item" data-q="feta formaggio feta condito con olio e.v.o. e origano">
+        <div class="item__t"><h3 class="item__n">Feta<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="feta cheese dressed with extra virgin olive oil and oregano">formaggio feta condito con olio E.V.O. e origano</p></div><p class="item__p"><span class="item__cur">€</span>6,00</p>
+      </li>
+      <li class="item" data-q="olive porzione olive di kalamata">
+        <div class="item__t"><h3 class="item__n">Olive<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="a portion of Kalamata olives">porzione olive di Kalamata</p></div>
+      </li>
+      <li class="item" data-q="patata fritta patate fritte speziate con origano greco">
+        <div class="item__t"><h3 class="item__n">Patata fritta<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="fried potatoes with Greek oregano">patate fritte speziate con origano greco</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="pite" aria-labelledby="h-pite">
+    <h2 class="msec__h" id="h-pite" data-en="Pita wraps">Pite</h2>
+      <p class="msec__note" data-en="Try the XL version with a larger handmade pita — € 1.00 extra">Prova la versione XL con pita artigianale più grande — € 1,00 extra</p>
+    <ul class="items">
+      <li class="item" data-q="gyros maiale* pita ripiena di carne gyros, salsa tzatziki, pomodori, cipolla rossa e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Gyros maiale*</h3><p class="item__d" data-en="pita filled with gyros pork, tzatziki, tomato, red onion and fries">pita ripiena di carne gyros, salsa tzatziki, pomodori, cipolla rossa e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,00</p>
+      </li>
+      <li class="item" data-q="souvlaki pollo pita ripiena di spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Souvlaki pollo</h3><p class="item__d" data-en="pita filled with a chicken skewer, tzatziki, tomato, red onion, salad and fries">pita ripiena di spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,50</p>
+      </li>
+      <li class="item" data-q="souvlaki maiale* pita ripiena di spiedino di maiale, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Souvlaki maiale*</h3><p class="item__d" data-en="pita filled with a pork skewer, tzatziki, tomato, red onion, salad and fries">pita ripiena di spiedino di maiale, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,50</p>
+      </li>
+      <li class="item" data-q="souvlaki agnello* pita ripiena di spiedino di agnello, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Souvlaki agnello*</h3><p class="item__d" data-en="pita filled with a lamb skewer, tzatziki, tomato, red onion, salad and fries">pita ripiena di spiedino di agnello, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>9,00</p>
+      </li>
+      <li class="item" data-q="bifteki manzo* pita ripiena di salsiccia di manzo con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Bifteki manzo*</h3><p class="item__d" data-en="pita filled with a beef patty and melting cheese, tzatziki, tomato, red onion, salad and fries">pita ripiena di salsiccia di manzo con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,50</p>
+      </li>
+      <li class="item" data-q="bifteki pollo e pancetta* pita ripiena di salsiccia di pollo e pancetta con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Bifteki pollo e pancetta*</h3><p class="item__d" data-en="pita filled with a chicken and bacon patty with melting cheese, tzatziki, tomato, red onion, salad and fries">pita ripiena di salsiccia di pollo e pancetta con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,50</p>
+      </li>
+      <li class="item" data-q="mythos* pita ripiena di carne gyros e spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Mythos*</h3><p class="item__d" data-en="pita filled with gyros meat and a chicken skewer, tzatziki, tomato, red onion, salad and fries">pita ripiena di carne gyros e spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>8,00</p>
+      </li>
+      <li class="item" data-q="vegetariano pita ripiena di feta, olive di kalamata, salsa tzatziki, pomodori, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Vegetariano<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="pita filled with feta, Kalamata olives, tzatziki, tomato, salad and fries">pita ripiena di feta, olive di Kalamata, salsa tzatziki, pomodori, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,00</p>
+      </li>
+      <li class="item" data-q="vegano pita ripiena di falafel, salsa hummus di ceci, pomodori, insalata e patatine fritte">
+        <div class="item__t"><h3 class="item__n">Vegano<span class="tag tag--vegan" data-en="vegan">vegano</span></h3><p class="item__d" data-en="pita filled with falafel, chickpea hummus, tomato, salad and fries">pita ripiena di falafel, salsa hummus di ceci, pomodori, insalata e patatine fritte</p></div><p class="item__p"><span class="item__cur">€</span>7,00</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="piatti" aria-labelledby="h-piatti">
+    <h2 class="msec__h" id="h-piatti" data-en="Plates">I nostri piatti</h2>
+      <p class="msec__note" data-en="Prices awaiting confirmation from the restaurant — please ask a member of staff.">Prezzi in attesa di conferma dal ristorante — chiedi al personale.</p>
+    <ul class="items">
+      <li class="item" data-q="gyros maiale* pita, carne gyros, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Gyros maiale*</h3><p class="item__d" data-en="pita, gyros pork, Greek salad, potatoes, tzatziki">pita, carne gyros, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="souvlaki pollo pita, 2 spiedini pollo, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Souvlaki pollo</h3><p class="item__d" data-en="pita, 2 chicken skewers, Greek salad, potatoes, tzatziki">pita, 2 spiedini pollo, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="souvlaki maiale* pita, 2 spiedini maiale, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Souvlaki maiale*</h3><p class="item__d" data-en="pita, 2 pork skewers, Greek salad, potatoes, tzatziki">pita, 2 spiedini maiale, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="souvlaki agnello* pita, 2 spiedini agnello, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Souvlaki agnello*</h3><p class="item__d" data-en="pita, 2 lamb skewers, Greek salad, potatoes, tzatziki">pita, 2 spiedini agnello, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="bifteki manzo* pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Bifteki manzo*</h3><p class="item__d" data-en="pita, 2 cheese-filled bifteki patties, Greek salad, potatoes, tzatziki">pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="bifteki pollo pancetta* pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Bifteki pollo pancetta*</h3><p class="item__d" data-en="pita, 2 cheese-filled bifteki patties, Greek salad, potatoes, tzatziki">pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="kontosouvli di pollo pita, 3 spiedini di pollo, patate e tzatziki">
+        <div class="item__t"><h3 class="item__n">Kontosouvli di pollo</h3><p class="item__d" data-en="pita, 3 chicken skewers, potatoes and tzatziki">pita, 3 spiedini di pollo, patate e tzatziki</p></div>
+      </li>
+      <li class="item" data-q="misto* pita, 150 g carne gyros, 1 spiedino pollo, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Misto*</h3><p class="item__d" data-en="pita, 150 g gyros meat, 1 chicken skewer, Greek salad, potatoes, tzatziki">pita, 150 g carne gyros, 1 spiedino pollo, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="mythos misto solo carne* 1 bifteki, 1 spiedino pollo, carne gyros, salsa a scelta">
+        <div class="item__t"><h3 class="item__n">Mythos misto solo carne*</h3><p class="item__d" data-en="1 bifteki patty, 1 chicken skewer, gyros meat, sauce of your choice">1 bifteki, 1 spiedino pollo, carne gyros, salsa a scelta</p></div>
+      </li>
+      <li class="item" data-q="vegetariano pita, melanzane e zucchine grigliate, falafel, insalata greca, patate, tzatziki">
+        <div class="item__t"><h3 class="item__n">Vegetariano<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="pita, grilled aubergine and courgette, falafel, Greek salad, potatoes, tzatziki">pita, melanzane e zucchine grigliate, falafel, insalata greca, patate, tzatziki</p></div>
+      </li>
+      <li class="item" data-q="vegano pita, melanzane e zucchine grigliate, falafel, insalata mista, patate, hummus">
+        <div class="item__t"><h3 class="item__n">Vegano<span class="tag tag--vegan" data-en="vegan">vegano</span></h3><p class="item__d" data-en="pita, grilled aubergine and courgette, falafel, mixed salad, potatoes, hummus">pita, melanzane e zucchine grigliate, falafel, insalata mista, patate, hummus</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="specialita" aria-labelledby="h-specialita">
+    <h2 class="msec__h" id="h-specialita" data-en="House specialities">Specialità della casa</h2>
+      <p class="msec__note" data-en="Two prints of the menu carry different prices: prices awaiting confirmation — please ask a member of staff.">Due stampe del menù riportano prezzi diversi: prezzi in attesa di conferma — chiedi al personale.</p>
+    <ul class="items">
+      <li class="item" data-q="moussakà melanzane, ragù di manzo, besciamella, patate e pane pita">
+        <div class="item__t"><h3 class="item__n">Moussakà</h3><p class="item__d" data-en="aubergine, beef ragù, béchamel, potatoes and pita bread">melanzane, ragù di manzo, besciamella, patate e pane pita</p></div>
+      </li>
+      <li class="item" data-q="pastitsio pasta al forno con ragù di manzo e besciamella">
+        <div class="item__t"><h3 class="item__n">Pastitsio</h3><p class="item__d" data-en="baked pasta with beef ragù and béchamel">pasta al forno con ragù di manzo e besciamella</p></div>
+      </li>
+      <li class="item" data-q="gemistà pomodoro e peperone ripieni di riso speziato, patate e pane pita">
+        <div class="item__t"><h3 class="item__n">Gemistà<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="tomato and pepper stuffed with spiced rice, potatoes and pita bread">pomodoro e peperone ripieni di riso speziato, patate e pane pita</p></div>
+      </li>
+      <li class="item" data-q="saganaki formaggio pastellato (pan grattato, sesamo, peperoncino e uova) e fritto servito con limone o miele e pane pita">
+        <div class="item__t"><h3 class="item__n">Saganaki<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="cheese in batter (breadcrumb, sesame, chilli and egg), fried and served with lemon or honey and pita bread">formaggio pastellato (pan grattato, sesamo, peperoncino e uova) e fritto servito con limone o miele e pane pita</p></div>
+      </li>
+      <li class="item" data-q="feta grigliata formaggio feta grigliato con pomodoro, peperone, cipolla rossa, peperoncino, olio e pane pita">
+        <div class="item__t"><h3 class="item__n">Feta grigliata<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="grilled feta with tomato, pepper, red onion, chilli, oil and pita bread">formaggio feta grigliato con pomodoro, peperone, cipolla rossa, peperoncino, olio e pane pita</p></div>
+      </li>
+      <li class="item" data-q="fagioli giganti fagioli giganti in salsa di pomodoro, cipolla e pane pita">
+        <div class="item__t"><h3 class="item__n">Fagioli giganti<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="giant beans in tomato sauce, onion and pita bread">fagioli giganti in salsa di pomodoro, cipolla e pane pita</p></div>
+      </li>
+      <li class="item" data-q="fava gialla mousse di fava gialla di santorini condita con olio, limone, capperi, cipolla rossa e pane pita">
+        <div class="item__t"><h3 class="item__n">Fava gialla<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="Santorini yellow split pea purée dressed with oil, lemon, capers, red onion and pita bread">mousse di fava gialla di Santorini condita con olio, limone, capperi, cipolla rossa e pane pita</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="insalate" aria-labelledby="h-insalate">
+    <h2 class="msec__h" id="h-insalate" data-en="Salads &amp; dips">Insalate e salse</h2>
+      <p class="msec__note" data-en="Prices awaiting confirmation from the restaurant — please ask a member of staff.">Prezzi in attesa di conferma dal ristorante — chiedi al personale.</p>
+    <ul class="items">
+      <li class="item" data-q="insalata mista pomodoro, insalata, cetriolo, cipolla e olive">
+        <div class="item__t"><h3 class="item__n">Insalata mista<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="tomato, lettuce, cucumber, onion and olives">pomodoro, insalata, cetriolo, cipolla e olive</p></div>
+      </li>
+      <li class="item" data-q="insalata greca cetriolo, pomodoro, cipolla, peperone, olive di kalamata e feta">
+        <div class="item__t"><h3 class="item__n">Insalata greca<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="cucumber, tomato, onion, pepper, Kalamata olives and feta">cetriolo, pomodoro, cipolla, peperone, olive di kalamata e feta</p></div>
+      </li>
+      <li class="item" data-q="melitzanosalata con pita insalata di melanzane, aglio, olio, spezie con pita">
+        <div class="item__t"><h3 class="item__n">Melitzanosalata con pita<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="aubergine dip with garlic, oil and spices, with pita">insalata di melanzane, aglio, olio, spezie con pita</p></div>
+      </li>
+      <li class="item" data-q="taramosalata con pita insalata orientale a base di uova di pesce con pita">
+        <div class="item__t"><h3 class="item__n">Taramosalata con pita</h3><p class="item__d" data-en="fish roe dip, with pita">insalata orientale a base di uova di pesce con pita</p></div>
+      </li>
+      <li class="item" data-q="tzatziki con pita salsa di yogurt, cetrioli, aglio, aneto, olio con pita">
+        <div class="item__t"><h3 class="item__n">Tzatziki con pita<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="yoghurt, cucumber, garlic, dill and oil dip, with pita">salsa di yogurt, cetrioli, aglio, aneto, olio con pita</p></div>
+      </li>
+      <li class="item" data-q="hummus di ceci con pita salsa di ceci, tahina, olio e limone (vegana) con pita">
+        <div class="item__t"><h3 class="item__n">Hummus di ceci con pita<span class="tag tag--vegan" data-en="vegan">vegano</span></h3><p class="item__d" data-en="chickpea, tahini, oil and lemon dip (vegan), with pita">salsa di ceci, tahina, olio e limone (vegana) con pita</p></div>
+      </li>
+      <li class="item" data-q="tirokafteri con pita salsa piccante a base di feta, yogurt e peperoncino con pita">
+        <div class="item__t"><h3 class="item__n">Tirokafteri con pita<span class="tag tag--veg" data-en="veg">veg</span><span class="tag tag--piccante" data-en="spicy">piccante</span></h3><p class="item__d" data-en="spicy feta, yoghurt and chilli dip, with pita">salsa piccante a base di feta, yogurt e peperoncino con pita</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="extras" aria-labelledby="h-extras">
+    <h2 class="msec__h" id="h-extras" data-en="Extras">Extras</h2>
+    <ul class="items">
+      <li class="item" data-q="tzatziki piccola porzione di tzatziki">
+        <div class="item__t"><h3 class="item__n">Tzatziki<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="small portion of tzatziki">piccola porzione di tzatziki</p></div><p class="item__p"><span class="item__cur">€</span>2,00</p>
+      </li>
+      <li class="item" data-q="tirosalata piccola porzione di tirosalata">
+        <div class="item__t"><h3 class="item__n">Tirosalata<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="small portion of tirosalata">piccola porzione di tirosalata</p></div><p class="item__p"><span class="item__cur">€</span>2,00</p>
+      </li>
+      <li class="item" data-q="melitzanosalata piccola porzione di melitzanosalata">
+        <div class="item__t"><h3 class="item__n">Melitzanosalata<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="small portion of melitzanosalata">piccola porzione di melitzanosalata</p></div><p class="item__p"><span class="item__cur">€</span>2,00</p>
+      </li>
+      <li class="item" data-q="tirokafteri piccola porzione di tirokafteri">
+        <div class="item__t"><h3 class="item__n">Tirokafteri<span class="tag tag--veg" data-en="veg">veg</span><span class="tag tag--piccante" data-en="spicy">piccante</span></h3><p class="item__d" data-en="small portion of tirokafteri">piccola porzione di tirokafteri</p></div><p class="item__p"><span class="item__cur">€</span>2,00</p>
+      </li>
+      <li class="item" data-q="taramosalata piccola porzione di taramosala">
+        <div class="item__t"><h3 class="item__n">Taramosalata</h3><p class="item__d" data-en="small portion of taramosalata">piccola porzione di taramosala</p></div><p class="item__p"><span class="item__cur">€</span>2,00</p>
+      </li>
+      <li class="item" data-q="hummus di ceci piccola porzione di hummus di ceci">
+        <div class="item__t"><h3 class="item__n">Hummus di ceci<span class="tag tag--vegan" data-en="vegan">vegano</span></h3><p class="item__d" data-en="small portion of chickpea hummus">piccola porzione di hummus di ceci</p></div><p class="item__p"><span class="item__cur">€</span>2,00</p>
+      </li>
+      <li class="item" data-q="ketchup piccola porzione di ketchup">
+        <div class="item__t"><h3 class="item__n">Ketchup</h3><p class="item__d" data-en="small portion of ketchup">piccola porzione di ketchup</p></div><p class="item__p"><span class="item__cur">€</span>1,50</p>
+      </li>
+      <li class="item" data-q="maionese piccola porzione di maionese">
+        <div class="item__t"><h3 class="item__n">Maionese</h3><p class="item__d" data-en="small portion of mayonnaise">piccola porzione di maionese</p></div><p class="item__p"><span class="item__cur">€</span>1,50</p>
+      </li>
+      <li class="item" data-q="feta piccola porzione di feta">
+        <div class="item__t"><h3 class="item__n">Feta<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="small portion of feta">piccola porzione di feta</p></div><p class="item__p"><span class="item__cur">€</span>2,50</p>
+      </li>
+      <li class="item" data-q="olive di kalamata piccola porzione olive di kalamata">
+        <div class="item__t"><h3 class="item__n">Olive di Kalamata<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="small portion of Kalamata olives">piccola porzione olive di Kalamata</p></div><p class="item__p"><span class="item__cur">€</span>2,50</p>
+      </li>
+      <li class="item" data-q="carne gyros porzione di carne gyros da 100gr">
+        <div class="item__t"><h3 class="item__n">Carne gyros</h3><p class="item__d" data-en="100 g portion of gyros meat">porzione di carne gyros da 100gr</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+      <li class="item" data-q="souvlaki pollo 1 spiedino di pollo">
+        <div class="item__t"><h3 class="item__n">Souvlaki pollo</h3><p class="item__d" data-en="1 chicken skewer">1 spiedino di pollo</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+      <li class="item" data-q="souvlaki maiale 1 spiedino di maiale">
+        <div class="item__t"><h3 class="item__n">Souvlaki maiale</h3><p class="item__d" data-en="1 pork skewer">1 spiedino di maiale</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+      <li class="item" data-q="bifteki manzo 1 bifteki di manzo">
+        <div class="item__t"><h3 class="item__n">Bifteki manzo</h3><p class="item__d" data-en="1 beef bifteki patty">1 bifteki di manzo</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+      <li class="item" data-q="bifteki pollo e pancetta 1 bifteki di pollo e pancetta">
+        <div class="item__t"><h3 class="item__n">Bifteki pollo e pancetta</h3><p class="item__d" data-en="1 chicken and bacon bifteki patty">1 bifteki di pollo e pancetta</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="dolci" aria-labelledby="h-dolci">
+    <h2 class="msec__h" id="h-dolci" data-en="Desserts">Dolci della casa</h2>
+    <ul class="items">
+      <li class="item" data-q="kataifi * pasta kataifi ripiena di noci affogata con sciroppo al miele">
+        <div class="item__t"><h3 class="item__n">Kataifi *<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="kataifi pastry filled with walnuts, soaked in honey syrup">pasta kataifi ripiena di noci affogata con sciroppo al miele</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="baklavà* pasta fillo ripiena di noci affogata con sciroppo al miele">
+        <div class="item__t"><h3 class="item__n">Baklavà*<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="filo pastry filled with walnuts, soaked in honey syrup">pasta fillo ripiena di noci affogata con sciroppo al miele</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="sokolatopita pan di spagna e mousse al cioccolato con zucchero a velo">
+        <div class="item__t"><h3 class="item__n">Sokolatopita<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="sponge cake and chocolate mousse with icing sugar">pan di spagna e mousse al cioccolato con zucchero a velo</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="galaktoboureko pasta fillo ripiena di crema al semolino, zucchero a velo e cannella">
+        <div class="item__t"><h3 class="item__n">Galaktoboureko<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="filo pastry filled with semolina custard, icing sugar and cinnamon">pasta fillo ripiena di crema al semolino, zucchero a velo e cannella</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="pita con nutella pita ripiena di nutella e zucchero a velo">
+        <div class="item__t"><h3 class="item__n">Pita con Nutella<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="pita filled with Nutella and icing sugar">pita ripiena di Nutella e zucchero a velo</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="yogurt bianco yogurt greco semplice">
+        <div class="item__t"><h3 class="item__n">Yogurt bianco<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="plain Greek yoghurt">yogurt greco semplice</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+      <li class="item" data-q="yogurt con miele yogurt greco con miele e cannella">
+        <div class="item__t"><h3 class="item__n">Yogurt con miele<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="Greek yoghurt with honey and cinnamon">yogurt greco con miele e cannella</p></div><p class="item__p"><span class="item__cur">€</span>4,50</p>
+      </li>
+      <li class="item" data-q="yogurt con amarene yogurt greco con amarene e sciroppo">
+        <div class="item__t"><h3 class="item__n">Yogurt con amarene<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="Greek yoghurt with sour cherries and syrup">yogurt greco con amarene e sciroppo</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="yogurt con noci e miele yogurt greco con noci, miele e cannella">
+        <div class="item__t"><h3 class="item__n">Yogurt con noci e miele<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="Greek yoghurt with walnuts, honey and cinnamon">yogurt greco con noci, miele e cannella</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+      <li class="item" data-q="yogurt con mandorle e miele yogurt con mandorle, miele e cannella">
+        <div class="item__t"><h3 class="item__n">Yogurt con mandorle e miele<span class="tag tag--veg" data-en="veg">veg</span></h3><p class="item__d" data-en="yoghurt with almonds, honey and cinnamon">yogurt con mandorle, miele e cannella</p></div><p class="item__p"><span class="item__cur">€</span>5,00</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="msec" id="vini" aria-labelledby="h-vini">
+    <h2 class="msec__h" id="h-vini" data-en="Greek wines">Vini greci</h2>
+    <ul class="items">
+      <li class="item" data-q="regina di cuori nico lazaridi (drama)">
+        <div class="item__t"><h3 class="item__n">Regina di Cuori</h3><p class="item__d" data-en="Nico Lazaridi (Drama)">Nico Lazaridi (Drama)</p></div><p class="item__p"><span class="item__cur">€</span>23,00</p>
+      </li>
+      <li class="item" data-q="paros moraitis (naoussa)">
+        <div class="item__t"><h3 class="item__n">Paros</h3><p class="item__d" data-en="Moraitis (Naoussa)">Moraitis (Naoussa)</p></div><p class="item__p"><span class="item__cur">€</span>25,00</p>
+      </li>
+      <li class="item" data-q="mega spileo iii cuvée (achaia)">
+        <div class="item__t"><h3 class="item__n">Mega Spileo</h3><p class="item__d" data-en="III Cuvée (Achaia)">III Cuvée (Achaia)</p></div><p class="item__p"><span class="item__cur">€</span>28,00</p>
+      </li>
+      <li class="item" data-q="moschofilero boutari (naoussa)">
+        <div class="item__t"><h3 class="item__n">Moschofilero</h3><p class="item__d" data-en="Boutari (Naoussa)">Boutari (Naoussa)</p></div><p class="item__p"><span class="item__cur">€</span>28,00</p>
+      </li>
+      <li class="item" data-q="retsina malamatina 0,25 l vino bianco">
+        <div class="item__t"><h3 class="item__n">Retsina Malamatina 0,25 L</h3><p class="item__d" data-en="white wine">vino bianco</p></div><p class="item__p"><span class="item__cur">€</span>4,00</p>
+      </li>
+      <li class="item" data-q="retsina malamatina 0,50 l vino bianco">
+        <div class="item__t"><h3 class="item__n">Retsina Malamatina 0,50 L</h3><p class="item__d" data-en="white wine">vino bianco</p></div><p class="item__p"><span class="item__cur">€</span>7,00</p>
+      </li>
+    </ul>
+  </section>
+    <p class="msec__empty" id="noresults" hidden data-en="No dish matches your search.">Nessun piatto corrisponde alla ricerca.</p>
+  </div>
+</main>
+
+<!-- ─────────────────────────────────────────────────────────── footer ── -->
+<footer class="mfoot on-blue">
+  <div class="wrap">
+    <p class="mfoot__act noprint">
+      <a class="btn btn-sm" href="index.html#prenota" data-en="Book a table">Prenota un tavolo</a>
+      <a class="btn btn-sm btn-ghost" href="tel:+390687774778" data-en="Call 06 8777 4778">Chiama 06 8777 4778</a>
+    </p>
+    <p class="mfoot__name">Mythos Cucina Greca</p>
+    <p>Via Tuscolana 596, Roma · <a class="tel" href="tel:+390687774778">06 8777 4778</a></p>
+    <p><a href="index.html" data-en="Back to the site">Torna al sito</a> · <a href="privacy.html">Privacy</a></p>
+    <p data-en="Menu transcribed from the restaurant's printed menu. Dishes and prices may change.">Menù trascritto dal menù stampato del ristorante. Piatti e prezzi possono variare.</p>
+  </div>
+</footer>
+
+<script defer src="assets/js/core.js"></script>
+<script defer src="assets/js/menu.js"></script>
+</body>
+</html>

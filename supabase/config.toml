@@ -1,0 +1,37 @@
+# Mythos — Supabase CLI config.
+#
+# This project deploys ONLY Edge Functions and one migration into an existing
+# shared Supabase project ("x3ro"). It does not own that project's global
+# settings, so nothing here should touch auth, storage, or API configuration.
+#
+# In particular: `mythos` is deliberately NOT added to the project's exposed
+# PostgREST schemas. The functions below reach Postgres directly over
+# SUPABASE_DB_URL, which is what keeps the anon key inert — it grants no access
+# to Mythos data by any route.
+
+project_id = "mythos"
+
+# All four functions handle their own authorisation.
+#
+# The three public ones must accept anonymous callers: a guest booking a table
+# has no Supabase user. They are protected by Turnstile, per-IP rate limiting,
+# a honeypot field, and a CORS origin allowlist instead.
+#
+# mythos-admin is public at the gateway but NOT public in effect: it demands an
+# Authorization bearer JWT, verifies it with auth.getUser(), and then checks the
+# caller against mythos.admins. A missing or invalid token gets 401; a valid
+# token belonging to a non-admin gets 403 and nothing else. Enforcing this in
+# code rather than at the gateway is what lets it tell those two cases apart
+# and audit the attempt.
+
+[functions.mythos-availability]
+verify_jwt = false
+
+[functions.mythos-book]
+verify_jwt = false
+
+[functions.mythos-cancel]
+verify_jwt = false
+
+[functions.mythos-admin]
+verify_jwt = false

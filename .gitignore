@@ -1,0 +1,9 @@
+# Harvested source material — never commit. Third-party photos + scrape output.
+harvest/
+FACTS.md
+.DS_Store
+.playwright-mcp/
+.tmp/
+supabase/.temp/
+.env
+.env.*

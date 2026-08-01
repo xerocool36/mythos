@@ -1,0 +1,1306 @@
+@charset "utf-8";
+/* ==========================================================================
+   MYTHOS CUCINA GRECA — core.css
+   Direction: Minoan, not Mykonos. The palette is sampled from the client's own
+   dolphin roundel (Knossos-fresco iconography, Bronze Age Crete) and the gold
+   from the printed menu masthead. Ultramarine is used at full strength as a
+   structural field, not as an accent.
+
+   TYPE PAIRING — Archivo (display + UI) over Newsreader (body).
+   Archivo is a variable grotesque with a real width axis; set in caps at
+   wdth 112 it reads like a carved museum label — the vocabulary of a Heraklion
+   vitrine — which lets the page speak Greek without a single faux-Greek
+   letterform, the one thing the logo already does and must not be repeated.
+   Newsreader carries the prose because inverting the usual serif-display /
+   sans-body pairing keeps the headings architectural and the copy spoken.
+   Martian Mono appears exactly once, on the booking code, because that is the
+   only string on the page a person has to read aloud down a phone line.
+   ========================================================================== */
+
+/* ------------------------------------------------------------- tokens -- */
+
+:root {
+  /* Brand — sampled from the roundel (harvest/logo/gm-006.jpg) */
+  --blue:        #0B14A0;   /* ultramarine — dominant structural colour      */
+  --blue-deep:   #131851;   /* shadow navy — depth on blue, text on light    */
+  --plaster:     #F5F6F8;   /* cool plaster white — the page ground          */
+  --ink:         #0B0D14;   /* near-black — headings on light                */
+  --gold:        #C4922E;   /* menu-masthead gold — rules, small caps only   */
+
+  /* Derived working values. Not brand colours; mixes of the five above.     */
+  --plaster-2:   #E7EAF1;   /* plaster pushed a step toward the navy         */
+  --gold-lift:   #E6C77E;   /* the gold lifted for text ON ultramarine (8:1) */
+  --rule:        rgba(19, 24, 81, .16);
+  --rule-soft:   rgba(19, 24, 81, .09);
+  --on-blue:     var(--plaster);
+  --on-blue-dim: rgba(245, 246, 248, .74);
+  --on-blue-faint: rgba(245, 246, 248, .30);
+
+  --btn-bg: var(--blue);
+  --btn-fg: var(--plaster);
+  --focus:  var(--blue);
+
+  --wrap: 1160px;
+  --gut:  clamp(1.15rem, 4.5vw, 3rem);
+  --disc: clamp(96px, 19vw, 148px);
+
+  --ease: cubic-bezier(.22, .72, .2, 1);
+
+  --f-disp: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --f-body: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-mono: 'Martian Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Sections on the ultramarine ground flip the button and focus variables so
+   nothing inside them has to be styled twice. */
+.on-blue {
+  --btn-bg: var(--plaster);
+  --btn-fg: var(--blue);
+  --focus:  var(--gold-lift);
+  color: var(--on-blue);
+  background: var(--blue);
+}
+
+/* --------------------------------------------------------------- base -- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  /* clip, not hidden: `hidden` on body would make it a scroll container and
+     break the sticky header. */
+  overflow-x: clip;
+  background: var(--plaster);
+  color: var(--blue-deep);
+  font: 300 clamp(1rem, .96rem + .2vw, 1.075rem)/1.66 var(--f-body);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.no-scroll { overflow: hidden; }
+
+img, picture, iframe { max-width: 100%; }
+img { height: auto; border: 0; }
+iframe { border: 0; display: block; }
+
+a { color: inherit; }
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+ul, ol { margin: 0; padding: 0; list-style: none; }
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+:where(h1, h2, h3) { margin: 0; font-weight: 600; }
+
+[id] { scroll-margin-top: calc(var(--bar-h, 64px) + 18px); }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+::selection { background: var(--blue); color: var(--plaster); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip {
+  position: absolute; left: 0; top: 0; z-index: 100;
+  transform: translateY(-120%);
+  background: var(--blue); color: var(--plaster);
+  padding: 1.05rem 1.2rem; text-decoration: none;
+  font: 600 .8rem/1 var(--f-disp); letter-spacing: .12em; text-transform: uppercase;
+}
+.skip:focus { transform: none; }
+
+/* ---------------------------------------------------------- type kit -- */
+
+.h2 {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 112%;
+  font-size: clamp(1.6rem, 1.05rem + 2.3vw, 2.65rem);
+  line-height: 1.05;
+  letter-spacing: -.012em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.on-blue .h2 { color: var(--plaster); }
+
+.eyebrow {
+  margin: 0 0 .85rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: .7rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+.eyebrow::after {
+  content: '';
+  flex: 1 1 auto;
+  max-width: 5.5rem;
+  height: 1px;
+  background: var(--gold);
+}
+.on-blue .eyebrow { color: var(--gold-lift); }
+.on-blue .eyebrow::after { background: var(--gold-lift); opacity: .55; }
+
+.lede {
+  font-size: clamp(1.06rem, 1rem + .4vw, 1.24rem);
+  line-height: 1.55;
+  color: var(--blue-deep);
+}
+.on-blue .lede { color: var(--on-blue-dim); }
+
+.fine { font-size: .92rem; color: rgba(19, 24, 81, .72); }
+
+.u-blue { color: var(--blue); }
+.on-blue .u-blue { color: var(--gold-lift); }
+
+.tel {
+  /* phone numbers are a primary action wherever they appear, so they carry a
+     44px target even when they sit inside a sentence */
+  display: inline-block;
+  padding: .65rem .12rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-variant-numeric: tabular-nums;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ buttons -- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.6rem;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-bg);
+  border-radius: 2px;
+  text-decoration: none;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: .82rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease), background-color .18s var(--ease);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(11, 20, 160, .22);
+}
+.btn:active { transform: none; }
+/* The outer ring can share a colour with the button it surrounds (a blue CTA on
+   plaster), so buttons also carry an inner ring in their own foreground. */
+.btn:focus-visible { box-shadow: inset 0 0 0 3px var(--btn-fg); }
+
+.btn-sm { min-height: 44px; padding: 0 1.05rem; font-size: .74rem; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--btn-bg);
+  border-color: currentColor;
+}
+.btn-ghost:hover { box-shadow: none; }
+
+.linkish {
+  background: none;
+  border: 0;
+  padding: .6rem 0;
+  min-height: 44px;
+  cursor: pointer;
+  font-family: var(--f-disp);
+  font-weight: 500;
+  font-size: .82rem;
+  letter-spacing: .06em;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .28em;
+  text-decoration-color: var(--gold);
+}
+.on-blue .linkish { text-decoration-color: var(--gold-lift); }
+
+/* ---------------------------------------------------------------- nav -- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--plaster);
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.nav.stuck {
+  border-bottom-color: var(--rule);
+  box-shadow: 0 6px 22px rgba(19, 24, 81, .07);
+}
+
+.nav__in {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: .6rem var(--gut);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .35rem 0;
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+.brand__disc { width: 34px; height: 34px; display: block; }
+.brand__name {
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-stretch: 118%;
+  font-size: 1.02rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.nav__act {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  flex: 0 0 auto;
+}
+
+.langbtn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 .5rem;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .74rem;
+  letter-spacing: .1em;
+  color: var(--blue-deep);
+  transition: border-color .18s var(--ease), color .18s var(--ease);
+}
+.langbtn:hover { border-color: var(--blue); color: var(--blue); }
+
+.burger {
+  width: 46px; height: 44px;
+  display: inline-flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 5px;
+  background: none; border: 1px solid var(--rule); border-radius: 2px;
+  cursor: pointer;
+}
+.burger span {
+  display: block; width: 18px; height: 2px;
+  background: var(--blue);
+  transition: transform .22s var(--ease), opacity .22s var(--ease);
+}
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Under ~420px the bar has to carry brand + language + CTA + burger, so the
+   whole row tightens rather than dropping the primary action. */
+@media (max-width: 420px) {
+  .nav__in { gap: .5rem; padding-inline: 1rem; }
+  .brand { gap: .45rem; }
+  .brand { padding: .5rem 0; }
+  .brand__disc { width: 30px; height: 30px; }
+  .brand__name { font-size: .9rem; letter-spacing: .06em; }
+  .nav__act { gap: .3rem; }
+  .langbtn { min-width: 40px; padding: 0 .3rem; font-size: .7rem; }
+  .btn-sm { padding: 0 .7rem; font-size: .67rem; letter-spacing: .07em; }
+  .burger { width: 42px; }
+}
+
+/* Drawer — one list, an overlay under 900px and an inline row above it. */
+.drawer {
+  position: fixed;
+  left: 0; right: 0;
+  top: var(--bar-h, 60px);
+  bottom: 0;
+  z-index: 40;
+  background: var(--blue);
+  padding: 1.6rem var(--gut) 3rem;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .24s var(--ease), transform .24s var(--ease), visibility .24s;
+}
+.drawer.is-open { visibility: visible; opacity: 1; transform: none; }
+
+.drawer__list {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.drawer__list a {
+  display: block;
+  padding: .95rem 0;
+  min-height: 44px;
+  border-bottom: 1px solid rgba(245, 246, 248, .18);
+  text-decoration: none;
+  color: var(--plaster);
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 108%;
+  font-size: 1.1rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.drawer .drawer__list a:focus-visible { outline-color: var(--gold-lift); }
+.drawer__call a { color: var(--gold-lift); }
+
+@media (min-width: 900px) {
+  .drawer {
+    position: static;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    background: none;
+    padding: 0;
+    overflow: visible;
+    margin-left: 1.4rem;
+  }
+  .drawer__list { flex-direction: row; gap: 1.6rem; align-items: center; }
+  .drawer__list a {
+    padding: .72rem 0;
+    min-height: 0;
+    border: 0;
+    color: var(--blue-deep);
+    font-size: .78rem;
+    font-stretch: 100%;
+    letter-spacing: .13em;
+    position: relative;
+  }
+  .drawer__list a::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: -3px;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .22s var(--ease);
+  }
+  .drawer__list a:hover::after { transform: scaleX(1); }
+  .drawer__call { display: none; }
+  .burger { display: none; }
+}
+
+/* --------------------------------------------------------------- hero -- */
+
+.hero { position: relative; }
+
+.hero__shot img {
+  display: block;
+  width: 100%;
+  height: clamp(340px, 112vw, 540px);
+  object-fit: cover;
+  object-position: center 52%;
+  background: var(--plaster-2);
+}
+
+.hero__body {
+  position: relative;
+  z-index: 1;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 var(--gut) clamp(3rem, 7vw, 5.5rem);
+}
+
+/* The mark is pressed onto the edge of the photograph like a seal. */
+.hero__disc {
+  display: block;
+  width: var(--disc);
+  height: var(--disc);
+  margin-top: calc(var(--disc) / -2);
+  margin-bottom: clamp(1.2rem, 2.5vw, 1.9rem);
+  filter: drop-shadow(0 10px 26px rgba(11, 20, 160, .28));
+}
+
+.hero__h {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 114%;
+  font-size: clamp(1.95rem, 1.1rem + 4.1vw, 4.15rem);
+  line-height: 1;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: 17ch;
+  text-wrap: balance;
+}
+/* the place name gets its own line at every width rather than trailing off the
+   end of whichever line the balancer picked */
+.hero__h .u-blue { display: block; }
+
+.hero__p {
+  margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+  max-width: 44ch;
+  font-size: clamp(1.06rem, 1rem + .45vw, 1.3rem);
+  line-height: 1.5;
+}
+
+.hero__act {
+  margin: clamp(1.5rem, 3vw, 2.2rem) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .9rem 1.4rem;
+}
+.hero__or {
+  font-size: .95rem;
+  color: rgba(19, 24, 81, .74);
+}
+
+@media (min-width: 720px) {
+  .hero__shot img { height: clamp(400px, 45vw, 600px); }
+}
+
+/* ----------------------------------------------------------- sections -- */
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: var(--gut);
+  padding-right: var(--gut);
+}
+
+.sec { padding-block: clamp(3.6rem, 8vw, 6.5rem); }
+.sec--tight { padding-block: clamp(3rem, 6vw, 5rem); }
+
+.sec__head { max-width: 58ch; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
+.sec__head .lede { margin-top: .9rem; }
+
+.sec__grid { display: grid; gap: clamp(2rem, 4.5vw, 3.5rem); }
+.sec__lead .lede { margin-top: 1rem; }
+.sec__lead > p:last-child { margin-top: 1rem; }
+
+@media (min-width: 860px) {
+  .sec__grid { grid-template-columns: 1.35fr .95fr; align-items: start; }
+  .sec__grid--even { grid-template-columns: 1.1fr .9fr; }
+}
+
+.card {
+  background: var(--plaster-2);
+  border-top: 3px solid var(--blue);
+  padding: clamp(1.4rem, 3vw, 2rem);
+}
+.card--quiet { background: transparent; border-top-color: var(--gold); border-top-width: 2px; }
+.card--quiet .lede { margin-bottom: .9rem; }
+
+.facts { margin: 0; }
+.facts__row {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: .5rem 1rem;
+  padding: .72rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.facts__row:first-child { padding-top: 0; }
+.facts__row:last-child { border-bottom: 0; }
+.facts dt {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue);
+  align-self: center;
+}
+.facts dd { margin: 0; align-self: center; }
+
+.linebadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.45em; height: 1.45em;
+  margin-right: .35em;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--plaster);
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: .78em;
+  vertical-align: -.15em;
+}
+
+.facts__note {
+  margin: 1.1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gold);
+  font-size: .9rem;
+  font-style: italic;
+  color: rgba(19, 24, 81, .78);
+}
+
+@media (max-width: 400px) {
+  .facts__row { grid-template-columns: 1fr; gap: .2rem; }
+}
+
+/* ------------------------------------------------------------- dishes -- */
+
+.dishes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(.6rem, 1.4vw, 1rem);
+}
+.dish { min-width: 0; }
+.dish--wide { grid-column: span 2; }
+
+.dish__box {
+  position: relative;
+  overflow: hidden;
+  background: var(--plaster-2);
+  aspect-ratio: 4 / 5;
+}
+.dish--wide .dish__box { aspect-ratio: 3 / 2; }
+.dish__box img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s var(--ease);
+}
+.dish:hover .dish__box img { transform: scale(1.035); }
+
+.dish__n {
+  margin: .7rem 0 0;
+  padding-top: .55rem;
+  position: relative;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: .72rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.dish__n::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 18px; height: 1px;
+  background: var(--gold);
+}
+
+@media (min-width: 720px) {
+  .dishes { grid-template-columns: repeat(6, 1fr); }
+  .dish { grid-column: span 2; }
+  .dish--wide { grid-column: span 3; }
+}
+
+/* ================================================================== */
+/*  THE FRESCO PANEL — the one place the page spends its boldness.     */
+/*  A full-bleed ultramarine field bounded above and below by a Greek  */
+/*  key redrawn from the restaurant's own printed menu border, with    */
+/*  the dolphin roundel seated on the upper band like a seal, so the   */
+/*  act of booking happens literally inside the brand mark.            */
+/* ================================================================== */
+
+.fresco {
+  position: relative;
+  isolation: isolate;
+  margin-top: clamp(3.5rem, 8vw, 6rem);
+}
+
+/* One meander unit: a mirrored pair of square spirals on a rail, traced from
+   harvest/menu/gm-007.jpg. Used once, structurally, as the panel's frame —
+   never as a repeating trim along other section edges. */
+.fresco::before,
+.fresco::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 15px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'%3E%3Cg fill='none' stroke='%23F5F6F8' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M0 21h44'/%3E%3Cpath d='M2 21V3h18v12H8V9h6'/%3E%3Cpath d='M42 21V3H24v12h12V9h-6'/%3E%3C/g%3E%3C/svg%3E") repeat-x center / 30px 15px;
+  opacity: .9;
+  pointer-events: none;
+  z-index: 2;
+}
+.fresco::before { top: 0; }
+.fresco::after  { bottom: 0; transform: scaleY(-1); }
+
+.fresco__seal {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: clamp(88px, 15vw, 132px);
+  height: clamp(88px, 15vw, 132px);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 8px 22px rgba(11, 13, 20, .4));
+}
+
+.fresco__in {
+  padding-block: clamp(4.6rem, 10vw, 7.5rem);
+}
+
+/* The hairline that turns the field into a panel rather than a stripe. */
+.fresco__head {
+  position: relative;
+  max-width: 46ch;
+  margin: 0 auto clamp(2.2rem, 5vw, 3.2rem);
+  padding-bottom: clamp(1.6rem, 3vw, 2.2rem);
+  text-align: center;
+  border-bottom: 1px solid var(--on-blue-faint);
+}
+.fresco__head .eyebrow { justify-content: center; }
+.fresco__head .eyebrow::after { display: none; }
+.fresco__head .lede { margin-top: 1rem; }
+
+/* A working path out of every widget state — including the one where the
+   Edge Functions are not wired up yet. */
+.fresco__phone {
+  max-width: 48rem;
+  margin: clamp(1.8rem, 4vw, 2.6rem) auto 0;
+  padding-top: clamp(1.2rem, 3vw, 1.7rem);
+  border-top: 1px solid var(--on-blue-faint);
+  text-align: center;
+  font-size: .95rem;
+  color: var(--on-blue-dim);
+}
+.fresco__phone .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+
+/* ==================================================================== */
+/*  BOOKING WIDGET — every state checked against --blue, not white.      */
+/* ==================================================================== */
+
+.bk {
+  position: relative;          /* anchors the off-screen honeypot          */
+  /* A single centred column, not a form stretched across the field — the
+     panel should read as an inscribed tablet, and the controls need a
+     measure, not the full 1440. */
+  max-width: 48rem;
+  margin: 0 auto;
+  min-width: 0;
+}
+.bk [hidden] { display: none !important; }
+
+.bk a {
+  color: var(--plaster);
+  text-decoration-color: var(--gold-lift);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+
+.bk-loading {
+  padding: 2.5rem 0;
+  text-align: center;
+  color: var(--on-blue-dim);
+  font-family: var(--f-disp);
+  font-size: .78rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+/* Errors are a plaster block with a navy bar — legible on ultramarine and
+   never dependent on hue alone. */
+.bk-error {
+  display: flex;
+  gap: .7rem;
+  margin: 1.1rem 0;
+  padding: .85rem 1rem;
+  background: var(--plaster);
+  color: var(--blue-deep);
+  border-left: 4px solid var(--blue-deep);
+  font-size: .95rem;
+}
+.bk-error::before {
+  content: '!';
+  flex: 0 0 auto;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  color: var(--blue);
+}
+/* A direct child of .bk is the widget's whole content — the availability call
+   failed — so it needs to look like a deliberate notice, not a stray strip. */
+.bk > .bk-error {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: clamp(1.2rem, 3vw, 1.6rem) clamp(1.1rem, 3vw, 1.5rem);
+  font-size: 1rem;
+}
+
+.bk-note {
+  margin: 1.1rem 0;
+  padding: 1rem 1.1rem;
+  background: rgba(245, 246, 248, .09);
+  border-left: 3px solid var(--gold-lift);
+  color: var(--plaster);
+  font-style: italic;
+}
+
+.bk-hint {
+  margin: .7rem 0 0;
+  font-size: .86rem;
+  color: var(--on-blue-dim);
+}
+.bk-hint strong { color: var(--gold-lift); font-weight: 600; }
+/* the "call us" number in the hint is a real action, so it gets a real target */
+.bk-hint a, .bk-consent a { display: inline-block; padding: .7rem .15rem; }
+
+.bk-form {
+  display: grid;
+  gap: clamp(1.6rem, 3.4vw, 2.4rem);
+  min-width: 0;
+}
+
+/* fieldsets default to min-width:min-content, which would stop the date strip
+   from shrinking and push a scrollbar onto <body>. */
+.bk-step {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.bk-step > legend {
+  padding: 0 0 .9rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: .72rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-lift);
+}
+
+/* Shared control skin ---------------------------------------------------- */
+.bk-chip, .bk-day, .bk-slot, .bk-tab {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  color: var(--plaster);
+  border: 1px solid var(--on-blue-faint);
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: var(--f-disp);
+  transition: background-color .16s var(--ease), border-color .16s var(--ease),
+              color .16s var(--ease), transform .16s var(--ease);
+}
+.bk-chip:hover:not(:disabled),
+.bk-day:hover:not(:disabled),
+.bk-slot:hover:not(:disabled) {
+  border-color: var(--plaster);
+  background: rgba(245, 246, 248, .1);
+  transform: translateY(-2px);
+}
+.bk-chip.is-on, .bk-day.is-on, .bk-slot.is-on {
+  background: var(--plaster);
+  border-color: var(--plaster);
+  color: var(--blue);
+  transform: none;
+}
+
+/* party ------------------------------------------------------------------ */
+.bk-party { display: flex; flex-wrap: wrap; gap: .5rem; }
+.bk-chip {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0 .5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* dates — a 45-day strip that scrolls, and says so ----------------------- */
+.bk-dates {
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: .1rem;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: .95rem;
+  scrollbar-color: rgba(245, 246, 248, .55) rgba(245, 246, 248, .14);
+  scrollbar-width: thin;
+  /* A rail painted on the container itself (background-attachment defaults to
+     `scroll`, so it stays put while the days move) — the strip still reads as
+     scrollable on platforms that hide overlay scrollbars at rest. */
+  background: linear-gradient(rgba(245, 246, 248, .3), rgba(245, 246, 248, .3))
+              left bottom / 100% 3px no-repeat;
+}
+.bk-dates::-webkit-scrollbar { height: 8px; }
+.bk-dates::-webkit-scrollbar-track {
+  background: rgba(245, 246, 248, .13);
+  border-radius: 4px;
+}
+.bk-dates::-webkit-scrollbar-thumb {
+  background: rgba(245, 246, 248, .5);
+  border-radius: 4px;
+}
+.bk-dates::-webkit-scrollbar-thumb:hover { background: rgba(245, 246, 248, .72); }
+
+.bk-day {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 60px;
+  min-height: 78px;
+  padding: .5rem .2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .1rem;
+  line-height: 1.15;
+}
+.bk-day-w {
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+.bk-day-n {
+  font-weight: 700;
+  font-stretch: 108%;
+  font-size: 1.28rem;
+  font-variant-numeric: tabular-nums;
+}
+.bk-day-m {
+  font-size: .62rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .72;
+}
+
+/* Unavailable never relies on colour alone: struck through and dimmed. */
+.bk-day.is-closed,
+.bk-day:disabled {
+  opacity: .58;
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: var(--on-blue-faint);
+  background: transparent;
+}
+.bk-day.is-closed .bk-day-n,
+.bk-day:disabled .bk-day-n {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+/* service tabs ----------------------------------------------------------- */
+.bk-serv { display: flex; flex-wrap: wrap; gap: .5rem; }
+.bk-tab {
+  min-height: 46px;
+  padding: 0 1.1rem;
+  border-color: transparent;
+  border-bottom: 2px solid var(--on-blue-faint);
+  border-radius: 0;
+  color: var(--on-blue-dim);
+  font-weight: 600;
+  font-size: .78rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.bk-tab:hover { color: var(--plaster); border-bottom-color: var(--plaster); }
+.bk-tab.is-on {
+  color: var(--plaster);
+  border-bottom-color: var(--gold-lift);
+  border-bottom-width: 3px;
+  background: transparent;
+}
+
+/* slots ------------------------------------------------------------------ */
+.bk-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: .5rem;
+}
+.bk-slot {
+  min-height: 58px;
+  padding: .5rem .35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .12rem;
+}
+.bk-slot-t {
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}
+.bk-slot-s {
+  font-size: .64rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .78;
+}
+.bk-slot:disabled {
+  opacity: .56;
+  cursor: not-allowed;
+  border-style: dashed;
+  background: transparent;
+}
+.bk-slot:disabled .bk-slot-t {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.bk-tz { margin-top: .9rem; }
+
+/* your details ----------------------------------------------------------- */
+.bk-you { display: grid; gap: 1rem; }
+
+.bk-f { display: grid; gap: .4rem; min-width: 0; }
+.bk-f > span {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--on-blue-dim);
+}
+.bk-f input,
+.bk-f textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: .7rem .85rem;
+  background: var(--plaster);
+  color: var(--ink);
+  border: 1px solid var(--plaster);
+  border-radius: 2px;
+  font-family: var(--f-body);
+  font-size: 1rem;
+}
+.bk-f textarea { min-height: 84px; resize: vertical; line-height: 1.5; }
+.bk-f input:focus-visible,
+.bk-f textarea:focus-visible { outline-offset: 2px; }
+.bk-f input::placeholder,
+.bk-f textarea::placeholder { color: rgba(19, 24, 81, .5); }
+
+@media (min-width: 720px) {
+  .bk-you { grid-template-columns: 1fr 1fr; }
+  .bk-you > legend { grid-column: 1 / -1; }
+  /* name + phone share a row; email, notes and everything after run full
+     width. nth-of-type counts <label>, which is what .bk-f and .bk-consent
+     both are — hence the compound selector rather than nth-child. */
+  .bk-you > .bk-f:nth-of-type(n+3),
+  .bk-you > .bk-consent,
+  .bk-you > .bk-error,
+  .bk-you > .cf-turnstile,
+  .bk-you > .bk-submit { grid-column: 1 / -1; }
+}
+
+/* Honeypot: off-screen, never display:none — some bots skip hidden fields.
+   Absolute inside the relative .bk so it cannot extend the scroll width. */
+.bk-hp {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.bk-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  min-height: 44px;
+  padding: .5rem 0;
+  cursor: pointer;
+  font-size: .95rem;
+  color: var(--on-blue-dim);
+}
+.bk-consent input {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin-top: .1rem;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.cf-turnstile { min-height: 68px; margin-top: .3rem; }
+
+.bk-submit { width: 100%; margin-top: .4rem; }
+.bk-submit:disabled { opacity: .6; cursor: progress; }
+
+.bk-cancel-link { margin: 1.4rem 0 0; text-align: center; }
+
+/* confirmation ------------------------------------------------------------ */
+.bk-done {
+  /* a plaster card set into the fresco: the code has to survive being read
+     aloud down a phone line, so it gets the strongest ground on the page */
+  --btn-bg: var(--blue);
+  --btn-fg: var(--plaster);
+  --focus:  var(--blue);
+  background: var(--plaster);
+  color: var(--blue-deep);
+  padding: clamp(1.8rem, 5vw, 3rem) clamp(1.2rem, 4vw, 2.5rem);
+  text-align: center;
+}
+.bk-done-k {
+  margin: 0 0 .5rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 110%;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.bk-done-l { margin: 0 0 .3rem; font-size: 1.06rem; }
+.bk-done-tz { margin: 0; font-size: .9rem; color: rgba(19, 24, 81, .7); }
+
+.bk-code-k {
+  margin: clamp(1.5rem, 4vw, 2.2rem) 0 .6rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--gold);
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.bk-code {
+  margin: 0 0 .6rem;
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 9.5vw, 3.3rem);
+  line-height: 1.1;
+  letter-spacing: .02em;
+  color: var(--blue);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.bk-done .bk-hint { color: rgba(19, 24, 81, .74); }
+.bk-done a { color: var(--blue); text-decoration-color: var(--gold); }
+
+.bk-done-act {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .8rem 1.4rem;
+}
+.bk-done .linkish { color: var(--blue); text-decoration-color: var(--gold); }
+
+/* cancel ------------------------------------------------------------------ */
+.bk-cancelform { max-width: 30rem; margin: 0 auto; }
+.bk-cancelform .bk-f { margin-bottom: 1rem; }
+.bk-cancelform .btn { margin-right: .8rem; }
+.bk-cancelled { text-align: center; }
+.bk.is-cancel { padding-top: .5rem; }
+
+/* pre-deploy / paused state ----------------------------------------------- */
+.bk-phoneonly {
+  max-width: 34rem;
+  margin: 0 auto;
+  text-align: center;
+  font-style: normal;
+  font-size: 1.08rem;
+  border-left: 0;
+  border-top: 1px solid var(--gold-lift);
+  border-bottom: 1px solid var(--gold-lift);
+  background: rgba(245, 246, 248, .07);
+  padding: clamp(1.6rem, 4vw, 2.4rem) 1.2rem;
+}
+/* Sits inside a sentence, so it stays inline — but large, gold on ultramarine
+   (8:1) and padded out to a 44px target. */
+.bk-phoneonly a {
+  display: inline-block;
+  padding: .35rem .25rem;
+  min-height: 44px;
+  line-height: 36px;
+  color: var(--gold-lift);
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-stretch: 106%;
+  font-size: clamp(1.1rem, 4.6vw, 1.4rem);
+  letter-spacing: .03em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--gold-lift);
+  text-underline-offset: .24em;
+}
+.bk-phoneonly a:hover { color: var(--plaster); text-decoration-color: var(--plaster); }
+
+/* ------------------------------------------------------------- place -- */
+
+.place { display: grid; gap: clamp(1rem, 2.5vw, 1.6rem); }
+
+.place__pics { display: grid; gap: clamp(.6rem, 1.4vw, 1rem); grid-template-columns: 1fr 1fr; }
+.place__fig { margin: 0; }
+.place__fig img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--plaster-2);
+}
+.place__fig figcaption {
+  margin-top: .55rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.place__map iframe {
+  width: 100%;
+  height: clamp(260px, 42vw, 420px);
+  background: var(--plaster-2);
+  filter: saturate(.85);
+}
+.place__links {
+  margin: .8rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.5rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .78rem;
+  letter-spacing: .1em;
+}
+.place__links a {
+  display: inline-block;
+  padding: .78rem 0;
+  text-underline-offset: .26em;
+  text-decoration-color: var(--gold);
+}
+
+@media (min-width: 860px) {
+  .place { grid-template-columns: 1fr 1fr; align-items: start; }
+  .place__pics { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------- footer -- */
+
+.foot {
+  margin-top: clamp(3.5rem, 8vw, 6rem);
+  padding-block: clamp(2.8rem, 6vw, 4.2rem) clamp(1.6rem, 3vw, 2.2rem);
+  font-size: .95rem;
+}
+
+.foot__in {
+  display: grid;
+  gap: clamp(1.6rem, 3.5vw, 2.5rem);
+  padding-bottom: clamp(1.8rem, 4vw, 2.6rem);
+  border-bottom: 1px solid var(--on-blue-faint);
+}
+
+.foot__name {
+  margin: 0;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-stretch: 120%;
+  font-size: 1.5rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--plaster);
+}
+.foot__sub {
+  margin: .3rem 0 0;
+  font-size: .8rem;
+  letter-spacing: .06em;
+  color: var(--on-blue-dim);
+}
+
+.foot__k {
+  margin: 0 0 .6rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .66rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-lift);
+}
+.foot__col p { color: var(--on-blue-dim); line-height: 1.7; }
+.foot__col a { display: inline-block; padding: .62rem 0; }
+.foot__col a, .foot__list a {
+  color: var(--plaster);
+  text-decoration-color: rgba(245, 246, 248, .4);
+  text-underline-offset: .22em;
+}
+.foot__col a:hover, .foot__list a:hover { text-decoration-color: var(--gold-lift); }
+.foot__list li { line-height: 1.35; }
+.foot__list a { display: inline-block; padding: .78rem 0; }
+
+.foot__end {
+  padding-top: clamp(1.2rem, 3vw, 1.8rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  justify-content: space-between;
+  font-size: .82rem;
+  color: var(--on-blue-dim);
+}
+.foot__by a { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+
+@media (min-width: 700px) {
+  .foot__in { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 980px) {
+  .foot__in { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+}
+
+/* ------------------------------------------------------------ reveals -- */
+
+/* Scoped to .js (set by an inline script in <head>). Without scripting the
+   content is simply there — no hidden page, no dependency on core.js loading. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-reveal].in { opacity: 1; transform: none; }
+
+/* ---------------------------------------------------- reduced motion -- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .btn:hover, .bk-chip:hover, .bk-day:hover, .bk-slot:hover { transform: none !important; }
+  .dish:hover .dish__box img { transform: none !important; }
+  .bk-dates { scroll-behavior: auto; }
+}

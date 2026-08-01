@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Unapproved client preview. Stays out of the index until the owner signs off. -->
+<meta name="robots" content="noindex,nofollow">
+
+<title>Mythos Cucina Greca — ristorante greco su Via Tuscolana, Roma</title>
+<meta name="description" content="Cucina greca su Via Tuscolana 596, a Roma: gyros, souvlaki, moussaka, tzatziki e baklava. A due passi dalla metro A, Arco di Travertino. Prenota un tavolo online.">
+
+<meta property="og:type" content="restaurant">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Mythos Cucina Greca">
+<meta property="og:title" content="Mythos Cucina Greca — Via Tuscolana 596, Roma">
+<meta property="og:description" content="Gyros, souvlaki e moussaka su Via Tuscolana, a due passi dalla metro Arco di Travertino. Prenota un tavolo.">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B14A0">
+
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/logo-disc-sm.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Martian+Mono:wght@600..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="assets/css/core.css">
+
+<!-- Reveal styles hang off .js, so a page without JavaScript (or with a failed
+     core.js) shows all of its content instead of a wall of opacity:0. -->
+<script>document.documentElement.className+=' js';</script>
+
+<script>/* Filled at deploy. Empty strings are deliberate: booking.js falls back to the
+   phone card when unset, which is the correct pre-backend state. */
+window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
+<script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
+<script defer src="assets/js/core.js"></script>
+<script defer src="assets/js/booking.js"></script>
+</head>
+
+<body>
+<a class="skip" href="#main" data-en="Skip to content">Vai al contenuto</a>
+
+<!-- ─────────────────────────────────────────────────────────────── nav ── -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="#top" aria-label="Mythos Cucina Greca">
+      <img class="brand__disc" src="assets/img/logo-disc-sm.png" width="96" height="96" alt="">
+      <span class="brand__name">Mythos</span>
+    </a>
+
+    <nav id="nav-drawer" class="drawer" aria-label="Menu principale">
+      <ul class="drawer__list">
+        <li><a href="#ristorante" data-en="The restaurant">Il ristorante</a></li>
+        <li><a href="#piatti" data-en="The food">I piatti</a></li>
+        <li><a href="menu.html" data-en="Menu">Menù</a></li>
+        <li><a href="#dove" data-en="Find us">Dove siamo</a></li>
+        <li class="drawer__call"><a href="tel:+390687774778">06 8777 4778</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav__act">
+      <button type="button" class="langbtn" data-lang-toggle aria-label="Switch to English">EN</button>
+      <a class="btn btn-sm" href="#prenota" data-en="Book">Prenota</a>
+      <button type="button" class="burger" data-menu-toggle aria-expanded="false" aria-controls="nav-drawer" aria-label="Apri il menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ────────────────────────────────────────────────────────────── hero ── -->
+<section class="hero">
+  <div class="hero__shot">
+    <picture>
+      <source media="(max-width: 719px)" srcset="assets/img/hero-storefront-sm.webp" width="1080" height="1350">
+      <img src="assets/img/hero-storefront.webp" width="2400" height="1350"
+           alt="La vetrina di Mythos su Via Tuscolana di sera, con l'insegna blu accesa"
+           fetchpriority="high" decoding="async">
+    </picture>
+  </div>
+
+  <div class="hero__body">
+    <img class="hero__disc" src="assets/img/logo-disc.png" width="512" height="512"
+         alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
+
+    <h1 class="hero__h" data-en="Gyros, souvlaki and moussaka <span class='u-blue'>on Via Tuscolana.</span>">Gyros, souvlaki e moussaka <span class="u-blue">su Via Tuscolana.</span></h1>
+
+    <p class="hero__p" data-en="Greek cooking a short walk from Metro A, Arco di Travertino. Lunch and dinner, closed on Mondays.">Cucina greca a due passi dalla metro A, Arco di Travertino. Pranzo e cena, chiuso il lunedì.</p>
+
+    <p class="hero__act">
+      <a class="btn" href="#prenota" data-en="Book a table">Prenota un tavolo</a>
+      <span class="hero__or"><span data-en="or call us">oppure chiamaci</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></span>
+    </p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────── ristorante ── -->
+<section class="sec" id="ristorante">
+  <div class="wrap sec__grid">
+    <div class="sec__lead" data-reveal>
+      <p class="eyebrow" data-en="The restaurant">Il ristorante</p>
+      <h2 class="h2" data-en="Greek plates, no fuss.">Piatti greci, senza giri di parole.</h2>
+      <p class="lede" data-en="We cook Greek: gyros, pita gyros, souvlaki, moussaka, tzatziki, dolmades, saganaki and Greek salad. Lunch and dinner, every day except Monday.">Facciamo cucina greca: gyros, pita gyros, souvlaki, moussaka, tzatziki, dolmades, saganaki e insalata greca. A pranzo e a cena, tutti i giorni tranne il lunedì.</p>
+      <p data-en="We're at Via Tuscolana 596, a short walk from the Arco di Travertino stop on Metro A. Book a table below in under a minute, or call us and one of us will pick up.">Siamo su Via Tuscolana 596, a due passi dalla fermata Arco di Travertino della metro A. Prenoti qui sotto in meno di un minuto, oppure ci chiami e rispondiamo noi.</p>
+    </div>
+
+    <div class="card" data-reveal>
+      <dl class="facts">
+        <div class="facts__row">
+          <dt data-en="Address">Indirizzo</dt>
+          <dd>Via Tuscolana 596, Roma</dd>
+        </div>
+        <div class="facts__row">
+          <dt data-en="Metro">Metro</dt>
+          <dd><span class="linebadge" aria-hidden="true">A</span> <span class="sr-only">Metro A, </span>Arco di Travertino</dd>
+        </div>
+        <div class="facts__row">
+          <dt data-en="Phone">Telefono</dt>
+          <dd><a class="tel" href="tel:+390687774778">06 8777 4778</a></dd>
+        </div>
+        <div class="facts__row">
+          <dt data-en="Closed">Chiuso</dt>
+          <dd data-en="Monday">Lunedì</dd>
+        </div>
+        <div class="facts__row">
+          <dt data-en="Service">Servizio</dt>
+          <dd data-en="Lunch and dinner">Pranzo e cena</dd>
+        </div>
+        <div class="facts__row">
+          <dt data-en="Delivery">Consegna</dt>
+          <dd>Just Eat</dd>
+        </div>
+      </dl>
+      <p class="facts__note" data-en="Opening times are being updated — call us to confirm. The booking panel below always shows the times we can actually seat you.">Orari in aggiornamento — chiamaci per conferma. Il riquadro delle prenotazioni qui sotto mostra sempre gli orari in cui possiamo davvero sederti.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────────── piatti ── -->
+<section class="sec sec--tight" id="piatti">
+  <div class="wrap">
+    <div class="sec__head" data-reveal>
+      <p class="eyebrow" data-en="The food">I piatti</p>
+      <h2 class="h2" data-en="What comes out of the kitchen.">Quello che esce dalla cucina.</h2>
+    </div>
+
+    <ul class="dishes" data-reveal>
+      <li class="dish dish--wide">
+        <div class="dish__box"><img src="assets/img/gyros-cut.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Pita al gyros aperta a metà, con carne, pomodoro, cipolla e prezzemolo"></div>
+        <p class="dish__n">Gyros</p>
+      </li>
+      <li class="dish dish--wide">
+        <div class="dish__box"><img src="assets/img/grill.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Spiedini alla griglia con patate al forno, insalata, tzatziki e pita"></div>
+        <p class="dish__n" data-en="From the grill">Dalla griglia</p>
+      </li>
+      <li class="dish">
+        <div class="dish__box"><img src="assets/img/gyros-cone.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Pita gyros servita nel cono di carta con patatine e tzatziki"></div>
+        <p class="dish__n">Pita gyros</p>
+      </li>
+      <li class="dish">
+        <div class="dish__box"><img src="assets/img/salad.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Insalata greca vista dall'alto: feta, peperoni, olive e cetriolo"></div>
+        <p class="dish__n" data-en="Greek salad">Insalata greca</p>
+      </li>
+      <li class="dish">
+        <div class="dish__box"><img src="assets/img/souvlaki.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Spiedini di souvlaki con patatine, insalata greca e tzatziki"></div>
+        <p class="dish__n">Souvlaki</p>
+      </li>
+      <li class="dish">
+        <div class="dish__box"><img src="assets/img/tzatziki.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Ciotola di tzatziki con triangoli di pita tostata"></div>
+        <p class="dish__n">Tzatziki</p>
+      </li>
+      <li class="dish">
+        <div class="dish__box"><img src="assets/img/dolmades.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Dolmades, foglie di vite ripiene, su un piatto bianco"></div>
+        <p class="dish__n">Dolmades</p>
+      </li>
+      <li class="dish">
+        <div class="dish__box"><img src="assets/img/baklava.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Baklava con granella di pistacchio su un piatto ovale"></div>
+        <p class="dish__n">Baklava</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── prenota — the fresco panel ── -->
+<section class="fresco on-blue" id="prenota">
+  <img class="fresco__seal" src="assets/img/logo-disc.png" width="512" height="512" alt="" aria-hidden="true">
+
+  <div class="fresco__in wrap">
+    <div class="fresco__head" data-reveal>
+      <p class="eyebrow" data-en="Book">Prenota</p>
+      <h2 class="h2" data-en="When are you coming?">Quando vieni?</h2>
+      <p class="lede" data-en="Pick a day and a time. You get a booking code straight away — keep it, it's how you cancel.">Scegli il giorno e l'orario. Ti diamo subito un codice: tienilo da parte, serve per annullare.</p>
+    </div>
+
+    <div id="prenota-app"></div>
+
+    <noscript>
+      <p class="bk-note bk-phoneonly">Il modulo di prenotazione ha bisogno di JavaScript. Chiamaci allo <a href="tel:+390687774778">06 8777 4778</a> e ti troviamo un tavolo.</p>
+    </noscript>
+
+    <p class="fresco__phone"><span data-en="Rather use the phone? Call us on">Preferisci il telefono? Chiamaci allo</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────── menu & consegna ── -->
+<section class="sec" id="menu">
+  <div class="wrap sec__grid sec__grid--even">
+    <div data-reveal>
+      <p class="eyebrow" data-en="Menu and delivery">Menù e consegna</p>
+      <h2 class="h2" data-en="The whole menu.">Il menù per intero.</h2>
+      <p class="lede" data-en="Pites, plates, desserts: the full list lives on its own page, so it stays quick to read on a phone.">Pite, piatti, dolci: la carta completa sta su una pagina a parte, così resta veloce da leggere al telefono.</p>
+      <p><a class="btn" href="menu.html" data-en="See the menu">Vedi il menù</a></p>
+    </div>
+    <div class="card card--quiet" data-reveal>
+      <p class="eyebrow" data-en="Delivery">Consegna</p>
+      <p class="lede" data-en="Rather stay in? We deliver with Just Eat.">Preferisci restare a casa? Consegniamo con Just Eat.</p>
+      <p class="fine" data-en="For a table, book here or call us — delivery orders go through Just Eat.">Per il tavolo prenota qui o chiamaci; gli ordini a domicilio passano da Just Eat.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────── dove siamo ── -->
+<section class="sec sec--tight" id="dove">
+  <div class="wrap">
+    <div class="sec__head" data-reveal>
+      <p class="eyebrow" data-en="Find us">Dove siamo</p>
+      <h2 class="h2">Via Tuscolana 596, Roma.</h2>
+      <p class="lede" data-en="Metro A, Arco di Travertino stop — then it's a short walk. Closed on Mondays; lunch and dinner the rest of the week.">Metro A, fermata Arco di Travertino: da lì sono due passi. Lunedì chiuso; il resto della settimana pranzo e cena.</p>
+    </div>
+
+    <div class="place" data-reveal>
+      <div class="place__pics">
+        <figure class="place__fig">
+          <img src="assets/img/room.webp" width="1200" height="900" loading="lazy" decoding="async" alt="La sala con le tovaglie blu e la parete di finestre">
+          <figcaption data-en="The dining room">La sala</figcaption>
+        </figure>
+        <figure class="place__fig">
+          <img src="assets/img/terrace.webp" width="1200" height="900" loading="lazy" decoding="async" alt="La veranda coperta con le sedie blu">
+          <figcaption data-en="The covered terrace">La veranda</figcaption>
+        </figure>
+      </div>
+
+      <div class="place__map">
+        <iframe
+          title="Mappa: Via Tuscolana 596, Roma"
+          src="https://www.google.com/maps?q=Via%20Tuscolana%20596%2C%20Roma&z=17&hl=it&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          width="600" height="450"></iframe>
+        <p class="place__links">
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Via%20Tuscolana%20596%2C%20Roma" target="_blank" rel="noopener" data-en="Open in Google Maps">Apri in Google Maps</a>
+          <a class="tel" href="tel:+390687774778">06 8777 4778</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ──────────────────────────────────────────────────────────── footer ── -->
+<footer class="foot on-blue">
+  <div class="wrap foot__in">
+    <div class="foot__brand">
+      <p class="foot__name">Mythos</p>
+      <p class="foot__sub" data-en="Greek kitchen · Rome">Cucina greca · Roma</p>
+    </div>
+
+    <div class="foot__col">
+      <p class="foot__k" data-en="Where">Dove</p>
+      <p>Via Tuscolana 596, Roma<br>
+        <span data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</span></p>
+    </div>
+
+    <div class="foot__col">
+      <p class="foot__k" data-en="Contact">Contatti</p>
+      <p><a class="tel" href="tel:+390687774778">06 8777 4778</a><br>
+        <span data-en="Closed on Mondays">Chiuso il lunedì</span></p>
+    </div>
+
+    <div class="foot__col">
+      <p class="foot__k" data-en="Pages">Pagine</p>
+      <ul class="foot__list">
+        <li><a href="#prenota" data-en="Book a table">Prenota un tavolo</a></li>
+        <li><a href="menu.html" data-en="Menu">Menù</a></li>
+        <li><a href="#dove" data-en="Find us">Dove siamo</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap foot__end">
+    <p data-en="Opening times are being updated — call us to confirm.">Orari in aggiornamento — chiamaci per conferma.</p>
+    <p class="foot__by">Sito realizzato da <a href="https://x3roautomations.it" target="_blank" rel="noopener">x3ro&nbsp;Automations</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
