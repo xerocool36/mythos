@@ -230,7 +230,8 @@ p:last-child { margin-bottom: 0; }
    plaster), so buttons also carry an inner ring in their own foreground. */
 .btn:focus-visible { box-shadow: inset 0 0 0 3px var(--btn-fg); }
 
-.btn-sm { min-height: 44px; padding: 0 1.05rem; font-size: .74rem; }
+.btn-sm { min-height: 44px; padding: 0 1.1rem; font-size: .74rem; }
+
 
 .btn-ghost {
   background: transparent;
@@ -309,9 +310,13 @@ p:last-child { margin-bottom: 0; }
 }
 
 .langbtn {
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 .5rem;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: 1px solid var(--rule);
   border-radius: 2px;
@@ -326,7 +331,8 @@ p:last-child { margin-bottom: 0; }
 .langbtn:hover { border-color: var(--blue); color: var(--blue); }
 
 .burger {
-  width: 46px; height: 44px;
+  width: 44px; height: 44px;
+  flex: 0 0 auto;
   display: inline-flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 5px;
   background: none; border: 1px solid var(--rule); border-radius: 2px;
@@ -350,9 +356,9 @@ p:last-child { margin-bottom: 0; }
   .brand__disc { width: 30px; height: 30px; }
   .brand__name { font-size: .9rem; letter-spacing: .06em; }
   .nav__act { gap: .3rem; }
-  .langbtn { min-width: 40px; padding: 0 .3rem; font-size: .7rem; }
-  .btn-sm { padding: 0 .7rem; font-size: .67rem; letter-spacing: .07em; }
-  .burger { width: 42px; }
+  .langbtn { width: 42px; height: 42px; font-size: .7rem; }
+  .btn-sm { min-height: 42px; padding: 0 .75rem; font-size: .69rem; letter-spacing: .08em; }
+  .burger { width: 42px; height: 42px; }
 }
 
 /* Drawer — one list, an overlay under 900px and an inline row above it. */
@@ -607,9 +613,11 @@ p:last-child { margin-bottom: 0; }
   .hero__pic { aspect-ratio: 16 / 10; }
 }
 
+/* Below the width where both labels fit on one line they go full-bleed and
+   stack, at full size. A button that has been squeezed to fit reads as a
+   different, lesser control than the one making the same offer further down. */
 @media (max-width: 559px) {
-  .hero__act { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
-  .hero__act .btn { min-height: 48px; padding: 0 .7rem; font-size: .71rem; letter-spacing: .1em; }
+  .hero__act .btn { flex: 1 0 100%; }
 }
 
 @media (min-width: 560px) {
@@ -697,21 +705,6 @@ p:last-child { margin-bottom: 0; }
   align-self: center;
 }
 .facts dd { margin: 0; align-self: center; }
-
-.linebadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.45em; height: 1.45em;
-  margin-right: .35em;
-  border-radius: 50%;
-  background: var(--blue);
-  color: var(--plaster);
-  font-family: var(--f-disp);
-  font-weight: 700;
-  font-size: .78em;
-  vertical-align: -.15em;
-}
 
 .facts__note {
   margin: 1.1rem 0 0;
@@ -1426,6 +1419,11 @@ p:last-child { margin-bottom: 0; }
    No embedded map: the map lives in Google Maps, where it is already better,
    and a 420px iframe of it is filler. */
 .loc { display: grid; gap: clamp(1.4rem, 3.4vw, 2.4rem); }
+.loc__social { margin-top: clamp(1rem, 2.6vw, 1.4rem); }
+/* .foot__k is written for the ultramarine footer, where its gold-lift reads at
+   8:1. On the plaster ground it is a pale smear, so this label takes the blue —
+   two classes deep so it wins wherever the two rules end up in the file. */
+.loc__social .foot__k { color: var(--blue); margin-bottom: .35rem; }
 
 .loc__h {
   font-family: var(--f-disp);
@@ -1481,6 +1479,71 @@ p:last-child { margin-bottom: 0; }
   .loc { grid-template-columns: 1fr 1.05fr; align-items: start; gap: clamp(2rem, 5vw, 3.5rem); }
 }
 
+
+/* ------------------------------------------------------- metro + social -- */
+
+/* The Rome metro mark, drawn rather than described. The network's own signage
+   is a white M on red, and the line letter rides in its line colour — A is
+   orange. A plain blue disc with an "A" in it was the site's brand colour
+   pretending to be wayfinding; this is the thing people actually look for on
+   the street. Both parts are text, so the badge scales with the type around it
+   instead of being a fixed-size image. */
+.metro {
+  display: inline-flex;
+  align-items: center;
+  gap: .28em;
+  vertical-align: -.18em;
+  margin-right: .45em;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.metro__m,
+.metro__a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  font-size: .82em;
+  color: #fff;
+}
+.metro__m { background: #D9241F; border-radius: 2px; }
+.metro__a { background: #F07E26; border-radius: 50%; }
+
+/* The four places this restaurant already exists online. Icon-only, because
+   the labels are in the accessible name and four words of "Facebook Instagram
+   Google Just Eat" in a footer is noise. */
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin: 1rem 0 0;
+}
+.social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--on-blue-faint);
+  border-radius: 50%;
+  color: var(--plaster);
+  transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease), transform .18s var(--ease);
+}
+.social svg { width: 19px; height: 19px; display: block; }
+.social a:hover {
+  background: var(--plaster);
+  border-color: var(--plaster);
+  color: var(--blue);
+  transform: translateY(-2px);
+}
+
+/* On the plaster ground (the location block) the same row inverts. */
+.social--light a { border-color: var(--rule); color: var(--blue); }
+.social--light a:hover { background: var(--blue); border-color: var(--blue); color: var(--plaster); }
+
 /* ------------------------------------------------------------- footer -- */
 
 .foot {
@@ -1495,6 +1558,10 @@ p:last-child { margin-bottom: 0; }
   padding-bottom: clamp(1.8rem, 4vw, 2.6rem);
   border-bottom: 1px solid var(--on-blue-faint);
 }
+
+.foot__disc { width: 54px; height: 54px; display: block; margin-bottom: .7rem; }
+
+.foot__metro { display: inline-flex; align-items: center; }
 
 .foot__name {
   margin: 0;
@@ -1523,24 +1590,39 @@ p:last-child { margin-bottom: 0; }
   color: var(--gold-lift);
 }
 .foot__col p { color: var(--on-blue-dim); line-height: 1.7; }
-.foot__col a { display: inline-block; padding: .62rem 0; }
+.foot__col a { display: inline-flex; align-items: center; min-height: 44px; padding: .1rem 0; }
 .foot__col a, .foot__list a {
   color: var(--plaster);
   text-decoration-color: rgba(245, 246, 248, .4);
   text-underline-offset: .22em;
 }
 .foot__col a:hover, .foot__list a:hover { text-decoration-color: var(--gold-lift); }
-.foot__list li { line-height: 1.35; }
-.foot__list a { display: inline-block; padding: .78rem 0; }
+.foot__list li { line-height: 1.3; }
+.foot__list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .1rem 0;
+}
 
+/* The end bar carries two unrelated things — a caveat about opening times and
+   the agency credit. Side by side they competed and the credit lost, so they
+   sit on their own rows and the credit gets the lower, terminal one. */
 .foot__end {
   padding-top: clamp(1.2rem, 3vw, 1.8rem);
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem 1.5rem;
-  justify-content: space-between;
+  display: grid;
+  gap: .9rem;
   font-size: .82rem;
   color: var(--on-blue-dim);
+}
+.foot__note { margin: 0; }
+
+@media (min-width: 760px) {
+  .foot__end {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: .5rem 1.5rem;
+  }
 }
 /* The agency credit. The x3ro mark is metallic blue-grey with a dark navy
    wordmark, so on the ultramarine footer it sinks into the ground and reads as
@@ -1686,7 +1768,10 @@ p:last-child { margin-bottom: 0; }
 
 /* Two columns in the footer from the width where a phone can hold them, so the
    four blocks stop being four full-width rows. */
-@media (min-width: 380px) {
+/* Bounded at the top end on purpose: this block sits after the footer's own
+   980px four-column rule, so an open-ended min-width here would win the
+   cascade and flatten the desktop footer back to two columns. */
+@media (min-width: 380px) and (max-width: 699px) {
   .foot__in { grid-template-columns: repeat(2, 1fr); }
   .foot__brand { grid-column: 1 / -1; }
 }
