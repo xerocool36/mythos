@@ -2,7 +2,7 @@
   "updated": "2026-08-01",
   "currency": "EUR",
   "source": "printed dine-in menu, photographed",
-  "source_detail": "Transcribed verbatim from photographs of the restaurant's own printed menu (harvest/menu/gm-002,003,004,009,014,015,016,017,018,019). Delivery-platform prices were NOT used: the Just Eat list runs far above the printed dine-in list (pita gyros 9,90 vs 7,00; moussaka 16,00 vs 12,00).",
+  "source_detail": "Transcribed verbatim from photographs of the restaurant's own printed menu (harvest/menu/gm-002,003,004,009,014,015,016,017,018,019). The Just Eat list was not used because it is a delivery menu: takeaway and delivery prices normally carry a markup over dine-in, so the two lists are different channels rather than contradictory readings of one price. This page is a table menu, so it carries the dine-in prices.",
   "excluded_source": "harvest/menu/gm-007, gm-010, gm-011, gm-013 — the two-sided 'NUOVA APERTURA' promotional leaflet (EXIF 2024-04-19). Its price list is a promotional one and contradicts the binder menu on every comparable line (pita gyros 6,00 / 5,00 on the leaflet vs 7,00 on the printed table menu), one item is struck out by hand, and the leaflet carries two venues. Dish names and descriptions for the 'piatti' and 'insalate' sections are taken from it because those pages of the table menu were not photographed, but none of its prices are published.",
   "allergens": "The printed menu carries no allergen information, so this file carries none. Guests must ask staff.",
   "footnote": {
@@ -10,162 +10,856 @@
     "en": "* frozen product"
   },
   "conflicts": [
-    { "item": "Dolmades", "section": "antipasti", "values": ["7.50", "8.50"], "note": "two prints of the table menu disagree (gm-003 vs gm-009)" },
-    { "item": "Tiropita", "section": "antipasti", "values": ["4.00", "6.00"], "note": "two prints of the table menu disagree (gm-003 vs gm-009)" },
-    { "item": "Keftes zucchine", "section": "antipasti", "values": ["5.50", "7.00"], "note": "two prints disagree; the portion also changes, 4 polpette vs 5 polpette" },
-    { "item": "Keftes manzo e maiale", "section": "antipasti", "values": ["5.50", "7.00"], "note": "two prints disagree; also renamed — 'Keftes manzo' on the older print, 'Keftes manzo e maiale' on the newer" },
-    { "item": "Keftes falafel", "section": "antipasti", "values": ["5.50", "7.00"], "note": "two prints disagree; 4 polpette vs 5 polpette" },
-    { "item": "Keftes pomodoro", "section": "antipasti", "values": ["5.50", "7.00"], "note": "two prints disagree; 4 polpette vs 5 polpette" },
-    { "item": "Keftes melanzane", "section": "antipasti", "values": ["5.50", "7.00"], "note": "two prints disagree; 4 polpette vs 5 polpette" },
-    { "item": "Olive", "section": "antipasti", "values": ["4.00", "4.50"], "note": "two prints of the table menu disagree (gm-003 vs gm-009)" },
-    { "item": "Moussakà", "section": "specialita", "values": ["12.00", "14.0…"], "note": "two prints disagree (gm-015 vs gm-014, EXIF 2025-05-31); the newer sheet also adds patate to the dish and its price column is cut off at the frame edge, final digit unreadable" },
-    { "item": "Pastitsio", "section": "specialita", "values": ["10.00", "12.…"], "note": "two prints disagree; newer sheet's price cut off at the frame edge" },
-    { "item": "Gemistà", "section": "specialita", "values": ["12.00", "1…"], "note": "two prints disagree; newer sheet's price cut off at the frame edge" },
-    { "item": "Saganaki", "section": "specialita", "values": ["9.00", "illeggibile"], "note": "the newer sheet's price column is outside the photograph" },
-    { "item": "Feta grigliata", "section": "specialita", "values": ["9.00", "illeggibile"], "note": "the newer sheet's price column is outside the photograph" },
-    { "item": "Fava gialla", "section": "specialita", "values": ["8.00", "illeggibile"], "note": "two prints disagree on the dish itself (capperi e cipolla rossa only on the newer sheet); newer price unreadable" },
-    { "item": "Fagioli giganti", "section": "specialita", "values": ["assente", "illeggibile"], "note": "appears only on the newer sheet (gm-014) and its price is outside the photograph" },
-    { "item": "Gyros maiale (pita)", "section": "volantino promozionale 2024", "values": ["6.00", "5.00"], "note": "the two prints of the NUOVA APERTURA leaflet disagree with each other (gm-007 vs gm-013) and both disagree with the printed table menu, which prices this pita at 7,00 on two agreeing sheets. The leaflet price list is not published anywhere on this page." }
+    {
+      "item": "Dolmades",
+      "section": "antipasti",
+      "values": [
+        "7.50",
+        "8.50"
+      ],
+      "note": "two prints of the table menu disagree (gm-003 vs gm-009)"
+    },
+    {
+      "item": "Tiropita",
+      "section": "antipasti",
+      "values": [
+        "4.00",
+        "6.00"
+      ],
+      "note": "two prints of the table menu disagree (gm-003 vs gm-009)"
+    },
+    {
+      "item": "Keftes zucchine",
+      "section": "antipasti",
+      "values": [
+        "5.50",
+        "7.00"
+      ],
+      "note": "two prints disagree; the portion also changes, 4 polpette vs 5 polpette"
+    },
+    {
+      "item": "Keftes manzo e maiale",
+      "section": "antipasti",
+      "values": [
+        "5.50",
+        "7.00"
+      ],
+      "note": "two prints disagree; also renamed — 'Keftes manzo' on the older print, 'Keftes manzo e maiale' on the newer"
+    },
+    {
+      "item": "Keftes falafel",
+      "section": "antipasti",
+      "values": [
+        "5.50",
+        "7.00"
+      ],
+      "note": "two prints disagree; 4 polpette vs 5 polpette"
+    },
+    {
+      "item": "Keftes pomodoro",
+      "section": "antipasti",
+      "values": [
+        "5.50",
+        "7.00"
+      ],
+      "note": "two prints disagree; 4 polpette vs 5 polpette"
+    },
+    {
+      "item": "Keftes melanzane",
+      "section": "antipasti",
+      "values": [
+        "5.50",
+        "7.00"
+      ],
+      "note": "two prints disagree; 4 polpette vs 5 polpette"
+    },
+    {
+      "item": "Olive",
+      "section": "antipasti",
+      "values": [
+        "4.00",
+        "4.50"
+      ],
+      "note": "two prints of the table menu disagree (gm-003 vs gm-009)"
+    },
+    {
+      "item": "Moussakà",
+      "section": "specialita",
+      "values": [
+        "12.00",
+        "14.0…"
+      ],
+      "note": "two prints disagree (gm-015 vs gm-014, EXIF 2025-05-31); the newer sheet also adds patate to the dish and its price column is cut off at the frame edge, final digit unreadable"
+    },
+    {
+      "item": "Pastitsio",
+      "section": "specialita",
+      "values": [
+        "10.00",
+        "12.…"
+      ],
+      "note": "two prints disagree; newer sheet's price cut off at the frame edge"
+    },
+    {
+      "item": "Gemistà",
+      "section": "specialita",
+      "values": [
+        "12.00",
+        "1…"
+      ],
+      "note": "two prints disagree; newer sheet's price cut off at the frame edge"
+    },
+    {
+      "item": "Saganaki",
+      "section": "specialita",
+      "values": [
+        "9.00",
+        "illeggibile"
+      ],
+      "note": "the newer sheet's price column is outside the photograph"
+    },
+    {
+      "item": "Feta grigliata",
+      "section": "specialita",
+      "values": [
+        "9.00",
+        "illeggibile"
+      ],
+      "note": "the newer sheet's price column is outside the photograph"
+    },
+    {
+      "item": "Fava gialla",
+      "section": "specialita",
+      "values": [
+        "8.00",
+        "illeggibile"
+      ],
+      "note": "two prints disagree on the dish itself (capperi e cipolla rossa only on the newer sheet); newer price unreadable"
+    },
+    {
+      "item": "Fagioli giganti",
+      "section": "specialita",
+      "values": [
+        "assente",
+        "illeggibile"
+      ],
+      "note": "appears only on the newer sheet (gm-014) and its price is outside the photograph"
+    },
+    {
+      "item": "Gyros maiale (pita)",
+      "section": "volantino promozionale 2024",
+      "values": [
+        "6.00",
+        "5.00"
+      ],
+      "note": "the two prints of the NUOVA APERTURA leaflet disagree with each other (gm-007 vs gm-013) and both disagree with the printed table menu, which prices this pita at 7,00 on two agreeing sheets. The leaflet price list is not published anywhere on this page."
+    }
   ],
   "sections": [
     {
       "id": "antipasti",
-      "name": { "it": "Antipasti", "en": "Starters" },
+      "name": {
+        "it": "Antipasti",
+        "en": "Starters"
+      },
       "items": [
-        { "name": "Dolmades", "desc": "6 involtini di riso alle erbe, salsa a scelta e pita", "desc_en": "6 herbed rice rolls, sauce of your choice and pita", "price": null, "tags": ["veg"] },
-        { "name": "Spanakopita", "desc": "pasta fillo ripiena di spinaci e feta", "desc_en": "filo pastry filled with spinach and feta", "price": "6.00", "tags": ["veg"] },
-        { "name": "Tiropita", "desc": "pasta fillo ripiena di crema di feta", "desc_en": "filo pastry filled with feta cream", "price": null, "tags": ["veg"] },
-        { "name": "Keftes zucchine*", "desc": "5 polpette di zucchine con menta, salsa a scelta", "desc_en": "5 courgette and mint fritters, sauce of your choice", "price": null, "tags": ["veg"] },
-        { "name": "Keftes manzo e maiale*", "desc": "5 polpette di manzo e maiale, salsa a scelta", "desc_en": "5 beef and pork meatballs, sauce of your choice", "price": null, "tags": [] },
-        { "name": "Keftes falafel*", "desc": "5 polpette di ceci e patate, salsa a scelta", "desc_en": "5 chickpea and potato fritters, sauce of your choice", "price": null, "tags": ["veg"] },
-        { "name": "Keftes pomodoro*", "desc": "5 polpette di pomodoro fresco, salsa a scelta", "desc_en": "5 fresh tomato fritters, sauce of your choice", "price": null, "tags": ["veg"] },
-        { "name": "Keftes melanzane*", "desc": "5 polpette di melanzane ripiene di feta, salsa a scelta", "desc_en": "5 aubergine fritters filled with feta, sauce of your choice", "price": null, "tags": ["veg"] },
-        { "name": "Feta", "desc": "formaggio feta condito con olio E.V.O. e origano", "desc_en": "feta cheese dressed with extra virgin olive oil and oregano", "price": "6.00", "tags": ["veg"] },
-        { "name": "Olive", "desc": "porzione olive di Kalamata", "desc_en": "a portion of Kalamata olives", "price": null, "tags": ["veg"] },
-        { "name": "Patata fritta", "desc": "patate fritte speziate con origano greco", "desc_en": "fried potatoes with Greek oregano", "price": "4.00", "tags": ["veg"] }
+        {
+          "name": "Dolmades",
+          "desc": "6 involtini di riso alle erbe, salsa a scelta e pita",
+          "desc_en": "6 herbed rice rolls, sauce of your choice and pita",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Spanakopita",
+          "desc": "pasta fillo ripiena di spinaci e feta",
+          "desc_en": "filo pastry filled with spinach and feta",
+          "price": "6.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Tiropita",
+          "desc": "pasta fillo ripiena di crema di feta",
+          "desc_en": "filo pastry filled with feta cream",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Keftes zucchine*",
+          "desc": "5 polpette di zucchine con menta, salsa a scelta",
+          "desc_en": "5 courgette and mint fritters, sauce of your choice",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Keftes manzo e maiale*",
+          "desc": "5 polpette di manzo e maiale, salsa a scelta",
+          "desc_en": "5 beef and pork meatballs, sauce of your choice",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Keftes falafel*",
+          "desc": "5 polpette di ceci e patate, salsa a scelta",
+          "desc_en": "5 chickpea and potato fritters, sauce of your choice",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Keftes pomodoro*",
+          "desc": "5 polpette di pomodoro fresco, salsa a scelta",
+          "desc_en": "5 fresh tomato fritters, sauce of your choice",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Keftes melanzane*",
+          "desc": "5 polpette di melanzane ripiene di feta, salsa a scelta",
+          "desc_en": "5 aubergine fritters filled with feta, sauce of your choice",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Feta",
+          "desc": "formaggio feta condito con olio E.V.O. e origano",
+          "desc_en": "feta cheese dressed with extra virgin olive oil and oregano",
+          "price": "6.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Olive",
+          "desc": "porzione olive di Kalamata",
+          "desc_en": "a portion of Kalamata olives",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Patata fritta",
+          "desc": "patate fritte speziate con origano greco",
+          "desc_en": "fried potatoes with Greek oregano",
+          "price": "4.00",
+          "tags": [
+            "veg"
+          ]
+        }
       ]
     },
     {
       "id": "pite",
-      "name": { "it": "Pite", "en": "Pita wraps" },
+      "name": {
+        "it": "Pite",
+        "en": "Pita wraps"
+      },
       "note": {
         "it": "Prova la versione XL con pita artigianale più grande — € 1,00 extra",
         "en": "Try the XL version with a larger handmade pita — € 1.00 extra"
       },
       "items": [
-        { "name": "Gyros maiale*", "desc": "pita ripiena di carne gyros, salsa tzatziki, pomodori, cipolla rossa e patatine fritte", "desc_en": "pita filled with gyros pork, tzatziki, tomato, red onion and fries", "price": "7.00", "tags": [] },
-        { "name": "Souvlaki pollo", "desc": "pita ripiena di spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte", "desc_en": "pita filled with a chicken skewer, tzatziki, tomato, red onion, salad and fries", "price": "7.50", "tags": [] },
-        { "name": "Souvlaki maiale*", "desc": "pita ripiena di spiedino di maiale, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte", "desc_en": "pita filled with a pork skewer, tzatziki, tomato, red onion, salad and fries", "price": "7.50", "tags": [] },
-        { "name": "Souvlaki agnello*", "desc": "pita ripiena di spiedino di agnello, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte", "desc_en": "pita filled with a lamb skewer, tzatziki, tomato, red onion, salad and fries", "price": "9.00", "tags": [] },
-        { "name": "Bifteki manzo*", "desc": "pita ripiena di salsiccia di manzo con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte", "desc_en": "pita filled with a beef patty and melting cheese, tzatziki, tomato, red onion, salad and fries", "price": "7.50", "tags": [] },
-        { "name": "Bifteki pollo e pancetta*", "desc": "pita ripiena di salsiccia di pollo e pancetta con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte", "desc_en": "pita filled with a chicken and bacon patty with melting cheese, tzatziki, tomato, red onion, salad and fries", "price": "7.50", "tags": [] },
-        { "name": "Mythos*", "desc": "pita ripiena di carne gyros e spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte", "desc_en": "pita filled with gyros meat and a chicken skewer, tzatziki, tomato, red onion, salad and fries", "price": "8.00", "tags": [] },
-        { "name": "Vegetariano", "desc": "pita ripiena di feta, olive di Kalamata, salsa tzatziki, pomodori, insalata e patatine fritte", "desc_en": "pita filled with feta, Kalamata olives, tzatziki, tomato, salad and fries", "price": "7.00", "tags": ["veg"] },
-        { "name": "Vegano", "desc": "pita ripiena di falafel, salsa hummus di ceci, pomodori, insalata e patatine fritte", "desc_en": "pita filled with falafel, chickpea hummus, tomato, salad and fries", "price": "7.00", "tags": ["vegan"] }
+        {
+          "name": "Gyros maiale*",
+          "desc": "pita ripiena di carne gyros, salsa tzatziki, pomodori, cipolla rossa e patatine fritte",
+          "desc_en": "pita filled with gyros pork, tzatziki, tomato, red onion and fries",
+          "price": "7.00",
+          "tags": []
+        },
+        {
+          "name": "Souvlaki pollo",
+          "desc": "pita ripiena di spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte",
+          "desc_en": "pita filled with a chicken skewer, tzatziki, tomato, red onion, salad and fries",
+          "price": "7.50",
+          "tags": []
+        },
+        {
+          "name": "Souvlaki maiale*",
+          "desc": "pita ripiena di spiedino di maiale, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte",
+          "desc_en": "pita filled with a pork skewer, tzatziki, tomato, red onion, salad and fries",
+          "price": "7.50",
+          "tags": []
+        },
+        {
+          "name": "Souvlaki agnello*",
+          "desc": "pita ripiena di spiedino di agnello, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte",
+          "desc_en": "pita filled with a lamb skewer, tzatziki, tomato, red onion, salad and fries",
+          "price": "9.00",
+          "tags": []
+        },
+        {
+          "name": "Bifteki manzo*",
+          "desc": "pita ripiena di salsiccia di manzo con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte",
+          "desc_en": "pita filled with a beef patty and melting cheese, tzatziki, tomato, red onion, salad and fries",
+          "price": "7.50",
+          "tags": []
+        },
+        {
+          "name": "Bifteki pollo e pancetta*",
+          "desc": "pita ripiena di salsiccia di pollo e pancetta con formaggio filante, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte",
+          "desc_en": "pita filled with a chicken and bacon patty with melting cheese, tzatziki, tomato, red onion, salad and fries",
+          "price": "7.50",
+          "tags": []
+        },
+        {
+          "name": "Mythos*",
+          "desc": "pita ripiena di carne gyros e spiedino di pollo, salsa tzatziki, pomodori, cipolla rossa, insalata e patatine fritte",
+          "desc_en": "pita filled with gyros meat and a chicken skewer, tzatziki, tomato, red onion, salad and fries",
+          "price": "8.00",
+          "tags": []
+        },
+        {
+          "name": "Vegetariano",
+          "desc": "pita ripiena di feta, olive di Kalamata, salsa tzatziki, pomodori, insalata e patatine fritte",
+          "desc_en": "pita filled with feta, Kalamata olives, tzatziki, tomato, salad and fries",
+          "price": "7.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Vegano",
+          "desc": "pita ripiena di falafel, salsa hummus di ceci, pomodori, insalata e patatine fritte",
+          "desc_en": "pita filled with falafel, chickpea hummus, tomato, salad and fries",
+          "price": "7.00",
+          "tags": [
+            "vegan"
+          ]
+        }
       ]
     },
     {
       "id": "piatti",
-      "name": { "it": "I nostri piatti", "en": "Plates" },
+      "name": {
+        "it": "I nostri piatti",
+        "en": "Plates"
+      },
       "note": {
         "it": "Prezzi in attesa di conferma dal ristorante — chiedi al personale.",
         "en": "Prices awaiting confirmation from the restaurant — please ask a member of staff."
       },
       "items": [
-        { "name": "Gyros maiale*", "desc": "pita, carne gyros, insalata greca, patate, tzatziki", "desc_en": "pita, gyros pork, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Souvlaki pollo", "desc": "pita, 2 spiedini pollo, insalata greca, patate, tzatziki", "desc_en": "pita, 2 chicken skewers, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Souvlaki maiale*", "desc": "pita, 2 spiedini maiale, insalata greca, patate, tzatziki", "desc_en": "pita, 2 pork skewers, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Souvlaki agnello*", "desc": "pita, 2 spiedini agnello, insalata greca, patate, tzatziki", "desc_en": "pita, 2 lamb skewers, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Bifteki manzo*", "desc": "pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki", "desc_en": "pita, 2 cheese-filled bifteki patties, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Bifteki pollo pancetta*", "desc": "pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki", "desc_en": "pita, 2 cheese-filled bifteki patties, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Kontosouvli di pollo", "desc": "pita, 3 spiedini di pollo, patate e tzatziki", "desc_en": "pita, 3 chicken skewers, potatoes and tzatziki", "price": null, "tags": [] },
-        { "name": "Misto*", "desc": "pita, 150 g carne gyros, 1 spiedino pollo, insalata greca, patate, tzatziki", "desc_en": "pita, 150 g gyros meat, 1 chicken skewer, Greek salad, potatoes, tzatziki", "price": null, "tags": [] },
-        { "name": "Mythos misto solo carne*", "desc": "1 bifteki, 1 spiedino pollo, carne gyros, salsa a scelta", "desc_en": "1 bifteki patty, 1 chicken skewer, gyros meat, sauce of your choice", "price": null, "tags": [] },
-        { "name": "Vegetariano", "desc": "pita, melanzane e zucchine grigliate, falafel, insalata greca, patate, tzatziki", "desc_en": "pita, grilled aubergine and courgette, falafel, Greek salad, potatoes, tzatziki", "price": null, "tags": ["veg"] },
-        { "name": "Vegano", "desc": "pita, melanzane e zucchine grigliate, falafel, insalata mista, patate, hummus", "desc_en": "pita, grilled aubergine and courgette, falafel, mixed salad, potatoes, hummus", "price": null, "tags": ["vegan"] }
+        {
+          "name": "Gyros maiale*",
+          "desc": "pita, carne gyros, insalata greca, patate, tzatziki",
+          "desc_en": "pita, gyros pork, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Souvlaki pollo",
+          "desc": "pita, 2 spiedini pollo, insalata greca, patate, tzatziki",
+          "desc_en": "pita, 2 chicken skewers, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Souvlaki maiale*",
+          "desc": "pita, 2 spiedini maiale, insalata greca, patate, tzatziki",
+          "desc_en": "pita, 2 pork skewers, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Souvlaki agnello*",
+          "desc": "pita, 2 spiedini agnello, insalata greca, patate, tzatziki",
+          "desc_en": "pita, 2 lamb skewers, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Bifteki manzo*",
+          "desc": "pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki",
+          "desc_en": "pita, 2 cheese-filled bifteki patties, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Bifteki pollo pancetta*",
+          "desc": "pita, 2 bifteki rip. di formaggio, insalata greca, patate, tzatziki",
+          "desc_en": "pita, 2 cheese-filled bifteki patties, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Kontosouvli di pollo",
+          "desc": "pita, 3 spiedini di pollo, patate e tzatziki",
+          "desc_en": "pita, 3 chicken skewers, potatoes and tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Misto*",
+          "desc": "pita, 150 g carne gyros, 1 spiedino pollo, insalata greca, patate, tzatziki",
+          "desc_en": "pita, 150 g gyros meat, 1 chicken skewer, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Mythos misto solo carne*",
+          "desc": "1 bifteki, 1 spiedino pollo, carne gyros, salsa a scelta",
+          "desc_en": "1 bifteki patty, 1 chicken skewer, gyros meat, sauce of your choice",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Vegetariano",
+          "desc": "pita, melanzane e zucchine grigliate, falafel, insalata greca, patate, tzatziki",
+          "desc_en": "pita, grilled aubergine and courgette, falafel, Greek salad, potatoes, tzatziki",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Vegano",
+          "desc": "pita, melanzane e zucchine grigliate, falafel, insalata mista, patate, hummus",
+          "desc_en": "pita, grilled aubergine and courgette, falafel, mixed salad, potatoes, hummus",
+          "price": null,
+          "tags": [
+            "vegan"
+          ]
+        }
       ]
     },
     {
       "id": "specialita",
-      "name": { "it": "Specialità della casa", "en": "House specialities" },
+      "name": {
+        "it": "Specialità della casa",
+        "en": "House specialities"
+      },
       "note": {
         "it": "Due stampe del menù riportano prezzi diversi: prezzi in attesa di conferma — chiedi al personale.",
         "en": "Two prints of the menu carry different prices: prices awaiting confirmation — please ask a member of staff."
       },
       "items": [
-        { "name": "Moussakà", "desc": "melanzane, ragù di manzo, besciamella, patate e pane pita", "desc_en": "aubergine, beef ragù, béchamel, potatoes and pita bread", "price": null, "tags": [] },
-        { "name": "Pastitsio", "desc": "pasta al forno con ragù di manzo e besciamella", "desc_en": "baked pasta with beef ragù and béchamel", "price": null, "tags": [] },
-        { "name": "Gemistà", "desc": "pomodoro e peperone ripieni di riso speziato, patate e pane pita", "desc_en": "tomato and pepper stuffed with spiced rice, potatoes and pita bread", "price": null, "tags": ["veg"] },
-        { "name": "Saganaki", "desc": "formaggio pastellato (pan grattato, sesamo, peperoncino e uova) e fritto servito con limone o miele e pane pita", "desc_en": "cheese in batter (breadcrumb, sesame, chilli and egg), fried and served with lemon or honey and pita bread", "price": null, "tags": ["veg"] },
-        { "name": "Feta grigliata", "desc": "formaggio feta grigliato con pomodoro, peperone, cipolla rossa, peperoncino, olio e pane pita", "desc_en": "grilled feta with tomato, pepper, red onion, chilli, oil and pita bread", "price": null, "tags": ["veg"] },
-        { "name": "Fagioli giganti", "desc": "fagioli giganti in salsa di pomodoro, cipolla e pane pita", "desc_en": "giant beans in tomato sauce, onion and pita bread", "price": null, "tags": ["veg"] },
-        { "name": "Fava gialla", "desc": "mousse di fava gialla di Santorini condita con olio, limone, capperi, cipolla rossa e pane pita", "desc_en": "Santorini yellow split pea purée dressed with oil, lemon, capers, red onion and pita bread", "price": null, "tags": ["veg"] }
+        {
+          "name": "Moussakà",
+          "desc": "melanzane, ragù di manzo, besciamella, patate e pane pita",
+          "desc_en": "aubergine, beef ragù, béchamel, potatoes and pita bread",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Pastitsio",
+          "desc": "pasta al forno con ragù di manzo e besciamella",
+          "desc_en": "baked pasta with beef ragù and béchamel",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Gemistà",
+          "desc": "pomodoro e peperone ripieni di riso speziato, patate e pane pita",
+          "desc_en": "tomato and pepper stuffed with spiced rice, potatoes and pita bread",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Saganaki",
+          "desc": "formaggio pastellato (pan grattato, sesamo, peperoncino e uova) e fritto servito con limone o miele e pane pita",
+          "desc_en": "cheese in batter (breadcrumb, sesame, chilli and egg), fried and served with lemon or honey and pita bread",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Feta grigliata",
+          "desc": "formaggio feta grigliato con pomodoro, peperone, cipolla rossa, peperoncino, olio e pane pita",
+          "desc_en": "grilled feta with tomato, pepper, red onion, chilli, oil and pita bread",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Fagioli giganti",
+          "desc": "fagioli giganti in salsa di pomodoro, cipolla e pane pita",
+          "desc_en": "giant beans in tomato sauce, onion and pita bread",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Fava gialla",
+          "desc": "mousse di fava gialla di Santorini condita con olio, limone, capperi, cipolla rossa e pane pita",
+          "desc_en": "Santorini yellow split pea purée dressed with oil, lemon, capers, red onion and pita bread",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        }
       ]
     },
     {
       "id": "insalate",
-      "name": { "it": "Insalate e salse", "en": "Salads & dips" },
+      "name": {
+        "it": "Insalate e salse",
+        "en": "Salads & dips"
+      },
       "note": {
         "it": "Prezzi in attesa di conferma dal ristorante — chiedi al personale.",
         "en": "Prices awaiting confirmation from the restaurant — please ask a member of staff."
       },
       "items": [
-        { "name": "Insalata mista", "desc": "pomodoro, insalata, cetriolo, cipolla e olive", "desc_en": "tomato, lettuce, cucumber, onion and olives", "price": null, "tags": ["veg"] },
-        { "name": "Insalata greca", "desc": "cetriolo, pomodoro, cipolla, peperone, olive di kalamata e feta", "desc_en": "cucumber, tomato, onion, pepper, Kalamata olives and feta", "price": null, "tags": ["veg"] },
-        { "name": "Melitzanosalata con pita", "desc": "insalata di melanzane, aglio, olio, spezie con pita", "desc_en": "aubergine dip with garlic, oil and spices, with pita", "price": null, "tags": ["veg"] },
-        { "name": "Taramosalata con pita", "desc": "insalata orientale a base di uova di pesce con pita", "desc_en": "fish roe dip, with pita", "price": null, "tags": [] },
-        { "name": "Tzatziki con pita", "desc": "salsa di yogurt, cetrioli, aglio, aneto, olio con pita", "desc_en": "yoghurt, cucumber, garlic, dill and oil dip, with pita", "price": null, "tags": ["veg"] },
-        { "name": "Hummus di ceci con pita", "desc": "salsa di ceci, tahina, olio e limone (vegana) con pita", "desc_en": "chickpea, tahini, oil and lemon dip (vegan), with pita", "price": null, "tags": ["vegan"] },
-        { "name": "Tirokafteri con pita", "desc": "salsa piccante a base di feta, yogurt e peperoncino con pita", "desc_en": "spicy feta, yoghurt and chilli dip, with pita", "price": null, "tags": ["veg", "piccante"] }
+        {
+          "name": "Insalata mista",
+          "desc": "pomodoro, insalata, cetriolo, cipolla e olive",
+          "desc_en": "tomato, lettuce, cucumber, onion and olives",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Insalata greca",
+          "desc": "cetriolo, pomodoro, cipolla, peperone, olive di kalamata e feta",
+          "desc_en": "cucumber, tomato, onion, pepper, Kalamata olives and feta",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Melitzanosalata con pita",
+          "desc": "insalata di melanzane, aglio, olio, spezie con pita",
+          "desc_en": "aubergine dip with garlic, oil and spices, with pita",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Taramosalata con pita",
+          "desc": "insalata orientale a base di uova di pesce con pita",
+          "desc_en": "fish roe dip, with pita",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Tzatziki con pita",
+          "desc": "salsa di yogurt, cetrioli, aglio, aneto, olio con pita",
+          "desc_en": "yoghurt, cucumber, garlic, dill and oil dip, with pita",
+          "price": null,
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Hummus di ceci con pita",
+          "desc": "salsa di ceci, tahina, olio e limone (vegana) con pita",
+          "desc_en": "chickpea, tahini, oil and lemon dip (vegan), with pita",
+          "price": null,
+          "tags": [
+            "vegan"
+          ]
+        },
+        {
+          "name": "Tirokafteri con pita",
+          "desc": "salsa piccante a base di feta, yogurt e peperoncino con pita",
+          "desc_en": "spicy feta, yoghurt and chilli dip, with pita",
+          "price": null,
+          "tags": [
+            "veg",
+            "piccante"
+          ]
+        }
       ]
     },
     {
       "id": "extras",
-      "name": { "it": "Extras", "en": "Extras" },
+      "name": {
+        "it": "Extras",
+        "en": "Extras"
+      },
       "items": [
-        { "name": "Tzatziki", "desc": "piccola porzione di tzatziki", "desc_en": "small portion of tzatziki", "price": "2.00", "tags": ["veg"] },
-        { "name": "Tirosalata", "desc": "piccola porzione di tirosalata", "desc_en": "small portion of tirosalata", "price": "2.00", "tags": ["veg"] },
-        { "name": "Melitzanosalata", "desc": "piccola porzione di melitzanosalata", "desc_en": "small portion of melitzanosalata", "price": "2.00", "tags": ["veg"] },
-        { "name": "Tirokafteri", "desc": "piccola porzione di tirokafteri", "desc_en": "small portion of tirokafteri", "price": "2.00", "tags": ["veg", "piccante"] },
-        { "name": "Taramosalata", "desc": "piccola porzione di taramosala", "desc_en": "small portion of taramosalata", "price": "2.00", "tags": [] },
-        { "name": "Hummus di ceci", "desc": "piccola porzione di hummus di ceci", "desc_en": "small portion of chickpea hummus", "price": "2.00", "tags": ["vegan"] },
-        { "name": "Ketchup", "desc": "piccola porzione di ketchup", "desc_en": "small portion of ketchup", "price": "1.50", "tags": [] },
-        { "name": "Maionese", "desc": "piccola porzione di maionese", "desc_en": "small portion of mayonnaise", "price": "1.50", "tags": [] },
-        { "name": "Feta", "desc": "piccola porzione di feta", "desc_en": "small portion of feta", "price": "2.50", "tags": ["veg"] },
-        { "name": "Olive di Kalamata", "desc": "piccola porzione olive di Kalamata", "desc_en": "small portion of Kalamata olives", "price": "2.50", "tags": ["veg"] },
-        { "name": "Carne gyros", "desc": "porzione di carne gyros da 100gr", "desc_en": "100 g portion of gyros meat", "price": "4.00", "tags": [] },
-        { "name": "Souvlaki pollo", "desc": "1 spiedino di pollo", "desc_en": "1 chicken skewer", "price": "4.00", "tags": [] },
-        { "name": "Souvlaki maiale", "desc": "1 spiedino di maiale", "desc_en": "1 pork skewer", "price": "4.00", "tags": [] },
-        { "name": "Bifteki manzo", "desc": "1 bifteki di manzo", "desc_en": "1 beef bifteki patty", "price": "4.00", "tags": [] },
-        { "name": "Bifteki pollo e pancetta", "desc": "1 bifteki di pollo e pancetta", "desc_en": "1 chicken and bacon bifteki patty", "price": "4.00", "tags": [] }
+        {
+          "name": "Tzatziki",
+          "desc": "piccola porzione di tzatziki",
+          "desc_en": "small portion of tzatziki",
+          "price": "2.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Tirosalata",
+          "desc": "piccola porzione di tirosalata",
+          "desc_en": "small portion of tirosalata",
+          "price": "2.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Melitzanosalata",
+          "desc": "piccola porzione di melitzanosalata",
+          "desc_en": "small portion of melitzanosalata",
+          "price": "2.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Tirokafteri",
+          "desc": "piccola porzione di tirokafteri",
+          "desc_en": "small portion of tirokafteri",
+          "price": "2.00",
+          "tags": [
+            "veg",
+            "piccante"
+          ]
+        },
+        {
+          "name": "Taramosalata",
+          "desc": "piccola porzione di taramosala",
+          "desc_en": "small portion of taramosalata",
+          "price": "2.00",
+          "tags": []
+        },
+        {
+          "name": "Hummus di ceci",
+          "desc": "piccola porzione di hummus di ceci",
+          "desc_en": "small portion of chickpea hummus",
+          "price": "2.00",
+          "tags": [
+            "vegan"
+          ]
+        },
+        {
+          "name": "Ketchup",
+          "desc": "piccola porzione di ketchup",
+          "desc_en": "small portion of ketchup",
+          "price": "1.50",
+          "tags": []
+        },
+        {
+          "name": "Maionese",
+          "desc": "piccola porzione di maionese",
+          "desc_en": "small portion of mayonnaise",
+          "price": "1.50",
+          "tags": []
+        },
+        {
+          "name": "Feta",
+          "desc": "piccola porzione di feta",
+          "desc_en": "small portion of feta",
+          "price": "2.50",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Olive di Kalamata",
+          "desc": "piccola porzione olive di Kalamata",
+          "desc_en": "small portion of Kalamata olives",
+          "price": "2.50",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Carne gyros",
+          "desc": "porzione di carne gyros da 100gr",
+          "desc_en": "100 g portion of gyros meat",
+          "price": "4.00",
+          "tags": []
+        },
+        {
+          "name": "Souvlaki pollo",
+          "desc": "1 spiedino di pollo",
+          "desc_en": "1 chicken skewer",
+          "price": "4.00",
+          "tags": []
+        },
+        {
+          "name": "Souvlaki maiale",
+          "desc": "1 spiedino di maiale",
+          "desc_en": "1 pork skewer",
+          "price": "4.00",
+          "tags": []
+        },
+        {
+          "name": "Bifteki manzo",
+          "desc": "1 bifteki di manzo",
+          "desc_en": "1 beef bifteki patty",
+          "price": "4.00",
+          "tags": []
+        },
+        {
+          "name": "Bifteki pollo e pancetta",
+          "desc": "1 bifteki di pollo e pancetta",
+          "desc_en": "1 chicken and bacon bifteki patty",
+          "price": "4.00",
+          "tags": []
+        }
       ]
     },
     {
       "id": "dolci",
-      "name": { "it": "Dolci della casa", "en": "Desserts" },
+      "name": {
+        "it": "Dolci della casa",
+        "en": "Desserts"
+      },
       "items": [
-        { "name": "Kataifi *", "desc": "pasta kataifi ripiena di noci affogata con sciroppo al miele", "desc_en": "kataifi pastry filled with walnuts, soaked in honey syrup", "price": "5.00", "tags": ["veg"] },
-        { "name": "Baklavà*", "desc": "pasta fillo ripiena di noci affogata con sciroppo al miele", "desc_en": "filo pastry filled with walnuts, soaked in honey syrup", "price": "5.00", "tags": ["veg"] },
-        { "name": "Sokolatopita", "desc": "pan di spagna e mousse al cioccolato con zucchero a velo", "desc_en": "sponge cake and chocolate mousse with icing sugar", "price": "5.00", "tags": ["veg"] },
-        { "name": "Galaktoboureko", "desc": "pasta fillo ripiena di crema al semolino, zucchero a velo e cannella", "desc_en": "filo pastry filled with semolina custard, icing sugar and cinnamon", "price": "5.00", "tags": ["veg"] },
-        { "name": "Pita con Nutella", "desc": "pita ripiena di Nutella e zucchero a velo", "desc_en": "pita filled with Nutella and icing sugar", "price": "5.00", "tags": ["veg"] },
-        { "name": "Yogurt bianco", "desc": "yogurt greco semplice", "desc_en": "plain Greek yoghurt", "price": "4.00", "tags": ["veg"] },
-        { "name": "Yogurt con miele", "desc": "yogurt greco con miele e cannella", "desc_en": "Greek yoghurt with honey and cinnamon", "price": "4.50", "tags": ["veg"] },
-        { "name": "Yogurt con amarene", "desc": "yogurt greco con amarene e sciroppo", "desc_en": "Greek yoghurt with sour cherries and syrup", "price": "5.00", "tags": ["veg"] },
-        { "name": "Yogurt con noci e miele", "desc": "yogurt greco con noci, miele e cannella", "desc_en": "Greek yoghurt with walnuts, honey and cinnamon", "price": "5.00", "tags": ["veg"] },
-        { "name": "Yogurt con mandorle e miele", "desc": "yogurt con mandorle, miele e cannella", "desc_en": "yoghurt with almonds, honey and cinnamon", "price": "5.00", "tags": ["veg"] }
+        {
+          "name": "Kataifi *",
+          "desc": "pasta kataifi ripiena di noci affogata con sciroppo al miele",
+          "desc_en": "kataifi pastry filled with walnuts, soaked in honey syrup",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Baklavà*",
+          "desc": "pasta fillo ripiena di noci affogata con sciroppo al miele",
+          "desc_en": "filo pastry filled with walnuts, soaked in honey syrup",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Sokolatopita",
+          "desc": "pan di spagna e mousse al cioccolato con zucchero a velo",
+          "desc_en": "sponge cake and chocolate mousse with icing sugar",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Galaktoboureko",
+          "desc": "pasta fillo ripiena di crema al semolino, zucchero a velo e cannella",
+          "desc_en": "filo pastry filled with semolina custard, icing sugar and cinnamon",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Pita con Nutella",
+          "desc": "pita ripiena di Nutella e zucchero a velo",
+          "desc_en": "pita filled with Nutella and icing sugar",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Yogurt bianco",
+          "desc": "yogurt greco semplice",
+          "desc_en": "plain Greek yoghurt",
+          "price": "4.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Yogurt con miele",
+          "desc": "yogurt greco con miele e cannella",
+          "desc_en": "Greek yoghurt with honey and cinnamon",
+          "price": "4.50",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Yogurt con amarene",
+          "desc": "yogurt greco con amarene e sciroppo",
+          "desc_en": "Greek yoghurt with sour cherries and syrup",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Yogurt con noci e miele",
+          "desc": "yogurt greco con noci, miele e cannella",
+          "desc_en": "Greek yoghurt with walnuts, honey and cinnamon",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        },
+        {
+          "name": "Yogurt con mandorle e miele",
+          "desc": "yogurt con mandorle, miele e cannella",
+          "desc_en": "yoghurt with almonds, honey and cinnamon",
+          "price": "5.00",
+          "tags": [
+            "veg"
+          ]
+        }
       ]
     },
     {
       "id": "vini",
-      "name": { "it": "Vini greci", "en": "Greek wines" },
+      "name": {
+        "it": "Vini greci",
+        "en": "Greek wines"
+      },
       "items": [
-        { "name": "Regina di Cuori", "desc": "Nico Lazaridi (Drama)", "desc_en": "Nico Lazaridi (Drama)", "price": "23.00", "tags": [] },
-        { "name": "Paros", "desc": "Moraitis (Naoussa)", "desc_en": "Moraitis (Naoussa)", "price": "25.00", "tags": [] },
-        { "name": "Mega Spileo", "desc": "III Cuvée (Achaia)", "desc_en": "III Cuvée (Achaia)", "price": "28.00", "tags": [] },
-        { "name": "Moschofilero", "desc": "Boutari (Naoussa)", "desc_en": "Boutari (Naoussa)", "price": "28.00", "tags": [] },
-        { "name": "Retsina Malamatina 0,25 L", "desc": "vino bianco", "desc_en": "white wine", "price": "4.00", "tags": [] },
-        { "name": "Retsina Malamatina 0,50 L", "desc": "vino bianco", "desc_en": "white wine", "price": "7.00", "tags": [] }
+        {
+          "name": "Regina di Cuori",
+          "desc": "Nico Lazaridi (Drama)",
+          "desc_en": "Nico Lazaridi (Drama)",
+          "price": "23.00",
+          "tags": []
+        },
+        {
+          "name": "Paros",
+          "desc": "Moraitis (Naoussa)",
+          "desc_en": "Moraitis (Naoussa)",
+          "price": "25.00",
+          "tags": []
+        },
+        {
+          "name": "Mega Spileo",
+          "desc": "III Cuvée (Achaia)",
+          "desc_en": "III Cuvée (Achaia)",
+          "price": "28.00",
+          "tags": []
+        },
+        {
+          "name": "Moschofilero",
+          "desc": "Boutari (Naoussa)",
+          "desc_en": "Boutari (Naoussa)",
+          "price": "28.00",
+          "tags": []
+        },
+        {
+          "name": "Retsina Malamatina 0,25 L",
+          "desc": "vino bianco",
+          "desc_en": "white wine",
+          "price": "4.00",
+          "tags": []
+        },
+        {
+          "name": "Retsina Malamatina 0,50 L",
+          "desc": "vino bianco",
+          "desc_en": "white wine",
+          "price": "7.00",
+          "tags": []
+        }
       ]
     }
   ]
