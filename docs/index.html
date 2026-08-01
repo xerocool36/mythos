@@ -71,60 +71,52 @@
 <span id="top"></span>
 
 <!-- ────────────────────────────────────────────────── hero — la vetrina ── -->
-<!-- The ultramarine is the ground, not a tint over a photograph. Three plates
-     are set into it: the sign at night, the grill, the room. -->
-<section class="hero on-blue">
+<!-- The room first, at full bleed — warm light, the grill alight, a table
+     already laid. The ultramarine is not a backdrop behind it but a solid
+     plinth set ON it, carrying the name and the two actions; the roundel
+     straddles the plinth's top edge like the wax seal on the actions band,
+     so the two ends of the page are made by the same hand. The meander keeps
+     its one job: closing the bottom edge of an ultramarine field, here the
+     fact bar that seats the whole composition. -->
+<section class="hero">
+  <div class="hero__stage">
+    <picture>
+      <source media="(max-width: 719px)" srcset="assets/img/hero-taverna-sm.webp" width="1080" height="810">
+      <img src="assets/img/hero-taverna.webp" width="1920" height="1080"
+           alt="La sala di una taverna greca alla luce calda del tardo pomeriggio: un tavolo di marmo con runner blu apparecchiato con tzatziki, insalata greca con feta e olive, spiedini di souvlaki e pita; sul fondo la griglia a carbone accesa e le sedie azzurre impagliate"
+           fetchpriority="high" decoding="async">
+    </picture>
+  </div>
+
   <div class="hero__in">
+    <div class="hero__panel">
+      <img class="hero__seal" src="assets/img/logo-disc.png" width="512" height="512"
+           alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
 
-    <div class="hero__say">
-      <p class="mark">
-        <img src="assets/img/logo-disc.png" width="512" height="512"
-             alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
-        <span data-en="Mythos — Greek kitchen">Mythos — Cucina Greca</span>
-      </p>
+      <p class="hero__kicker" data-en="Mythos — Greek kitchen">Mythos — Cucina Greca</p>
 
-      <h1 class="hero__h" data-en="Gyros, souvlaki and moussaka <span class='u-blue'>on Via Tuscolana.</span>">Gyros, souvlaki e moussaka <span class="u-blue">su Via Tuscolana.</span></h1>
+      <h1 class="hero__h" data-en="Gyros, souvlaki and moussaka <span>on Via Tuscolana.</span>">Gyros, souvlaki e moussaka <span>su Via Tuscolana.</span></h1>
 
       <p class="hero__p" data-en="The grill, the pites, the meze and the sweets: a neighbourhood Greek kitchen, open for lunch and for dinner.">La griglia, le pite, i meze e i dolci: cucina greca di quartiere, a pranzo e a cena.</p>
 
       <p class="hero__act">
         <a class="btn" href="prenota.html" data-en="Book a table">Prenota un tavolo</a>
-        <span class="hero__or"><span data-en="or call us">oppure chiamaci</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></span>
+        <a class="btn btn-ghost" href="menu.html" data-en="See the menu">Vedi il menù</a>
       </p>
 
-      <ul class="hero__rail">
-        <li data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</li>
-        <li data-en="Closed on Mondays">Chiuso il lunedì</li>
-        <li data-en="Delivery with Just Eat">Consegna con Just Eat</li>
-      </ul>
+      <p class="hero__or"><span data-en="or call us">oppure chiamaci</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></p>
     </div>
-
-    <div class="hero__frieze">
-      <figure class="hero__pane hero__pane--wide hero__pane--sign">
-        <picture>
-          <source media="(max-width: 719px)" srcset="assets/img/hero-insegna-sm.webp" width="860" height="502">
-          <img src="assets/img/hero-insegna.webp" width="1600" height="933"
-               alt="L'insegna al neon di Mythos accesa la sera sopra l'ingresso, tra l'edera e una lanterna"
-               fetchpriority="high" decoding="async">
-        </picture>
-        <figcaption data-en="The sign">L'insegna</figcaption>
-      </figure>
-
-      <figure class="hero__pane hero__pane--sq">
-        <img src="assets/img/hero-griglia.webp" width="900" height="900" decoding="async"
-             alt="Piatto di souvlaki alla griglia con pita, patate al forno, tzatziki e insalata greca">
-        <figcaption data-en="From the grill">Dalla griglia</figcaption>
-      </figure>
-
-      <figure class="hero__pane hero__pane--sq">
-        <img src="assets/img/hero-sala.webp" width="900" height="900" decoding="async"
-             alt="La sala apparecchiata, con le tovaglie azzurre e le sedie di legno">
-        <figcaption data-en="The dining room">La sala</figcaption>
-      </figure>
-    </div>
-
   </div>
 </section>
+
+<!-- the three facts we are actually allowed to publish, seating the hero -->
+<div class="herobar on-blue">
+  <ul class="wrap herobar__in">
+    <li data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</li>
+    <li data-en="Closed on Mondays">Chiuso il lunedì</li>
+    <li data-en="Delivery with Just Eat">Consegna con Just Eat</li>
+  </ul>
+</div>
 
 <!-- ──────────────────────────────────────────────────────── ristorante ── -->
 <section class="sec" id="ristorante">
@@ -163,7 +155,7 @@
         <p class="dish__n" data-en="From the grill">Dalla griglia</p>
       </li>
       <li class="dish">
-        <div class="dish__box"><img src="assets/img/gyros-cone.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Pita gyros servita nel cono di carta con patatine e tzatziki"></div>
+        <div class="dish__box"><img src="assets/img/gyros-cone.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Pita gyros aperta nel piatto, con carne gyros, cipolla, pomodoro e tzatziki"></div>
         <p class="dish__n">Pita gyros</p>
       </li>
       <li class="dish">

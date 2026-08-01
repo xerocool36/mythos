@@ -432,55 +432,86 @@ p:last-child { margin-bottom: 0; }
 /* ====================================================================== */
 /*  THE VETRINA — the first screen.                                        */
 /*                                                                         */
-/*  Not a photograph with a headline on top of it. The hero is the          */
-/*  ultramarine itself — the brand colour used as ground, at full strength  */
-/*  — and the photographs are three plates set into it: the sign at night,  */
-/*  the grill, the room. Brand, place and food land at the same moment, so  */
-/*  scrolling adds depth instead of supplying the first interesting thing.  */
-/*  No scrim, no centred stack, no photograph behind type.                  */
+/*  The room arrives first, at full bleed and already warm: the grill lit,  */
+/*  a table laid, late light on a terracotta wall. Nothing is withheld for  */
+/*  a scroll to reveal.                                                     */
+/*                                                                         */
+/*  The ultramarine is not a wash behind that photograph and not a tint     */
+/*  over it — it is a solid plinth set ON it at full strength, carrying the */
+/*  name, the sentence and the two doors. The roundel straddles the         */
+/*  plinth's top edge exactly as it straddles the actions band further down */
+/*  the page, so the top and the bottom of the site read as one hand. The   */
+/*  meander keeps its single documented job — closing the bottom edge of an */
+/*  ultramarine field — which here is the fact bar the whole thing sits on. */
 /* ====================================================================== */
 
-.hero { position: relative; isolation: isolate; }
+.hero {
+  position: relative;
+  isolation: isolate;
+  background: var(--blue-deep);
+}
 
-/* the meander closes the field along the bottom, the way the printed menu
-   closes its own page */
-.hero::after {
+/* the photograph ---------------------------------------------------------- */
+.hero__stage { position: relative; z-index: 0; }
+.hero__stage picture { display: block; }
+.hero__stage img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 58%;
+}
+
+/* Depth, not a scrim. A short ultramarine fall from the top keeps the sticky
+   header's plaster bar from floating on a bright wall, and a warm-dark foot
+   stops the photograph from ending on a hard line where the plinth begins.
+   Both are weak on purpose: the room has to stay warm. */
+.hero__stage::after {
   content: '';
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 15px;
-  background: var(--meander) repeat-x center / 30px 15px;
-  transform: scaleY(-1);
-  opacity: .9;
+  inset: 0;
   pointer-events: none;
-  z-index: 2;
+  background:
+    linear-gradient(to bottom, rgba(19, 24, 81, .34), rgba(19, 24, 81, 0) 26%),
+    linear-gradient(to top, rgba(11, 13, 20, .38), rgba(11, 13, 20, 0) 34%);
 }
 
 .hero__in {
+  position: relative;
+  z-index: 1;
   max-width: var(--wrap);
   margin: 0 auto;
-  padding: clamp(1.9rem, 4.5vw, 3.2rem) var(--gut) clamp(2.6rem, 5vw, 4rem);
-  display: grid;
-  gap: clamp(1.5rem, 3.6vw, 2.4rem);
+  padding: 0 var(--gut);
   min-width: 0;
 }
 
-/* mark ------------------------------------------------------------------ */
-/* The roundel is small and paired with a line of caps rather than blown up:
-   on ultramarine a large blue disc would sink into its own ground. */
-.mark {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  margin: 0 0 clamp(1rem, 2.4vw, 1.4rem);
+/* the plinth -------------------------------------------------------------- */
+.hero__panel {
+  position: relative;
+  /* rides up over the foot of the photograph */
+  margin-top: clamp(-3.4rem, -8vw, -2.2rem);
+  padding: clamp(2.1rem, 6vw, 2.6rem) clamp(1.35rem, 5vw, 2.2rem) clamp(1.9rem, 5vw, 2.3rem);
+  background: var(--blue);
+  color: var(--on-blue);
+  --btn-bg: var(--plaster);
+  --btn-fg: var(--blue);
+  --focus:  var(--gold-lift);
+  box-shadow: 0 18px 44px rgba(11, 13, 20, .32);
 }
-.mark img {
-  flex: 0 0 auto;
-  width: clamp(44px, 11vw, 60px);
+
+/* the wax seal, half on the photograph and half on the plinth */
+.hero__seal {
+  position: absolute;
+  top: 0;
+  left: clamp(1.35rem, 5vw, 2.2rem);
+  width: clamp(56px, 13vw, 74px);
   height: auto;
-  filter: drop-shadow(0 6px 16px rgba(11, 13, 20, .35));
+  transform: translateY(-50%);
+  filter: drop-shadow(0 8px 20px rgba(11, 13, 20, .45));
 }
-.mark span {
+
+.hero__kicker {
+  margin: 0 0 clamp(.7rem, 2vw, .95rem);
   font-family: var(--f-disp);
   font-weight: 600;
   font-stretch: 104%;
@@ -492,45 +523,104 @@ p:last-child { margin-bottom: 0; }
 }
 
 .hero__h {
+  margin: 0;
   font-family: var(--f-disp);
   font-weight: 600;
   font-stretch: 114%;
-  font-size: clamp(1.9rem, 1.05rem + 4vw, 3.5rem);
+  font-size: clamp(1.85rem, 1.1rem + 3.4vw, 3.15rem);
   line-height: 1.02;
   letter-spacing: -.02em;
   text-transform: uppercase;
   color: var(--plaster);
-  max-width: 15ch;
+  max-width: 16ch;
   text-wrap: balance;
 }
 /* the street gets its own line at every width rather than trailing off the end
    of whichever line the balancer picked */
-.hero__h .u-blue { display: block; }
+.hero__h span { display: block; color: var(--gold-lift); }
 
 .hero__p {
-  margin: clamp(.9rem, 2vw, 1.3rem) 0 0;
-  max-width: 40ch;
-  font-size: clamp(1.02rem, .98rem + .35vw, 1.2rem);
+  margin: clamp(.85rem, 2vw, 1.15rem) 0 0;
+  max-width: 42ch;
+  font-size: clamp(1rem, .96rem + .3vw, 1.12rem);
   line-height: 1.5;
   color: var(--on-blue-dim);
 }
 
 .hero__act {
-  margin: clamp(1.3rem, 2.8vw, 1.9rem) 0 0;
+  margin: clamp(1.2rem, 2.8vw, 1.6rem) 0 0;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: .35rem 1.3rem;
+  gap: .55rem;
 }
-.hero__or { font-size: .95rem; color: var(--on-blue-dim); }
+.hero__act .btn { flex: 1 1 auto; }
+
+.hero__or {
+  margin: .75rem 0 0;
+  font-size: .95rem;
+  color: var(--on-blue-dim);
+}
 .hero__or .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
 
-/* the three facts we are actually allowed to publish, set as a rail */
-.hero__rail {
-  margin: clamp(1.2rem, 2.6vw, 1.7rem) 0 0;
+@media (min-width: 560px) {
+  .hero__act .btn { flex: 0 0 auto; }
+}
+
+/* From 720 the photograph gets room to be a room, and the plinth stops being
+   a full-width slab: it becomes a card laid on the left of the picture. */
+@media (min-width: 720px) {
+  .hero__stage img { aspect-ratio: 16 / 9; object-position: center 55%; }
+  .hero__panel {
+    max-width: 33rem;
+    margin-top: clamp(-6rem, -9vw, -4rem);
+  }
+}
+
+/* From 960 the plinth sits inside the picture rather than under it: the hero
+   is one field, the photograph fills it, the blue block is set into its lower
+   left with air on every side. */
+@media (min-width: 960px) {
+  .hero {
+    min-height: min(80svh, 780px);
+    display: grid;
+    align-items: end;
+  }
+  .hero__stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero__stage picture, .hero__stage img { height: 100%; }
+  .hero__stage img { aspect-ratio: auto; object-position: center 56%; }
+
+  .hero__in { padding-block: clamp(2.4rem, 5vw, 4rem); }
+  .hero__panel {
+    margin-top: 0;
+    max-width: 35rem;
+    padding: clamp(2.4rem, 3.4vw, 3rem) clamp(2.2rem, 3vw, 2.8rem) clamp(2.1rem, 3vw, 2.6rem);
+  }
+  .hero__seal { left: clamp(2.2rem, 3vw, 2.8rem); }
+}
+
+/* the fact bar the composition sits on ------------------------------------ */
+.herobar {
+  position: relative;
+  padding-block: clamp(.9rem, 2.4vw, 1.15rem) clamp(1.5rem, 3vw, 1.8rem);
+}
+.herobar::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 15px;
+  background: var(--meander) repeat-x center / 30px 15px;
+  transform: scaleY(-1);
+  opacity: .9;
+  pointer-events: none;
+}
+.herobar__in {
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem 1.4rem;
+  gap: .5rem 1.6rem;
   font-family: var(--f-disp);
   font-weight: 600;
   font-size: .68rem;
@@ -538,14 +628,10 @@ p:last-child { margin-bottom: 0; }
   text-transform: uppercase;
   color: var(--on-blue-dim);
 }
-.hero__rail li {
-  display: flex;
-  align-items: center;
-  gap: .6rem;
-}
+.herobar__in li { display: flex; align-items: center; gap: .6rem; }
 /* a gold pip in front of every item — a separator drawn between items instead
    reads as a trailing dash on the item before it once the rail wraps */
-.hero__rail li::before {
+.herobar__in li::before {
   content: '';
   flex: 0 0 auto;
   width: 5px;
@@ -554,93 +640,21 @@ p:last-child { margin-bottom: 0; }
   background: var(--gold-lift);
 }
 
-/* frieze ---------------------------------------------------------------- */
-.hero__frieze {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  min-width: 0;
-}
-.hero__pane {
-  position: relative;
-  margin: 0;
-  overflow: hidden;
-  background: rgba(245, 246, 248, .09);
-}
-.hero__pane img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/* a plaster hairline over the photograph — the plate is set into the wall,
-   not floated on it */
-.hero__pane::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 0 1px rgba(245, 246, 248, .34);
-  pointer-events: none;
-}
-.hero__pane--wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
-.hero__pane--sq   { aspect-ratio: 1 / 1; }
-.hero__pane--sign img { object-position: center 38%; }
-
-/* the museum label, pinned to the plate in solid brand blue */
-.hero__pane figcaption {
-  position: absolute;
-  left: 0; bottom: 0;
-  z-index: 1;
-  padding: .42rem .7rem;
-  background: var(--blue);
-  color: var(--plaster);
-  font-family: var(--f-disp);
-  font-weight: 600;
-  font-size: .58rem;
-  line-height: 1;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-}
-
-@media (min-width: 720px) {
-  .hero__pane--wide { aspect-ratio: 2 / 1; }
-  .hero__pane figcaption { font-size: .62rem; padding: .48rem .85rem; }
-}
-
-/* From 960 the field stops being a column: the copy keeps the site measure on
-   the left, and the frieze runs off the right edge of the viewport. The
-   padding is derived from `100%` (the section's own content width, scrollbar
-   already excluded) rather than 50vw, so the h1 lines up with the nav brand to
-   the pixel and nothing can overhang the document. */
-@media (min-width: 960px) {
-  .hero__in {
-    max-width: none;
-    padding-left: max(var(--gut), calc((100% - var(--wrap)) / 2 + var(--gut)));
-    padding-right: 0;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
-    align-items: center;
-    gap: clamp(2rem, 4vw, 3.4rem);
-  }
-  .hero__say { max-width: 32rem; }
-  .hero__pane--wide { aspect-ratio: 21 / 9; }
-  .hero__pane--sq { aspect-ratio: 5 / 4; }
-}
-
-/* A restrained arrival: the field is already painted, the pieces settle onto
+/* A restrained arrival: the picture is already there, the plinth settles onto
    it. Load-time only — nothing here is driven by scroll position. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero__say > *, .hero__pane { animation: heroIn .6s var(--ease) both; }
-  .hero__say > *:nth-child(2) { animation-delay: .06s; }
-  .hero__say > *:nth-child(3) { animation-delay: .1s; }
-  .hero__say > *:nth-child(4) { animation-delay: .14s; }
-  .hero__say > *:nth-child(5) { animation-delay: .18s; }
-  .hero__pane:nth-child(1) { animation-delay: .12s; }
-  .hero__pane:nth-child(2) { animation-delay: .2s; }
-  .hero__pane:nth-child(3) { animation-delay: .26s; }
+  .hero__panel > * { animation: heroIn .6s var(--ease) both; }
+  .hero__panel > *:nth-child(3) { animation-delay: .06s; }
+  .hero__panel > *:nth-child(4) { animation-delay: .1s; }
+  .hero__panel > *:nth-child(5) { animation-delay: .14s; }
+  .hero__panel > *:nth-child(6) { animation-delay: .18s; }
+  .hero__seal { animation: sealIn .7s var(--ease) both; }
 }
 @keyframes heroIn {
   from { opacity: 0; transform: translateY(12px); }
+}
+@keyframes sealIn {
+  from { opacity: 0; transform: translateY(-50%) scale(.88); }
 }
 
 /* ----------------------------------------------------------- sections -- */
