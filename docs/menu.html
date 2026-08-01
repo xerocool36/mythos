@@ -34,13 +34,47 @@
 /* The category bar pins under the header, so it has to know how tall the
    header actually is. core.js writes --bar-h; menu.js writes --cat-h. Neither
    is ever hard-coded: on a 360px phone the header wraps and both grow. */
+/* On the menu page the site header is NOT sticky. Two stacked bars cost 138px
+   of a phone screen permanently, and somebody reading a menu at the table
+   needs the dishes, not the navigation — so the header scrolls away and the
+   category bar alone pins, at the top, on its own. The lang toggle moved into
+   this bar because it is now the only chrome that stays. */
+.is-menu .nav { position: static; }
+
 .catbar {
   position: sticky;
-  top: var(--bar-h, 64px);
+  top: 0;
   z-index: 40;
   background: var(--plaster);
   border-bottom: 1px solid var(--rule);
+  box-shadow: 0 6px 22px rgba(19, 24, 81, 0);
+  transition: box-shadow .25s var(--ease);
 }
+.catbar.stuck { box-shadow: 0 6px 22px rgba(19, 24, 81, .09); }
+
+/* The toggle and the search button are page controls, not menu sections, so a
+   hairline separates them from the chip rail they sit beside — otherwise the
+   EN button reads as one more category and clips the chip scrolling under it. */
+.catbar__tools {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  padding-left: .45rem;
+  margin-left: .1rem;
+  border-left: 1px solid var(--rule);
+}
+.catbar__lang {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 .4rem;
+  /* matches the round search button beside it rather than the pill chips */
+  border-radius: 999px;
+}
+
+/* One language toggle per page. On the menu the header scrolls away, so the
+   copy that stays — the one in the pinned bar — is the one that survives. */
+.is-menu .nav .langbtn { display: none; }
 .catbar__in {
   max-width: var(--wrap);
   margin: 0 auto;
@@ -133,9 +167,9 @@
 
 /* ------------------------------------------------------------ blue band -- */
 
-.mtop { padding: clamp(1.5rem, 5vw, 2.6rem) 0 clamp(1.5rem, 5vw, 2.4rem); }
+.mtop { padding: clamp(1rem, 3.2vw, 1.9rem) 0 clamp(1rem, 3.2vw, 1.8rem); }
 .mtop__in { display: flex; align-items: center; gap: clamp(.9rem, 3vw, 1.5rem); }
-.mtop__disc { width: clamp(58px, 15vw, 84px); height: auto; flex: 0 0 auto; }
+.mtop__disc { width: clamp(46px, 11vw, 68px); height: auto; flex: 0 0 auto; }
 .mtop__h {
   font-family: var(--f-disp);
   font-weight: 600;
@@ -148,7 +182,7 @@
   margin: 0;
 }
 .mtop__sub {
-  margin: .5rem 0 0;
+  margin: .3rem 0 0;
   font-size: 1rem;
   line-height: 1.5;
   color: var(--on-blue-dim);
@@ -161,9 +195,36 @@
 .mnotes {
   border-top: 2px solid var(--gold);
   background: var(--plaster-2);
-  padding: 1rem 0 1.05rem;
 }
-.mnotes p { margin: 0 0 .35rem; font-size: 1rem; line-height: 1.5; color: var(--blue-deep); }
+.mnotes__d { padding: 0; }
+.mnotes__d summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 46px;
+  cursor: pointer;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.mnotes__d summary::-webkit-details-marker { display: none; }
+/* a chevron that turns, drawn in CSS so the row costs no extra request */
+.mnotes__d summary::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 8px; height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform .22s var(--ease);
+}
+.mnotes__d[open] summary::before { transform: rotate(-135deg) translate(-2px, -2px); }
+.mnotes__body { padding-bottom: .95rem; }
+.mnotes p { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.5; color: var(--blue-deep); }
 .mnotes p:last-child { margin-bottom: 0; }
 .mnotes strong { font-weight: 600; }
 
@@ -172,9 +233,11 @@
 .mbody { padding-block: clamp(1.6rem, 4vw, 2.6rem) clamp(2.5rem, 7vw, 4rem); }
 
 .msec {
-  /* Jumping to a section must not park its first line under two sticky bars. */
-  scroll-margin-top: calc(var(--bar-h, 64px) + var(--cat-h, 52px) + 14px);
-  padding-top: clamp(1.6rem, 4vw, 2.4rem);
+  /* Only the category bar pins now, so that is the only offset to clear — and
+     it is measured at runtime by menu.js rather than hard-coded, because the
+     chip row grows a second line on a narrow phone. */
+  scroll-margin-top: calc(var(--cat-h, 52px) + 14px);
+  padding-top: clamp(1.4rem, 3.4vw, 2.4rem);
 }
 .msec:first-child { padding-top: .4rem; }
 .msec[hidden] { display: none; }
@@ -304,6 +367,8 @@
   .mtop__h, .mfoot__name { color: #000 !important; }
   .mtop__sub, .mfoot p { color: #333 !important; }
   .mnotes { background: #fff; border-top-color: #000; padding: 0 0 6mm; }
+  .mnotes__d summary { display: none; }
+  .mnotes__body { display: block !important; padding-bottom: 0; }
   .mfoot { background: #fff !important; color: #000 !important; padding: 6mm 0 0; border-top: 1px solid #000; }
   .mfoot a:not(.btn) { color: #000; }
 
@@ -378,11 +443,14 @@
         <li><a href="#vini" data-en="Greek wines">Vini greci</a></li>
       </ul>
     </nav>
-    <button type="button" class="findbtn" id="findbtn" hidden aria-expanded="false" aria-controls="findrow" aria-label="Cerca un piatto">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path>
-      </svg>
-    </button>
+    <div class="catbar__tools">
+      <button type="button" class="catbar__lang langbtn" data-lang-toggle aria-label="Switch to English">EN</button>
+      <button type="button" class="findbtn" id="findbtn" hidden aria-expanded="false" aria-controls="findrow" aria-label="Cerca un piatto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path>
+        </svg>
+      </button>
+    </div>
   </div>
   <div class="findrow" id="findrow" hidden>
     <input type="search" id="find" autocomplete="off" autocapitalize="off" spellcheck="false"
@@ -399,10 +467,6 @@
     <div>
       <h1 class="mtop__h">Menù</h1>
       <p class="mtop__sub"><span data-en="Greek kitchen">Cucina greca</span> · Via Tuscolana 596, Roma</p>
-      <p class="mtop__act noprint">
-        <a class="btn btn-sm" href="prenota.html" data-en="Book a table">Prenota un tavolo</a>
-        <a class="btn btn-sm btn-ghost" href="index.html" data-en="Home">Torna al sito</a>
-      </p>
     </div>
   </div>
 </section>
@@ -410,9 +474,14 @@
 <!-- ────────────────────────────────────────────────────────── notices ── -->
 <div class="mnotes">
   <div class="wrap">
-    <p data-en="&lt;strong&gt;Allergies:&lt;/strong&gt; the printed menu carries no allergen information, so neither does this page. Please tell a member of staff about any allergy or intolerance before you order."><strong>Allergie:</strong> il menù stampato non riporta informazioni sugli allergeni e questa pagina non ne aggiunge. Segnala sempre al personale qualsiasi allergia o intolleranza prima di ordinare.</p>
-    <p data-en="Some prices are still awaiting confirmation from the restaurant and are shown without a figure. Ask a member of staff.">Alcuni prezzi sono in attesa di conferma dal ristorante e sono mostrati senza cifra. Chiedi al personale.</p>
-    <p data-en="* frozen product">* prodotto surgelato</p>
+    <details class="mnotes__d">
+      <summary data-en="Allergies, prices and notes">Allergie, prezzi e note</summary>
+      <div class="mnotes__body">
+        <p data-en="&lt;strong&gt;Allergies:&lt;/strong&gt; the printed menu carries no allergen information, so neither does this page. Please tell a member of staff about any allergy or intolerance before you order."><strong>Allergie:</strong> il menù stampato non riporta informazioni sugli allergeni e questa pagina non ne aggiunge. Segnala sempre al personale qualsiasi allergia o intolleranza prima di ordinare.</p>
+        <p data-en="Some prices are still awaiting confirmation from the restaurant and are shown without a figure. Ask a member of staff.">Alcuni prezzi sono in attesa di conferma dal ristorante e sono mostrati senza cifra. Chiedi al personale.</p>
+        <p data-en="* frozen product">* prodotto surgelato</p>
+      </div>
+    </details>
   </div>
 </div>
 
@@ -714,6 +783,13 @@
     <p>Via Tuscolana 596, Roma · <a class="tel" href="tel:+390687774778">06 8777 4778</a></p>
     <p><a href="index.html" data-en="Back to the site">Torna al sito</a> · <a href="privacy.html">Privacy</a></p>
     <p data-en="Menu transcribed from the restaurant's printed menu. Dishes and prices may change.">Menù trascritto dal menù stampato del ristorante. Piatti e prezzi possono variare.</p>
+    <p class="foot__by mfoot__by">
+      <span data-en="Site by">Sito realizzato da</span>
+      <a class="byx3ro" href="https://x3roautomations.it" target="_blank" rel="noopener">
+        <img src="assets/img/x3ro-logo.webp" width="300" height="188" alt="" loading="lazy" decoding="async">
+        <span>x3ro&nbsp;Automations</span>
+      </a>
+    </p>
   </div>
 </footer>
 

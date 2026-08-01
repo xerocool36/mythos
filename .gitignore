@@ -7,3 +7,6 @@ FACTS.md
 supabase/.temp/
 .env
 .env.*
+
+# dev-only: symlinked playwright for tools/*.mjs
+node_modules/

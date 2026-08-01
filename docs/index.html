@@ -71,29 +71,20 @@
 <span id="top"></span>
 
 <!-- ────────────────────────────────────────────────── hero — la vetrina ── -->
-<!-- The room first, at full bleed — warm light, the grill alight, a table
-     already laid. The ultramarine is not a backdrop behind it but a solid
-     plinth set ON it, carrying the name and the two actions; the roundel
-     straddles the plinth's top edge like the wax seal on the actions band,
-     so the two ends of the page are made by the same hand. The meander keeps
-     its one job: closing the bottom edge of an ultramarine field, here the
-     fact bar that seats the whole composition. -->
+<!-- Plaster ground, the name and the two doors on the left, one plate shot
+     straight down on the right. The only photographs that exist of this place
+     are its customers' own, and the honest ones are plates rather than rooms,
+     so the Greek is carried by ornament: a gold meander tab over the kicker,
+     the roundel straddling the frame, and the meander closing the bottom edge
+     of the ultramarine frame — its one documented job. The three publishable
+     facts sit inside this section instead of in a band of their own, which is
+     one whole block less to scroll past on a phone. -->
 <section class="hero">
-  <div class="hero__stage">
-    <picture>
-      <source media="(max-width: 719px)" srcset="assets/img/hero-taverna-sm.webp" width="1080" height="810">
-      <img src="assets/img/hero-taverna.webp" width="1920" height="1080"
-           alt="La sala di una taverna greca alla luce calda del tardo pomeriggio: un tavolo di marmo con runner blu apparecchiato con tzatziki, insalata greca con feta e olive, spiedini di souvlaki e pita; sul fondo la griglia a carbone accesa e le sedie azzurre impagliate"
-           fetchpriority="high" decoding="async">
-    </picture>
-  </div>
-
   <div class="hero__in">
-    <div class="hero__panel">
-      <img class="hero__seal" src="assets/img/logo-disc.png" width="512" height="512"
-           alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
+    <div class="hero__copy">
+      <p class="hero__tab" aria-hidden="true"></p>
 
-      <p class="hero__kicker" data-en="Mythos — Greek kitchen">Mythos — Cucina Greca</p>
+      <p class="hero__kicker" data-en="Mythos — Greek kitchen · Rome">Mythos — Cucina Greca · Roma</p>
 
       <h1 class="hero__h" data-en="Gyros, souvlaki and moussaka <span>on Via Tuscolana.</span>">Gyros, souvlaki e moussaka <span>su Via Tuscolana.</span></h1>
 
@@ -105,18 +96,23 @@
       </p>
 
       <p class="hero__or"><span data-en="or call us">oppure chiamaci</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></p>
+
+      <ul class="hero__facts">
+        <li data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</li>
+        <li data-en="Closed on Mondays">Chiuso il lunedì</li>
+        <li data-en="Delivery with Just Eat">Consegna con Just Eat</li>
+      </ul>
     </div>
+
+    <figure class="hero__shot">
+      <img class="hero__seal" src="assets/img/logo-disc.png" width="512" height="512"
+           alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
+      <img class="hero__pic" src="assets/img/hero-griglia.webp" width="1024" height="1024"
+           alt="Grigliata mista servita su un piatto bianco: spiedini di carne, patate al forno, insalata greca, pita e una ciotolina di tzatziki"
+           fetchpriority="high" decoding="async">
+    </figure>
   </div>
 </section>
-
-<!-- the three facts we are actually allowed to publish, seating the hero -->
-<div class="herobar on-blue">
-  <ul class="wrap herobar__in">
-    <li data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</li>
-    <li data-en="Closed on Mondays">Chiuso il lunedì</li>
-    <li data-en="Delivery with Just Eat">Consegna con Just Eat</li>
-  </ul>
-</div>
 
 <!-- ──────────────────────────────────────────────────────── ristorante ── -->
 <section class="sec" id="ristorante">
@@ -145,7 +141,7 @@
       <h2 class="h2" data-en="What comes out of the kitchen.">Quello che esce dalla cucina.</h2>
     </div>
 
-    <ul class="dishes" data-reveal>
+    <ul class="dishes" data-reveal data-stagger>
       <li class="dish dish--wide">
         <div class="dish__box"><img src="assets/img/gyros-cut.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Pita al gyros aperta a metà, con carne, pomodoro, cipolla e prezzemolo"></div>
         <p class="dish__n">Gyros</p>
@@ -208,14 +204,14 @@
 <!-- ──────────────────────────────────────────────────────── dove siamo ── -->
 <section class="sec sec--tight" id="dove">
   <div class="wrap">
-    <div class="loc" data-reveal>
-      <div class="loc__lead">
+    <div class="loc">
+      <div class="loc__lead" data-reveal>
         <p class="eyebrow" data-en="Find us">Dove siamo</p>
         <h2 class="loc__h">Via Tuscolana 596, Roma.</h2>
         <p class="lede" data-en="Metro A, Arco di Travertino stop — then it's a short walk down Via Tuscolana.">Metro A, fermata Arco di Travertino: da lì sono due passi lungo la Tuscolana.</p>
       </div>
 
-      <ul class="loc__list">
+      <ul class="loc__list" data-reveal data-stagger>
         <li>
           <span class="loc__k" data-en="Address">Indirizzo</span>
           <span class="loc__v">Via Tuscolana 596, Roma</span>
@@ -275,7 +271,13 @@
 
   <div class="wrap foot__end">
     <p data-en="Opening times are being updated — call us to confirm.">Orari in aggiornamento — chiamaci per conferma.</p>
-    <p class="foot__by">Sito realizzato da <a href="https://x3roautomations.it" target="_blank" rel="noopener">x3ro&nbsp;Automations</a></p>
+    <p class="foot__by">
+      <span data-en="Site by">Sito realizzato da</span>
+      <a class="byx3ro" href="https://x3roautomations.it" target="_blank" rel="noopener">
+        <img src="assets/img/x3ro-logo.webp" width="300" height="188" alt="" loading="lazy" decoding="async">
+        <span>x3ro&nbsp;Automations</span>
+      </a>
+    </p>
   </div>
 </footer>
 

@@ -54,6 +54,9 @@
      used in exactly one role site-wide — to close the bottom edge of an
      ultramarine field — never as a repeating trim along arbitrary sections. */
   --meander: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'%3E%3Cg fill='none' stroke='%23F5F6F8' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M0 21h44'/%3E%3Cpath d='M2 21V3h18v12H8V9h6'/%3E%3Cpath d='M42 21V3H24v12h12V9h-6'/%3E%3C/g%3E%3C/svg%3E");
+  /* The same unit drawn in gold, for the one place the ornament sits on the
+     plaster ground rather than on ultramarine: the tab above the hero kicker. */
+  --meander-gold: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'%3E%3Cg fill='none' stroke='%23C4922E' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M0 21h44'/%3E%3Cpath d='M2 21V3h18v12H8V9h6'/%3E%3Cpath d='M42 21V3H24v12h12V9h-6'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Sections on the ultramarine ground flip the button and focus variables so
@@ -432,94 +435,58 @@ p:last-child { margin-bottom: 0; }
 /* ====================================================================== */
 /*  THE VETRINA — the first screen.                                        */
 /*                                                                         */
-/*  The room arrives first, at full bleed and already warm: the grill lit,  */
-/*  a table laid, late light on a terracotta wall. Nothing is withheld for  */
-/*  a scroll to reveal.                                                     */
+/*  No cinematic room shot. The only photographs of this restaurant that   */
+/*  exist are the ones its own customers took, and the honest ones are     */
+/*  plates, not interiors — so the first screen is laid the way a good     */
+/*  taverna lays a table: plaster ground, one dish shot straight down, and */
+/*  the Greek carried by ornament instead of by scenery.                   */
 /*                                                                         */
-/*  The ultramarine is not a wash behind that photograph and not a tint     */
-/*  over it — it is a solid plinth set ON it at full strength, carrying the */
-/*  name, the sentence and the two doors. The roundel straddles the         */
-/*  plinth's top edge exactly as it straddles the actions band further down */
-/*  the page, so the top and the bottom of the site read as one hand. The   */
-/*  meander keeps its single documented job — closing the bottom edge of an */
-/*  ultramarine field — which here is the fact bar the whole thing sits on. */
+/*  The photograph is set into an ultramarine frame, and the meander keeps */
+/*  its single documented job — closing the bottom edge of an ultramarine  */
+/*  field, here that frame. The roundel straddles the frame's top-left     */
+/*  corner exactly as it straddles the actions band further down the page. */
+/*                                                                         */
+/*  The three publishable facts are folded into this section rather than   */
+/*  standing as a band of their own, which is one whole block less to      */
+/*  scroll past on a phone.                                                */
 /* ====================================================================== */
 
 .hero {
   position: relative;
-  isolation: isolate;
-  background: var(--blue-deep);
-}
-
-/* the photograph ---------------------------------------------------------- */
-.hero__stage { position: relative; z-index: 0; }
-.hero__stage picture { display: block; }
-.hero__stage img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: center 58%;
-}
-
-/* Depth, not a scrim. A short ultramarine fall from the top keeps the sticky
-   header's plaster bar from floating on a bright wall, and a warm-dark foot
-   stops the photograph from ending on a hard line where the plinth begins.
-   Both are weak on purpose: the room has to stay warm. */
-.hero__stage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgba(19, 24, 81, .34), rgba(19, 24, 81, 0) 26%),
-    linear-gradient(to top, rgba(11, 13, 20, .38), rgba(11, 13, 20, 0) 34%);
+  background: var(--plaster);
+  padding-block: clamp(1.5rem, 4.5vw, 3.2rem) clamp(1.9rem, 5vw, 3.6rem);
 }
 
 .hero__in {
-  position: relative;
-  z-index: 1;
   max-width: var(--wrap);
   margin: 0 auto;
   padding: 0 var(--gut);
-  min-width: 0;
+  display: grid;
+  gap: clamp(1.4rem, 4.5vw, 2.4rem);
+  align-items: center;
 }
 
-/* the plinth -------------------------------------------------------------- */
-.hero__panel {
-  position: relative;
-  /* rides up over the foot of the photograph */
-  margin-top: clamp(-3.4rem, -8vw, -2.2rem);
-  padding: clamp(2.1rem, 6vw, 2.6rem) clamp(1.35rem, 5vw, 2.2rem) clamp(1.9rem, 5vw, 2.3rem);
-  background: var(--blue);
-  color: var(--on-blue);
-  --btn-bg: var(--plaster);
-  --btn-fg: var(--blue);
-  --focus:  var(--gold-lift);
-  box-shadow: 0 18px 44px rgba(11, 13, 20, .32);
-}
+/* copy ------------------------------------------------------------------- */
 
-/* the wax seal, half on the photograph and half on the plinth */
-.hero__seal {
-  position: absolute;
-  top: 0;
-  left: clamp(1.35rem, 5vw, 2.2rem);
-  width: clamp(56px, 13vw, 74px);
-  height: auto;
-  transform: translateY(-50%);
-  filter: drop-shadow(0 8px 20px rgba(11, 13, 20, .45));
+/* A short length of meander used as a tab, not as a trim: three units, gold,
+   sitting above the kicker the way a stamped rule sits above a museum label. */
+.hero__tab {
+  width: 96px;
+  height: 16px;
+  margin: 0 0 clamp(.8rem, 2.2vw, 1.1rem);
+  background: var(--meander-gold) repeat-x left center / 32px 16px;
 }
 
 .hero__kicker {
-  margin: 0 0 clamp(.7rem, 2vw, .95rem);
+  margin: 0 0 clamp(.5rem, 1.6vw, .75rem);
   font-family: var(--f-disp);
   font-weight: 600;
   font-stretch: 104%;
-  font-size: clamp(.66rem, .6rem + .2vw, .75rem);
+  font-size: clamp(.66rem, .6rem + .2vw, .74rem);
   line-height: 1.35;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--gold-lift);
+  color: var(--gold);
 }
 
 .hero__h {
@@ -527,134 +494,155 @@ p:last-child { margin-bottom: 0; }
   font-family: var(--f-disp);
   font-weight: 600;
   font-stretch: 114%;
-  font-size: clamp(1.85rem, 1.1rem + 3.4vw, 3.15rem);
-  line-height: 1.02;
-  letter-spacing: -.02em;
+  font-size: clamp(1.72rem, 1.06rem + 2.6vw, 2.7rem);
+  line-height: 1.04;
+  letter-spacing: -.022em;
   text-transform: uppercase;
-  color: var(--plaster);
-  max-width: 16ch;
+  color: var(--ink);
   text-wrap: balance;
 }
 /* the street gets its own line at every width rather than trailing off the end
-   of whichever line the balancer picked */
-.hero__h span { display: block; color: var(--gold-lift); }
+   of whichever line the balancer happened to pick */
+.hero__h span { display: block; color: var(--blue); }
 
 .hero__p {
-  margin: clamp(.85rem, 2vw, 1.15rem) 0 0;
-  max-width: 42ch;
-  font-size: clamp(1rem, .96rem + .3vw, 1.12rem);
-  line-height: 1.5;
-  color: var(--on-blue-dim);
+  margin: clamp(.75rem, 2vw, 1.05rem) 0 0;
+  max-width: 40ch;
+  font-size: clamp(1rem, .96rem + .3vw, 1.1rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--blue-deep) 84%, transparent);
 }
 
 .hero__act {
-  margin: clamp(1.2rem, 2.8vw, 1.6rem) 0 0;
+  margin: clamp(1.05rem, 2.4vw, 1.45rem) 0 0;
   display: flex;
   flex-wrap: wrap;
   gap: .55rem;
 }
-.hero__act .btn { flex: 1 1 auto; }
+.hero__act .btn { flex: 1 1 auto; justify-content: center; }
 
 .hero__or {
   margin: .75rem 0 0;
   font-size: .95rem;
-  color: var(--on-blue-dim);
+  color: color-mix(in srgb, var(--blue-deep) 70%, transparent);
 }
-.hero__or .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+.hero__or .tel { font-weight: 500; color: var(--blue); }
 
-@media (min-width: 560px) {
-  .hero__act .btn { flex: 0 0 auto; }
-}
-
-/* From 720 the photograph gets room to be a room, and the plinth stops being
-   a full-width slab: it becomes a card laid on the left of the picture. */
-@media (min-width: 720px) {
-  .hero__stage img { aspect-ratio: 16 / 9; object-position: center 55%; }
-  .hero__panel {
-    max-width: 33rem;
-    margin-top: clamp(-6rem, -9vw, -4rem);
-  }
-}
-
-/* From 960 the plinth sits inside the picture rather than under it: the hero
-   is one field, the photograph fills it, the blue block is set into its lower
-   left with air on every side. */
-@media (min-width: 960px) {
-  .hero {
-    min-height: min(80svh, 780px);
-    display: grid;
-    align-items: end;
-  }
-  .hero__stage {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-  .hero__stage picture, .hero__stage img { height: 100%; }
-  .hero__stage img { aspect-ratio: auto; object-position: center 56%; }
-
-  .hero__in { padding-block: clamp(2.4rem, 5vw, 4rem); }
-  .hero__panel {
-    margin-top: 0;
-    max-width: 35rem;
-    padding: clamp(2.4rem, 3.4vw, 3rem) clamp(2.2rem, 3vw, 2.8rem) clamp(2.1rem, 3vw, 2.6rem);
-  }
-  .hero__seal { left: clamp(2.2rem, 3vw, 2.8rem); }
-}
-
-/* the fact bar the composition sits on ------------------------------------ */
-.herobar {
-  position: relative;
-  padding-block: clamp(.9rem, 2.4vw, 1.15rem) clamp(1.5rem, 3vw, 1.8rem);
-}
-.herobar::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 15px;
-  background: var(--meander) repeat-x center / 30px 15px;
-  transform: scaleY(-1);
-  opacity: .9;
-  pointer-events: none;
-}
-.herobar__in {
+/* the three facts we are actually allowed to publish ---------------------- */
+.hero__facts {
+  margin: clamp(1.1rem, 2.8vw, 1.5rem) 0 0;
+  padding-top: clamp(.95rem, 2.4vw, 1.25rem);
+  border-top: 1px solid var(--rule);
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem 1.6rem;
+  gap: .5rem 1.4rem;
   font-family: var(--f-disp);
   font-weight: 600;
-  font-size: .68rem;
-  letter-spacing: .14em;
+  font-size: .67rem;
+  letter-spacing: .13em;
   text-transform: uppercase;
-  color: var(--on-blue-dim);
+  color: color-mix(in srgb, var(--blue-deep) 74%, transparent);
 }
-.herobar__in li { display: flex; align-items: center; gap: .6rem; }
+.hero__facts li { display: flex; align-items: center; gap: .55rem; }
 /* a gold pip in front of every item — a separator drawn between items instead
    reads as a trailing dash on the item before it once the rail wraps */
-.herobar__in li::before {
+.hero__facts li::before {
   content: '';
   flex: 0 0 auto;
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--gold-lift);
+  background: var(--gold);
 }
 
-/* A restrained arrival: the picture is already there, the plinth settles onto
-   it. Load-time only — nothing here is driven by scroll position. */
+/* the photograph --------------------------------------------------------- */
+
+.hero__shot {
+  position: relative;
+  margin: 0;
+  background: var(--blue);
+  padding: clamp(.5rem, 1.6vw, .7rem);
+  /* room under the picture for the meander to run in */
+  padding-bottom: clamp(1.45rem, 3.2vw, 1.85rem);
+  box-shadow: 0 16px 40px rgba(11, 13, 20, .16);
+}
+
+.hero__pic {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* the meander closing the frame's bottom edge */
+.hero__shot::after {
+  content: '';
+  position: absolute;
+  left: clamp(.5rem, 1.6vw, .7rem);
+  right: clamp(.5rem, 1.6vw, .7rem);
+  bottom: clamp(.26rem, .75vw, .4rem);
+  height: 15px;
+  background: var(--meander) repeat-x center / 30px 15px;
+  transform: scaleY(-1);
+  opacity: .92;
+  pointer-events: none;
+}
+
+/* the wax seal, straddling the frame's top-left corner */
+.hero__seal {
+  position: absolute;
+  top: 0;
+  left: clamp(.9rem, 3vw, 1.4rem);
+  width: clamp(50px, 10vw, 66px);
+  height: auto;
+  transform: translateY(-46%);
+  filter: drop-shadow(0 8px 20px rgba(11, 13, 20, .35));
+}
+
+/* On a phone the picture leads — a plate is the fastest way to say what this
+   place is — and the copy follows straight under it. */
+@media (max-width: 767px) {
+  .hero__shot { order: -1; }
+  .hero__pic { aspect-ratio: 16 / 10; }
+}
+
+@media (max-width: 559px) {
+  .hero__act { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .hero__act .btn { min-height: 48px; padding: 0 .7rem; font-size: .71rem; letter-spacing: .1em; }
+}
+
+@media (min-width: 560px) {
+  .hero__act .btn { flex: 0 0 auto; }
+}
+
+@media (min-width: 768px) {
+  .hero__in {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+    gap: clamp(1.8rem, 4vw, 3.2rem);
+  }
+  .hero__pic { aspect-ratio: 1 / 1; }
+}
+
+@media (min-width: 1040px) {
+  .hero__pic { aspect-ratio: 5 / 4; }
+}
+
+/* A restrained arrival: nothing here is driven by scroll position. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero__panel > * { animation: heroIn .6s var(--ease) both; }
-  .hero__panel > *:nth-child(3) { animation-delay: .06s; }
-  .hero__panel > *:nth-child(4) { animation-delay: .1s; }
-  .hero__panel > *:nth-child(5) { animation-delay: .14s; }
-  .hero__panel > *:nth-child(6) { animation-delay: .18s; }
-  .hero__seal { animation: sealIn .7s var(--ease) both; }
+  .hero__copy > *, .hero__shot { animation: heroIn .55s var(--ease) both; }
+  .hero__copy > *:nth-child(2) { animation-delay: .04s; }
+  .hero__copy > *:nth-child(3) { animation-delay: .08s; }
+  .hero__copy > *:nth-child(4) { animation-delay: .12s; }
+  .hero__copy > *:nth-child(5) { animation-delay: .16s; }
+  .hero__copy > *:nth-child(6) { animation-delay: .2s; }
+  .hero__seal { animation: sealIn .7s var(--ease) .12s both; }
 }
 @keyframes heroIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
 }
 @keyframes sealIn {
-  from { opacity: 0; transform: translateY(-50%) scale(.88); }
+  from { opacity: 0; transform: translateY(-46%) scale(.88); }
 }
 
 /* ----------------------------------------------------------- sections -- */
@@ -871,6 +859,29 @@ p:last-child { margin-bottom: 0; }
   opacity: .9;
   pointer-events: none;
   z-index: 2;
+}
+
+/* The roundel-plus-label lockup that opens the booking and cancel pages. The
+   disc is a 512px asset: without an explicit size it renders at the full
+   column width and pushes the first control of the widget a screen and a half
+   down, which is exactly what this page is built not to do. */
+.mark {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin: 0 0 clamp(.9rem, 2.6vw, 1.2rem);
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: clamp(.66rem, .6rem + .2vw, .74rem);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-lift);
+}
+.mark img {
+  flex: 0 0 auto;
+  width: clamp(44px, 9vw, 58px);
+  height: auto;
 }
 
 .pren__in {
@@ -1531,13 +1542,54 @@ p:last-child { margin-bottom: 0; }
   font-size: .82rem;
   color: var(--on-blue-dim);
 }
-.foot__by a {
+/* The agency credit. The x3ro mark is metallic blue-grey with a dark navy
+   wordmark, so on the ultramarine footer it sinks into the ground and reads as
+   a smudge — it gets its own plaster chip instead. The logo is sized by its
+   RENDERED HEIGHT against the line of text beside it, never by width: matching
+   widths would leave a wide logo towering over the sentence it belongs to. */
+.foot__by {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  flex-wrap: wrap;
+}
+/* The mark alone is a metallic robot arm at credit size — a smudge, not a
+   logo — so it is paired with the name set in the site's own display face.
+   The mark is the badge, the words do the reading. */
+.byx3ro {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  color: var(--plaster);
-  text-decoration-color: var(--gold-lift);
+  gap: .45rem;
+  min-height: 44px;          /* the tap target, not the visible chip */
+  padding: .5rem 0;
+  text-decoration: none;
 }
+.byx3ro img {
+  display: block;
+  height: 30px;              /* sized by rendered height against the text */
+  width: auto;
+  padding: .26rem .34rem;
+  background: var(--plaster);
+  border-radius: 3px;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.byx3ro span {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  color: var(--plaster);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--gold-lift);
+  text-underline-offset: .22em;
+}
+.byx3ro:hover img {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(11, 13, 20, .3);
+}
+.byx3ro:hover span { text-decoration-color: var(--plaster); }
 
 @media (min-width: 700px) {
   .foot__in { grid-template-columns: repeat(2, 1fr); }
@@ -1557,6 +1609,87 @@ p:last-child { margin-bottom: 0; }
   transition-delay: var(--d, 0ms);
 }
 .js [data-reveal].in { opacity: 1; transform: none; }
+
+
+/* ------------------------------------------------- staggered reveals -- */
+
+/* A container marked data-stagger reveals its children in sequence rather than
+   as one block. The delays are CSS-only: the container already receives .in
+   from the one IntersectionObserver in core.js, so this adds no JS and no
+   second observer. Opacity and transform are used rather than clip-path —
+   a clip that collapses the observed element to zero area means it can never
+   intersect, so the reveal never fires and lazy images inside it never load. */
+.js [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .55s var(--ease), transform .55s var(--ease);
+}
+.js [data-stagger].in > * { opacity: 1; transform: none; }
+.js [data-stagger].in > *:nth-child(1) { transition-delay: 0ms; }
+.js [data-stagger].in > *:nth-child(2) { transition-delay: 60ms; }
+.js [data-stagger].in > *:nth-child(3) { transition-delay: 120ms; }
+.js [data-stagger].in > *:nth-child(4) { transition-delay: 180ms; }
+.js [data-stagger].in > *:nth-child(5) { transition-delay: 240ms; }
+.js [data-stagger].in > *:nth-child(6) { transition-delay: 300ms; }
+.js [data-stagger].in > *:nth-child(7) { transition-delay: 360ms; }
+.js [data-stagger].in > *:nth-child(8) { transition-delay: 420ms; }
+
+/* Pictures settle rather than pop: the frame arrives first and the photograph
+   inside it releases from a slight scale. Transform only — no layout work. */
+.js [data-reveal] .fig__img,
+.js [data-reveal] .dish__box img {
+  transform: scale(1.05);
+  transition: transform .9s var(--ease);
+}
+.js [data-reveal].in .fig__img,
+.js [data-reveal].in .dish__box img { transform: none; }
+
+.fig { overflow: hidden; }
+.fig img { transition: transform .6s var(--ease); }
+.fig:hover img { transform: scale(1.03); }
+
+/* ------------------------------------------------ phone: tighten up -- */
+
+/* The page had grown to six and a half phone screens. Everything below is
+   vertical only — no type gets smaller, no tap target shrinks under 44px,
+   nothing is hidden. It is padding, aspect ratios and column counts. */
+
+@media (max-width: 719px) {
+  .hero    { padding-block: 1.15rem 1.8rem; }
+  .hero__in { gap: 1.25rem; }
+  .sec        { padding-block: 2.6rem; }
+  .sec--tight { padding-block: 2.3rem; }
+  .sec__head  { margin-bottom: 1.4rem; }
+  .sec__grid  { gap: 1.6rem; }
+
+  /* eight plates in a plain 2×4 grid: the two wide cards were spending a full
+     screen of height each to say the same thing as their neighbours */
+  .dishes { gap: .55rem; }
+  .dish--wide { grid-column: span 1; }
+  .dish__box, .dish--wide .dish__box { aspect-ratio: 1 / 1; }
+  .dish__n { margin-top: .5rem; font-size: .68rem; }
+
+  /* the veranda is a 3:4 portrait; at full column width that is half a screen */
+  .fig img { aspect-ratio: 16 / 11; }
+
+  .acts { margin-top: 2.4rem; }
+  .acts__in { padding-block: 3rem 2.4rem; gap: 1.9rem; }
+  .acts__seal { width: 72px; height: 72px; }
+
+  .loc { gap: 1.2rem; }
+  .loc__list li { padding: .35rem 0; }
+
+  .foot { margin-top: 2.6rem; padding-block: 2.2rem 1.4rem; }
+  .foot__in { gap: 1.3rem; padding-bottom: 1.4rem; }
+  .foot__name { font-size: 1.3rem; }
+}
+
+/* Two columns in the footer from the width where a phone can hold them, so the
+   four blocks stop being four full-width rows. */
+@media (min-width: 380px) {
+  .foot__in { grid-template-columns: repeat(2, 1fr); }
+  .foot__brand { grid-column: 1 / -1; }
+}
 
 /* ---------------------------------------------------- reduced motion -- */
 
