@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Unapproved client preview. Stays out of the index until the owner signs off. -->
+<meta name="robots" content="noindex,nofollow">
+
+<title>Prenota un tavolo — Mythos Cucina Greca, Via Tuscolana 596 Roma</title>
+<meta name="description" content="Prenota un tavolo da Mythos Cucina Greca, Via Tuscolana 596, Roma. Scegli il giorno e l'orario, ricevi subito il codice della prenotazione.">
+
+<!-- This is the URL that goes in the reservation field of the Google Business
+     Profile, so it has to stand on its own: name, what you're doing here and
+     the first control of the form, all above the fold. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Mythos Cucina Greca">
+<meta property="og:title" content="Prenota un tavolo — Mythos Cucina Greca, Roma">
+<meta property="og:description" content="Via Tuscolana 596, Roma. Scegli giorno e orario e ricevi subito il codice della prenotazione.">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B14A0">
+
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/logo-disc-sm.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Martian+Mono:wght@600..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="assets/css/core.css">
+
+<!-- Reveal styles hang off .js, so a page without JavaScript (or with a failed
+     core.js) shows all of its content instead of a wall of opacity:0. -->
+<script>document.documentElement.className+=' js';</script>
+
+<script>/* Filled at deploy. Empty strings are deliberate: booking.js falls back to the
+   phone card when unset, which is the correct pre-backend state. */
+window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
+<script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
+<script defer src="assets/js/core.js"></script>
+<script defer src="assets/js/booking.js"></script>
+</head>
+
+<body>
+<a class="skip" href="#main" data-en="Skip to content">Vai al contenuto</a>
+
+<!-- ─────────────────────────────────────────────────────────────── nav ── -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="index.html" aria-label="Mythos Cucina Greca — torna alla home">
+      <img class="brand__disc" src="assets/img/logo-disc-sm.png" width="96" height="96" alt="">
+      <span class="brand__name">Mythos</span>
+    </a>
+
+    <nav id="nav-drawer" class="drawer" aria-label="Menu principale">
+      <ul class="drawer__list">
+        <li><a href="index.html#ristorante" data-en="The restaurant">Il ristorante</a></li>
+        <li><a href="index.html#piatti" data-en="The food">I piatti</a></li>
+        <li><a href="menu.html" data-en="Menu">Menù</a></li>
+        <li><a href="index.html#dove" data-en="Find us">Dove siamo</a></li>
+        <li class="drawer__call"><a href="tel:+390687774778">06 8777 4778</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav__act">
+      <button type="button" class="langbtn" data-lang-toggle aria-label="Switch to English">EN</button>
+      <a class="btn btn-sm" href="prenota.html" aria-current="page" data-en="Book">Prenota</a>
+      <button type="button" class="burger" data-menu-toggle aria-expanded="false" aria-controls="nav-drawer" aria-label="Apri il menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ──────────────────────────────────────────────────── prenotazione ── -->
+<section class="pren on-blue">
+  <div class="wrap pren__in">
+
+    <div class="pren__head">
+      <p class="mark">
+        <img src="assets/img/logo-disc.png" width="512" height="512"
+             alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
+        <span data-en="Mythos — Greek kitchen">Mythos — Cucina Greca</span>
+      </p>
+
+      <h1 class="pren__h" data-en="Book a table">Prenota un tavolo</h1>
+
+      <p class="pren__where">Via Tuscolana 596, Roma · <span data-en="Metro A, Arco di Travertino">Metro A, Arco di Travertino</span></p>
+
+      <p class="pren__how" data-en="Pick the day, the service and how many of you there are. You get a booking code straight away — keep it, it's how you cancel.">Scegli il giorno, il servizio e quante siete. Ti diamo subito un codice: tienilo da parte, serve per annullare.</p>
+    </div>
+
+    <div id="prenota-app"></div>
+
+    <noscript>
+      <p class="bk-note bk-phoneonly">Il modulo di prenotazione ha bisogno di JavaScript. Chiamaci allo <a href="tel:+390687774778">06 8777 4778</a> e ti troviamo un tavolo.</p>
+    </noscript>
+
+    <p class="pren__phone"><span data-en="Rather use the phone? Call us on">Preferisci il telefono? Chiamaci allo</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></p>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────── dove siamo ── -->
+<section class="sec sec--tight" id="dove">
+  <div class="wrap">
+    <div class="loc" data-reveal>
+      <div class="loc__lead">
+        <p class="eyebrow" data-en="Find us">Dove siamo</p>
+        <h2 class="loc__h">Via Tuscolana 596, Roma.</h2>
+        <p class="lede" data-en="Metro A, Arco di Travertino stop — then it's a short walk down Via Tuscolana. Have a look at the menu before you come.">Metro A, fermata Arco di Travertino: da lì sono due passi lungo la Tuscolana. Se vuoi, dai un'occhiata al menù prima di venire.</p>
+        <p><a class="btn btn-ghost" href="menu.html" data-en="See the menu">Vedi il menù</a></p>
+      </div>
+
+      <ul class="loc__list">
+        <li>
+          <span class="loc__k" data-en="Address">Indirizzo</span>
+          <span class="loc__v">Via Tuscolana 596, Roma</span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Metro">Metro</span>
+          <span class="loc__v"><span class="linebadge" aria-hidden="true">A</span><span class="sr-only">Metro A, </span>Arco di Travertino</span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Phone">Telefono</span>
+          <span class="loc__v"><a class="tel" href="tel:+390687774778">06 8777 4778</a></span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Closed">Chiuso</span>
+          <span class="loc__v" data-en="Monday — lunch and dinner the rest of the week">Lunedì — pranzo e cena il resto della settimana</span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Map">Mappa</span>
+          <span class="loc__v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Mythos%20Cucina%20Greca%2C%20Via%20Tuscolana%20596%2C%20Roma" target="_blank" rel="noopener" data-en="Open in Google Maps">Apri in Google Maps</a></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ──────────────────────────────────────────────────────────── footer ── -->
+<footer class="foot on-blue">
+  <div class="wrap foot__in">
+    <div class="foot__brand">
+      <p class="foot__name">Mythos</p>
+      <p class="foot__sub" data-en="Greek kitchen · Rome">Cucina greca · Roma</p>
+    </div>
+
+    <div class="foot__col">
+      <p class="foot__k" data-en="Where">Dove</p>
+      <p>Via Tuscolana 596, Roma<br>
+        <span data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</span></p>
+    </div>
+
+    <div class="foot__col">
+      <p class="foot__k" data-en="Contact">Contatti</p>
+      <p><a class="tel" href="tel:+390687774778">06 8777 4778</a><br>
+        <span data-en="Closed on Mondays">Chiuso il lunedì</span></p>
+    </div>
+
+    <div class="foot__col">
+      <p class="foot__k" data-en="Pages">Pagine</p>
+      <ul class="foot__list">
+        <li><a href="index.html" data-en="Home">Home</a></li>
+        <li><a href="menu.html" data-en="Menu">Menù</a></li>
+        <li><a href="index.html#dove" data-en="Find us">Dove siamo</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap foot__end">
+    <p data-en="Opening times are being updated — call us to confirm.">Orari in aggiornamento — chiamaci per conferma.</p>
+    <p class="foot__by">Sito realizzato da <a href="https://x3roautomations.it" target="_blank" rel="noopener">x3ro&nbsp;Automations</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -105,8 +105,22 @@
       <img class="brand__disc" src="assets/img/logo-disc-sm.png" width="96" height="96" alt="">
       <span class="brand__name">Mythos</span>
     </a>
+
+    <nav id="nav-drawer" class="drawer" aria-label="Menu principale">
+      <ul class="drawer__list">
+        <li><a href="index.html#ristorante">Il ristorante</a></li>
+        <li><a href="index.html#piatti">I piatti</a></li>
+        <li><a href="menu.html">Menù</a></li>
+        <li><a href="index.html#dove">Dove siamo</a></li>
+        <li class="drawer__call"><a href="tel:+390687774778">06 8777 4778</a></li>
+      </ul>
+    </nav>
+
     <div class="nav__act">
-      <a class="btn btn-sm btn-ghost" href="index.html">Torna al sito</a>
+      <a class="btn btn-sm" href="prenota.html">Prenota</a>
+      <button type="button" class="burger" data-menu-toggle aria-expanded="false" aria-controls="nav-drawer" aria-label="Apri il menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
@@ -216,7 +230,8 @@
       <ul class="foot__list">
         <li><a href="index.html">Home</a></li>
         <li><a href="menu.html">Menù</a></li>
-        <li><a href="index.html#prenota">Prenota un tavolo</a></li>
+        <li><a href="prenota.html">Prenota un tavolo</a></li>
+        <li><a href="index.html#dove">Dove siamo</a></li>
       </ul>
     </div>
   </div>
@@ -227,5 +242,8 @@
   </div>
 </footer>
 
+<!-- core.js only: it measures the header height for the sticky offset and runs
+     the drawer, which is the same nav the other three pages carry. -->
+<script defer src="assets/js/core.js"></script>
 </body>
 </html>

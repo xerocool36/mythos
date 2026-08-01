@@ -269,7 +269,16 @@
 .mfoot__act { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.1rem; }
 .mfoot p { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.55; color: var(--on-blue-dim); }
 .mfoot p:last-child { margin-bottom: 0; }
-.mfoot a:not(.btn) { color: var(--plaster); text-underline-offset: .22em; text-decoration-color: var(--gold-lift); }
+/* inline-flex + min-height so the footer links are real 44px targets, the same
+   as every other link on the site */
+.mfoot a:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--plaster);
+  text-underline-offset: .22em;
+  text-decoration-color: var(--gold-lift);
+}
 .mfoot__name {
   font-family: var(--f-disp);
   font-weight: 700;
@@ -333,9 +342,23 @@
       <img class="brand__disc" src="assets/img/logo-disc-sm.png" width="96" height="96" alt="">
       <span class="brand__name">Mythos</span>
     </a>
+
+    <nav id="nav-drawer" class="drawer" aria-label="Menu principale">
+      <ul class="drawer__list">
+        <li><a href="index.html#ristorante" data-en="The restaurant">Il ristorante</a></li>
+        <li><a href="index.html#piatti" data-en="The food">I piatti</a></li>
+        <li><a href="menu.html" aria-current="page" data-en="Menu">Menù</a></li>
+        <li><a href="index.html#dove" data-en="Find us">Dove siamo</a></li>
+        <li class="drawer__call"><a href="tel:+390687774778">06 8777 4778</a></li>
+      </ul>
+    </nav>
+
     <div class="nav__act">
       <button type="button" class="langbtn" data-lang-toggle aria-label="Switch to English">EN</button>
-      <a class="btn btn-sm" href="tel:+390687774778" data-en="Call">Chiama</a>
+      <a class="btn btn-sm" href="prenota.html" data-en="Book">Prenota</a>
+      <button type="button" class="burger" data-menu-toggle aria-expanded="false" aria-controls="nav-drawer" aria-label="Apri il menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
@@ -377,7 +400,7 @@
       <h1 class="mtop__h">Menù</h1>
       <p class="mtop__sub"><span data-en="Greek kitchen">Cucina greca</span> · Via Tuscolana 596, Roma</p>
       <p class="mtop__act noprint">
-        <a class="btn btn-sm" href="index.html#prenota" data-en="Book a table">Prenota un tavolo</a>
+        <a class="btn btn-sm" href="prenota.html" data-en="Book a table">Prenota un tavolo</a>
         <a class="btn btn-sm btn-ghost" href="index.html" data-en="Home">Torna al sito</a>
       </p>
     </div>
@@ -684,7 +707,7 @@
 <footer class="mfoot on-blue">
   <div class="wrap">
     <p class="mfoot__act noprint">
-      <a class="btn btn-sm" href="index.html#prenota" data-en="Book a table">Prenota un tavolo</a>
+      <a class="btn btn-sm" href="prenota.html" data-en="Book a table">Prenota un tavolo</a>
       <a class="btn btn-sm btn-ghost" href="tel:+390687774778" data-en="Call 06 8777 4778">Chiama 06 8777 4778</a>
     </p>
     <p class="mfoot__name">Mythos Cucina Greca</p>

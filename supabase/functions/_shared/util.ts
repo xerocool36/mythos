@@ -229,7 +229,15 @@ export async function fetchWithTimeout(
   }
 }
 
-const MAIL_FROM = 'Mythos Prenotazioni <prenotazioni@x3roautomations.it>';
+// Sender is configurable because the Resend account belongs to the restaurant,
+// not to us. Two valid shapes:
+//   1. No domain yet — leave MYTHOS_MAIL_FROM unset. Resend's default sender
+//      only delivers to the account owner's own address, which is exactly who
+//      the booking notification goes to, so this works without buying a domain.
+//   2. Once they own a domain and verify it in Resend, set MYTHOS_MAIL_FROM to
+//      'Mythos Prenotazioni <prenotazioni@theirdomain.it>'. No code change.
+// There are no guest-facing emails, so nothing else depends on a verified domain.
+const MAIL_FROM = Deno.env.get('MYTHOS_MAIL_FROM') ?? 'Mythos <onboarding@resend.dev>';
 
 export interface OwnerEmail {
   subject: string;

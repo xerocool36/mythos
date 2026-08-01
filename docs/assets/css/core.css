@@ -42,13 +42,18 @@
 
   --wrap: 1160px;
   --gut:  clamp(1.15rem, 4.5vw, 3rem);
-  --disc: clamp(96px, 19vw, 148px);
 
   --ease: cubic-bezier(.22, .72, .2, 1);
 
   --f-disp: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --f-body: 'Newsreader', Georgia, 'Times New Roman', serif;
   --f-mono: 'Martian Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* One meander unit: a mirrored pair of square spirals on a rail, traced from
+     the restaurant's own printed menu border (harvest/menu/gm-007.jpg). It is
+     used in exactly one role site-wide — to close the bottom edge of an
+     ultramarine field — never as a repeating trim along arbitrary sections. */
+  --meander: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'%3E%3Cg fill='none' stroke='%23F5F6F8' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M0 21h44'/%3E%3Cpath d='M2 21V3h18v12H8V9h6'/%3E%3Cpath d='M42 21V3H24v12h12V9h-6'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Sections on the ultramarine ground flip the button and focus variables so
@@ -398,9 +403,13 @@ p:last-child { margin-bottom: 0; }
     margin-left: 1.4rem;
   }
   .drawer__list { flex-direction: row; gap: 1.6rem; align-items: center; }
+  /* inline-flex + min-height keeps the pointer target at 44px without growing
+     the bar: the tallest thing in the row is already the 44px CTA */
   .drawer__list a {
-    padding: .72rem 0;
-    min-height: 0;
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    min-height: 44px;
     border: 0;
     color: var(--blue-deep);
     font-size: .78rem;
@@ -410,7 +419,7 @@ p:last-child { margin-bottom: 0; }
   }
   .drawer__list a::after {
     content: '';
-    position: absolute; left: 0; right: 0; bottom: -3px;
+    position: absolute; left: 0; right: 0; bottom: 10px;
     height: 1px; background: var(--gold);
     transform: scaleX(0); transform-origin: left;
     transition: transform .22s var(--ease);
@@ -420,74 +429,218 @@ p:last-child { margin-bottom: 0; }
   .burger { display: none; }
 }
 
-/* --------------------------------------------------------------- hero -- */
+/* ====================================================================== */
+/*  THE VETRINA — the first screen.                                        */
+/*                                                                         */
+/*  Not a photograph with a headline on top of it. The hero is the          */
+/*  ultramarine itself — the brand colour used as ground, at full strength  */
+/*  — and the photographs are three plates set into it: the sign at night,  */
+/*  the grill, the room. Brand, place and food land at the same moment, so  */
+/*  scrolling adds depth instead of supplying the first interesting thing.  */
+/*  No scrim, no centred stack, no photograph behind type.                  */
+/* ====================================================================== */
 
-.hero { position: relative; }
+.hero { position: relative; isolation: isolate; }
 
-.hero__shot img {
-  display: block;
-  width: 100%;
-  height: clamp(340px, 112vw, 540px);
-  object-fit: cover;
-  object-position: center 52%;
-  background: var(--plaster-2);
+/* the meander closes the field along the bottom, the way the printed menu
+   closes its own page */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 15px;
+  background: var(--meander) repeat-x center / 30px 15px;
+  transform: scaleY(-1);
+  opacity: .9;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.hero__body {
-  position: relative;
-  z-index: 1;
+.hero__in {
   max-width: var(--wrap);
   margin: 0 auto;
-  padding: 0 var(--gut) clamp(3rem, 7vw, 5.5rem);
+  padding: clamp(1.9rem, 4.5vw, 3.2rem) var(--gut) clamp(2.6rem, 5vw, 4rem);
+  display: grid;
+  gap: clamp(1.5rem, 3.6vw, 2.4rem);
+  min-width: 0;
 }
 
-/* The mark is pressed onto the edge of the photograph like a seal. */
-.hero__disc {
-  display: block;
-  width: var(--disc);
-  height: var(--disc);
-  margin-top: calc(var(--disc) / -2);
-  margin-bottom: clamp(1.2rem, 2.5vw, 1.9rem);
-  filter: drop-shadow(0 10px 26px rgba(11, 20, 160, .28));
+/* mark ------------------------------------------------------------------ */
+/* The roundel is small and paired with a line of caps rather than blown up:
+   on ultramarine a large blue disc would sink into its own ground. */
+.mark {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 0 0 clamp(1rem, 2.4vw, 1.4rem);
+}
+.mark img {
+  flex: 0 0 auto;
+  width: clamp(44px, 11vw, 60px);
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(11, 13, 20, .35));
+}
+.mark span {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: clamp(.66rem, .6rem + .2vw, .75rem);
+  line-height: 1.35;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-lift);
 }
 
 .hero__h {
   font-family: var(--f-disp);
   font-weight: 600;
   font-stretch: 114%;
-  font-size: clamp(1.95rem, 1.1rem + 4.1vw, 4.15rem);
-  line-height: 1;
+  font-size: clamp(1.9rem, 1.05rem + 4vw, 3.5rem);
+  line-height: 1.02;
   letter-spacing: -.02em;
   text-transform: uppercase;
-  color: var(--ink);
-  max-width: 17ch;
+  color: var(--plaster);
+  max-width: 15ch;
   text-wrap: balance;
 }
-/* the place name gets its own line at every width rather than trailing off the
-   end of whichever line the balancer picked */
+/* the street gets its own line at every width rather than trailing off the end
+   of whichever line the balancer picked */
 .hero__h .u-blue { display: block; }
 
 .hero__p {
-  margin: clamp(1rem, 2vw, 1.5rem) 0 0;
-  max-width: 44ch;
-  font-size: clamp(1.06rem, 1rem + .45vw, 1.3rem);
+  margin: clamp(.9rem, 2vw, 1.3rem) 0 0;
+  max-width: 40ch;
+  font-size: clamp(1.02rem, .98rem + .35vw, 1.2rem);
   line-height: 1.5;
+  color: var(--on-blue-dim);
 }
 
 .hero__act {
-  margin: clamp(1.5rem, 3vw, 2.2rem) 0 0;
+  margin: clamp(1.3rem, 2.8vw, 1.9rem) 0 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .9rem 1.4rem;
+  gap: .35rem 1.3rem;
 }
-.hero__or {
-  font-size: .95rem;
-  color: rgba(19, 24, 81, .74);
+.hero__or { font-size: .95rem; color: var(--on-blue-dim); }
+.hero__or .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+
+/* the three facts we are actually allowed to publish, set as a rail */
+.hero__rail {
+  margin: clamp(1.2rem, 2.6vw, 1.7rem) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.4rem;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--on-blue-dim);
+}
+.hero__rail li {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+/* a gold pip in front of every item — a separator drawn between items instead
+   reads as a trailing dash on the item before it once the rail wraps */
+.hero__rail li::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-lift);
+}
+
+/* frieze ---------------------------------------------------------------- */
+.hero__frieze {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  min-width: 0;
+}
+.hero__pane {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: rgba(245, 246, 248, .09);
+}
+.hero__pane img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* a plaster hairline over the photograph — the plate is set into the wall,
+   not floated on it */
+.hero__pane::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(245, 246, 248, .34);
+  pointer-events: none;
+}
+.hero__pane--wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+.hero__pane--sq   { aspect-ratio: 1 / 1; }
+.hero__pane--sign img { object-position: center 38%; }
+
+/* the museum label, pinned to the plate in solid brand blue */
+.hero__pane figcaption {
+  position: absolute;
+  left: 0; bottom: 0;
+  z-index: 1;
+  padding: .42rem .7rem;
+  background: var(--blue);
+  color: var(--plaster);
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .58rem;
+  line-height: 1;
+  letter-spacing: .2em;
+  text-transform: uppercase;
 }
 
 @media (min-width: 720px) {
-  .hero__shot img { height: clamp(400px, 45vw, 600px); }
+  .hero__pane--wide { aspect-ratio: 2 / 1; }
+  .hero__pane figcaption { font-size: .62rem; padding: .48rem .85rem; }
+}
+
+/* From 960 the field stops being a column: the copy keeps the site measure on
+   the left, and the frieze runs off the right edge of the viewport. The
+   padding is derived from `100%` (the section's own content width, scrollbar
+   already excluded) rather than 50vw, so the h1 lines up with the nav brand to
+   the pixel and nothing can overhang the document. */
+@media (min-width: 960px) {
+  .hero__in {
+    max-width: none;
+    padding-left: max(var(--gut), calc((100% - var(--wrap)) / 2 + var(--gut)));
+    padding-right: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3.4rem);
+  }
+  .hero__say { max-width: 32rem; }
+  .hero__pane--wide { aspect-ratio: 21 / 9; }
+  .hero__pane--sq { aspect-ratio: 5 / 4; }
+}
+
+/* A restrained arrival: the field is already painted, the pieces settle onto
+   it. Load-time only — nothing here is driven by scroll position. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__say > *, .hero__pane { animation: heroIn .6s var(--ease) both; }
+  .hero__say > *:nth-child(2) { animation-delay: .06s; }
+  .hero__say > *:nth-child(3) { animation-delay: .1s; }
+  .hero__say > *:nth-child(4) { animation-delay: .14s; }
+  .hero__say > *:nth-child(5) { animation-delay: .18s; }
+  .hero__pane:nth-child(1) { animation-delay: .12s; }
+  .hero__pane:nth-child(2) { animation-delay: .2s; }
+  .hero__pane:nth-child(3) { animation-delay: .26s; }
+}
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(12px); }
 }
 
 /* ----------------------------------------------------------- sections -- */
@@ -624,76 +777,128 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* ================================================================== */
-/*  THE FRESCO PANEL — the one place the page spends its boldness.     */
-/*  A full-bleed ultramarine field bounded above and below by a Greek  */
-/*  key redrawn from the restaurant's own printed menu border, with    */
-/*  the dolphin roundel seated on the upper band like a seal, so the   */
-/*  act of booking happens literally inside the brand mark.            */
+/*  THE ACTIONS BAND — where the landing page spends its boldness now  */
+/*  that the booking form has moved to a URL of its own. Two doors,    */
+/*  side by side, on a full-strength ultramarine field: the booking    */
+/*  page (the one that goes in the Google Business Profile reservation */
+/*  field) and the menu.                                               */
 /* ================================================================== */
 
-.fresco {
+.acts {
   position: relative;
   isolation: isolate;
-  margin-top: clamp(3.5rem, 8vw, 6rem);
+  margin-top: clamp(3rem, 7vw, 5rem);
 }
-
-/* One meander unit: a mirrored pair of square spirals on a rail, traced from
-   harvest/menu/gm-007.jpg. Used once, structurally, as the panel's frame —
-   never as a repeating trim along other section edges. */
-.fresco::before,
-.fresco::after {
+.acts::after {
   content: '';
   position: absolute;
-  left: 0; right: 0;
+  left: 0; right: 0; bottom: 0;
   height: 15px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'%3E%3Cg fill='none' stroke='%23F5F6F8' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M0 21h44'/%3E%3Cpath d='M2 21V3h18v12H8V9h6'/%3E%3Cpath d='M42 21V3H24v12h12V9h-6'/%3E%3C/g%3E%3C/svg%3E") repeat-x center / 30px 15px;
+  background: var(--meander) repeat-x center / 30px 15px;
+  transform: scaleY(-1);
   opacity: .9;
   pointer-events: none;
   z-index: 2;
 }
-.fresco::before { top: 0; }
-.fresco::after  { bottom: 0; transform: scaleY(-1); }
 
-.fresco__seal {
+/* the roundel seated on the top edge like a wax seal */
+.acts__seal {
   position: absolute;
   top: 0;
   left: 50%;
   z-index: 3;
-  width: clamp(88px, 15vw, 132px);
-  height: clamp(88px, 15vw, 132px);
+  width: clamp(80px, 14vw, 116px);
+  height: clamp(80px, 14vw, 116px);
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 8px 22px rgba(11, 13, 20, .4));
 }
 
-.fresco__in {
-  padding-block: clamp(4.6rem, 10vw, 7.5rem);
+.acts__in {
+  padding-block: clamp(3.8rem, 8vw, 5.6rem) clamp(3.2rem, 7vw, 4.8rem);
+  display: grid;
+  gap: clamp(2.2rem, 5vw, 3.4rem);
+}
+.acts__card > .lede { margin: .9rem 0 0; }
+.acts__card > .btn  { margin-top: clamp(1.2rem, 2.6vw, 1.6rem); }
+.acts__card .fine {
+  margin: 1rem 0 0;
+  color: var(--on-blue-dim);
+  font-size: .9rem;
+}
+.acts__card .fine .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+
+@media (min-width: 800px) {
+  .acts__in { grid-template-columns: 1fr 1fr; }
+  /* a hairline between the two doors rather than a box around each */
+  .acts__card + .acts__card {
+    padding-left: clamp(2.2rem, 5vw, 3.4rem);
+    border-left: 1px solid var(--on-blue-faint);
+  }
 }
 
-/* The hairline that turns the field into a panel rather than a stripe. */
-.fresco__head {
+/* ================================================================== */
+/*  THE BOOKING PAGE HEAD — prenota.html                               */
+/*  A cold arrival from Google has to see, without scrolling: whose     */
+/*  table this is, that a table is what is being booked, and the first  */
+/*  control of the widget. So this block is deliberately short.         */
+/* ================================================================== */
+
+.pren {
   position: relative;
-  max-width: 46ch;
-  margin: 0 auto clamp(2.2rem, 5vw, 3.2rem);
-  padding-bottom: clamp(1.6rem, 3vw, 2.2rem);
-  text-align: center;
+  isolation: isolate;
+}
+.pren::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 15px;
+  background: var(--meander) repeat-x center / 30px 15px;
+  transform: scaleY(-1);
+  opacity: .9;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pren__in {
+  padding-block: clamp(1.6rem, 4vw, 2.6rem) clamp(3rem, 6vw, 4.4rem);
+}
+
+.pren__head {
+  max-width: 48rem;
+  margin: 0 auto clamp(1.6rem, 3.4vw, 2.2rem);
+  padding-bottom: clamp(1.2rem, 2.6vw, 1.7rem);
   border-bottom: 1px solid var(--on-blue-faint);
 }
-.fresco__head .eyebrow { justify-content: center; }
-.fresco__head .eyebrow::after { display: none; }
-.fresco__head .lede { margin-top: 1rem; }
+.pren__h {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-stretch: 112%;
+  font-size: clamp(1.75rem, 1.15rem + 2.6vw, 2.9rem);
+  line-height: 1.03;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  color: var(--plaster);
+}
+.pren__where {
+  margin: .8rem 0 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--on-blue-dim);
+}
+.pren__how { margin: .5rem 0 0; font-size: .95rem; color: var(--on-blue-dim); }
 
 /* A working path out of every widget state — including the one where the
    Edge Functions are not wired up yet. */
-.fresco__phone {
+.pren__phone {
   max-width: 48rem;
-  margin: clamp(1.8rem, 4vw, 2.6rem) auto 0;
+  margin: clamp(1.6rem, 3.5vw, 2.4rem) auto 0;
   padding-top: clamp(1.2rem, 3vw, 1.7rem);
   border-top: 1px solid var(--on-blue-faint);
   text-align: center;
   font-size: .95rem;
   color: var(--on-blue-dim);
 }
-.fresco__phone .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+.pren__phone .tel { color: var(--plaster); text-decoration-color: var(--gold-lift); }
 
 /* ==================================================================== */
 /*  BOOKING WIDGET — every state checked against --blue, not white.      */
@@ -1156,21 +1361,22 @@ p:last-child { margin-bottom: 0; }
 }
 .bk-phoneonly a:hover { color: var(--plaster); text-decoration-color: var(--plaster); }
 
-/* ------------------------------------------------------------- place -- */
+/* --------------------------------------------------------- the figure -- */
 
-.place { display: grid; gap: clamp(1rem, 2.5vw, 1.6rem); }
-
-.place__pics { display: grid; gap: clamp(.6rem, 1.4vw, 1rem); grid-template-columns: 1fr 1fr; }
-.place__fig { margin: 0; }
-.place__fig img {
+/* The room and the veranda belong to the restaurant's story, beside the
+   sentence that describes it — not to a map. */
+.fig { margin: 0; }
+.fig img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   background: var(--plaster-2);
 }
-.place__fig figcaption {
-  margin-top: .55rem;
+.fig figcaption {
+  margin-top: .6rem;
+  padding-top: .5rem;
+  position: relative;
   font-family: var(--f-disp);
   font-weight: 600;
   font-size: .68rem;
@@ -1178,33 +1384,76 @@ p:last-child { margin-bottom: 0; }
   text-transform: uppercase;
   color: var(--blue);
 }
-
-.place__map iframe {
-  width: 100%;
-  height: clamp(260px, 42vw, 420px);
-  background: var(--plaster-2);
-  filter: saturate(.85);
+.fig figcaption::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 18px; height: 1px;
+  background: var(--gold);
 }
-.place__links {
-  margin: .8rem 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem 1.5rem;
+@media (min-width: 860px) {
+  .fig img { aspect-ratio: 3 / 4; }
+}
+
+/* ---------------------------------------------------------- location -- */
+
+/* What replaced the map slab. An address, the metro stop, a phone number and
+   a link — the four things somebody standing on Via Tuscolana actually needs.
+   No embedded map: the map lives in Google Maps, where it is already better,
+   and a 420px iframe of it is filler. */
+.loc { display: grid; gap: clamp(1.4rem, 3.4vw, 2.4rem); }
+
+.loc__h {
   font-family: var(--f-disp);
   font-weight: 600;
-  font-size: .78rem;
-  letter-spacing: .1em;
+  font-stretch: 112%;
+  font-size: clamp(1.45rem, 1.05rem + 1.7vw, 2.2rem);
+  line-height: 1.06;
+  letter-spacing: -.012em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
-.place__links a {
-  display: inline-block;
-  padding: .78rem 0;
+.loc__lead .lede { margin-top: .8rem; }
+
+.loc__list {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.loc__list li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: .3rem 1rem;
+  align-items: center;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.loc__k {
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .66rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.loc__v { min-width: 0; }
+.loc__v a:not(.tel) {
+  display: inline-flex;
+  align-items: center;
+  padding: .5rem 0;
+  min-height: 44px;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: .8rem;
+  letter-spacing: .06em;
   text-underline-offset: .26em;
   text-decoration-color: var(--gold);
 }
 
+@media (max-width: 400px) {
+  .loc__list li { grid-template-columns: 1fr; }
+}
 @media (min-width: 860px) {
-  .place { grid-template-columns: 1fr 1fr; align-items: start; }
-  .place__pics { grid-template-columns: 1fr; }
+  .loc { grid-template-columns: 1fr 1.05fr; align-items: start; gap: clamp(2rem, 5vw, 3.5rem); }
 }
 
 /* ------------------------------------------------------------- footer -- */
@@ -1268,7 +1517,13 @@ p:last-child { margin-bottom: 0; }
   font-size: .82rem;
   color: var(--on-blue-dim);
 }
-.foot__by a { color: var(--plaster); text-decoration-color: var(--gold-lift); }
+.foot__by a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--plaster);
+  text-decoration-color: var(--gold-lift);
+}
 
 @media (min-width: 700px) {
   .foot__in { grid-template-columns: repeat(2, 1fr); }

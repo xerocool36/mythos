@@ -33,12 +33,7 @@
      core.js) shows all of its content instead of a wall of opacity:0. -->
 <script>document.documentElement.className+=' js';</script>
 
-<script>/* Filled at deploy. Empty strings are deliberate: booking.js falls back to the
-   phone card when unset, which is the correct pre-backend state. */
-window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
-<script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 <script defer src="assets/js/core.js"></script>
-<script defer src="assets/js/booking.js"></script>
 </head>
 
 <body>
@@ -64,7 +59,7 @@ window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
 
     <div class="nav__act">
       <button type="button" class="langbtn" data-lang-toggle aria-label="Switch to English">EN</button>
-      <a class="btn btn-sm" href="#prenota" data-en="Book">Prenota</a>
+      <a class="btn btn-sm" href="prenota.html" data-en="Book">Prenota</a>
       <button type="button" class="burger" data-menu-toggle aria-expanded="false" aria-controls="nav-drawer" aria-label="Apri il menu">
         <span></span><span></span><span></span>
       </button>
@@ -75,29 +70,59 @@ window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
 <main id="main">
 <span id="top"></span>
 
-<!-- ────────────────────────────────────────────────────────────── hero ── -->
-<section class="hero">
-  <div class="hero__shot">
-    <picture>
-      <source media="(max-width: 719px)" srcset="assets/img/hero-storefront-sm.webp" width="1080" height="1350">
-      <img src="assets/img/hero-storefront.webp" width="2400" height="1350"
-           alt="La vetrina di Mythos su Via Tuscolana di sera, con l'insegna blu accesa"
-           fetchpriority="high" decoding="async">
-    </picture>
-  </div>
+<!-- ────────────────────────────────────────────────── hero — la vetrina ── -->
+<!-- The ultramarine is the ground, not a tint over a photograph. Three plates
+     are set into it: the sign at night, the grill, the room. -->
+<section class="hero on-blue">
+  <div class="hero__in">
 
-  <div class="hero__body">
-    <img class="hero__disc" src="assets/img/logo-disc.png" width="512" height="512"
-         alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
+    <div class="hero__say">
+      <p class="mark">
+        <img src="assets/img/logo-disc.png" width="512" height="512"
+             alt="Il marchio Mythos: due delfini minoici e la scritta MYTHOS su un disco blu oltremare, bordato da una greca">
+        <span data-en="Mythos — Greek kitchen">Mythos — Cucina Greca</span>
+      </p>
 
-    <h1 class="hero__h" data-en="Gyros, souvlaki and moussaka <span class='u-blue'>on Via Tuscolana.</span>">Gyros, souvlaki e moussaka <span class="u-blue">su Via Tuscolana.</span></h1>
+      <h1 class="hero__h" data-en="Gyros, souvlaki and moussaka <span class='u-blue'>on Via Tuscolana.</span>">Gyros, souvlaki e moussaka <span class="u-blue">su Via Tuscolana.</span></h1>
 
-    <p class="hero__p" data-en="Greek cooking a short walk from Metro A, Arco di Travertino. Lunch and dinner, closed on Mondays.">Cucina greca a due passi dalla metro A, Arco di Travertino. Pranzo e cena, chiuso il lunedì.</p>
+      <p class="hero__p" data-en="The grill, the pites, the meze and the sweets: a neighbourhood Greek kitchen, open for lunch and for dinner.">La griglia, le pite, i meze e i dolci: cucina greca di quartiere, a pranzo e a cena.</p>
 
-    <p class="hero__act">
-      <a class="btn" href="#prenota" data-en="Book a table">Prenota un tavolo</a>
-      <span class="hero__or"><span data-en="or call us">oppure chiamaci</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></span>
-    </p>
+      <p class="hero__act">
+        <a class="btn" href="prenota.html" data-en="Book a table">Prenota un tavolo</a>
+        <span class="hero__or"><span data-en="or call us">oppure chiamaci</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></span>
+      </p>
+
+      <ul class="hero__rail">
+        <li data-en="Metro A — Arco di Travertino">Metro A — Arco di Travertino</li>
+        <li data-en="Closed on Mondays">Chiuso il lunedì</li>
+        <li data-en="Delivery with Just Eat">Consegna con Just Eat</li>
+      </ul>
+    </div>
+
+    <div class="hero__frieze">
+      <figure class="hero__pane hero__pane--wide hero__pane--sign">
+        <picture>
+          <source media="(max-width: 719px)" srcset="assets/img/hero-insegna-sm.webp" width="860" height="502">
+          <img src="assets/img/hero-insegna.webp" width="1600" height="933"
+               alt="L'insegna al neon di Mythos accesa la sera sopra l'ingresso, tra l'edera e una lanterna"
+               fetchpriority="high" decoding="async">
+        </picture>
+        <figcaption data-en="The sign">L'insegna</figcaption>
+      </figure>
+
+      <figure class="hero__pane hero__pane--sq">
+        <img src="assets/img/hero-griglia.webp" width="900" height="900" decoding="async"
+             alt="Piatto di souvlaki alla griglia con pita, patate al forno, tzatziki e insalata greca">
+        <figcaption data-en="From the grill">Dalla griglia</figcaption>
+      </figure>
+
+      <figure class="hero__pane hero__pane--sq">
+        <img src="assets/img/hero-sala.webp" width="900" height="900" decoding="async"
+             alt="La sala apparecchiata, con le tovaglie azzurre e le sedie di legno">
+        <figcaption data-en="The dining room">La sala</figcaption>
+      </figure>
+    </div>
+
   </div>
 </section>
 
@@ -107,43 +132,20 @@ window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
     <div class="sec__lead" data-reveal>
       <p class="eyebrow" data-en="The restaurant">Il ristorante</p>
       <h2 class="h2" data-en="Greek plates, no fuss.">Piatti greci, senza giri di parole.</h2>
-      <p class="lede" data-en="We cook Greek: gyros, pita gyros, souvlaki, moussaka, tzatziki, dolmades, saganaki and Greek salad. Lunch and dinner, every day except Monday.">Facciamo cucina greca: gyros, pita gyros, souvlaki, moussaka, tzatziki, dolmades, saganaki e insalata greca. A pranzo e a cena, tutti i giorni tranne il lunedì.</p>
-      <p data-en="We're at Via Tuscolana 596, a short walk from the Arco di Travertino stop on Metro A. Book a table below in under a minute, or call us and one of us will pick up.">Siamo su Via Tuscolana 596, a due passi dalla fermata Arco di Travertino della metro A. Prenoti qui sotto in meno di un minuto, oppure ci chiami e rispondiamo noi.</p>
+      <p class="lede" data-en="Gyros and pita gyros, souvlaki off the grill, moussaka, tzatziki, dolmades, saganaki and Greek salad — and baklava to finish.">Gyros e pita gyros, souvlaki dalla griglia, moussakà, tzatziki, dolmades, saganaki e insalata greca. E, per finire, il baklava.</p>
+      <p data-en="We're at Via Tuscolana 596, a short walk from the Arco di Travertino stop on Metro A. Lunch and dinner, every day except Monday. Rather stay in? We deliver with Just Eat.">Siamo su Via Tuscolana 596, a due passi dalla fermata Arco di Travertino della metro A. A pranzo e a cena, tutti i giorni tranne il lunedì. Preferisci restare a casa? Consegniamo con Just Eat.</p>
+      <p><a class="btn btn-ghost" href="prenota.html" data-en="Book a table">Prenota un tavolo</a></p>
     </div>
 
-    <div class="card" data-reveal>
-      <dl class="facts">
-        <div class="facts__row">
-          <dt data-en="Address">Indirizzo</dt>
-          <dd>Via Tuscolana 596, Roma</dd>
-        </div>
-        <div class="facts__row">
-          <dt data-en="Metro">Metro</dt>
-          <dd><span class="linebadge" aria-hidden="true">A</span> <span class="sr-only">Metro A, </span>Arco di Travertino</dd>
-        </div>
-        <div class="facts__row">
-          <dt data-en="Phone">Telefono</dt>
-          <dd><a class="tel" href="tel:+390687774778">06 8777 4778</a></dd>
-        </div>
-        <div class="facts__row">
-          <dt data-en="Closed">Chiuso</dt>
-          <dd data-en="Monday">Lunedì</dd>
-        </div>
-        <div class="facts__row">
-          <dt data-en="Service">Servizio</dt>
-          <dd data-en="Lunch and dinner">Pranzo e cena</dd>
-        </div>
-        <div class="facts__row">
-          <dt data-en="Delivery">Consegna</dt>
-          <dd>Just Eat</dd>
-        </div>
-      </dl>
-      <p class="facts__note" data-en="Opening times are being updated — call us to confirm. The booking panel below always shows the times we can actually seat you.">Orari in aggiornamento — chiamaci per conferma. Il riquadro delle prenotazioni qui sotto mostra sempre gli orari in cui possiamo davvero sederti.</p>
-    </div>
+    <figure class="fig" data-reveal>
+      <img src="assets/img/veranda.webp" width="900" height="1172" loading="lazy" decoding="async"
+           alt="La veranda coperta al tramonto: pareti arancioni, tovaglie azzurre e sedie impagliate">
+      <figcaption data-en="The covered veranda">La veranda</figcaption>
+    </figure>
   </div>
 </section>
 
-<!-- ────────────────────────────────────────────────────────────── piatti ── -->
+<!-- ─────────────────────────────────────────────────────────── piatti ── -->
 <section class="sec sec--tight" id="piatti">
   <div class="wrap">
     <div class="sec__head" data-reveal>
@@ -188,40 +190,25 @@ window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
   </div>
 </section>
 
-<!-- ───────────────────────────────────── prenota — the fresco panel ── -->
-<section class="fresco on-blue" id="prenota">
-  <img class="fresco__seal" src="assets/img/logo-disc.png" width="512" height="512" alt="" aria-hidden="true">
+<!-- ─────────────────────────────────── le due porte: prenota e menù ── -->
+<section class="acts on-blue" id="azioni">
+  <img class="acts__seal" src="assets/img/logo-disc.png" width="512" height="512" alt="" aria-hidden="true">
 
-  <div class="fresco__in wrap">
-    <div class="fresco__head" data-reveal>
+  <div class="wrap acts__in">
+    <div class="acts__card" data-reveal>
       <p class="eyebrow" data-en="Book">Prenota</p>
-      <h2 class="h2" data-en="When are you coming?">Quando vieni?</h2>
-      <p class="lede" data-en="Pick a day and a time. You get a booking code straight away — keep it, it's how you cancel.">Scegli il giorno e l'orario. Ti diamo subito un codice: tienilo da parte, serve per annullare.</p>
+      <h2 class="h2" data-en="A table, in under a minute.">Un tavolo, in meno di un minuto.</h2>
+      <p class="lede" data-en="Pick the day, the service and how many of you there are. You get a booking code straight away — keep it, it's how you cancel.">Scegli il giorno, il servizio e quante siete. Ti diamo subito un codice: tienilo da parte, serve per annullare.</p>
+      <a class="btn" href="prenota.html" data-en="Book a table">Prenota un tavolo</a>
+      <p class="fine"><span data-en="Rather use the phone? Call us on">Preferisci il telefono? Chiamaci allo</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></p>
     </div>
 
-    <div id="prenota-app"></div>
-
-    <noscript>
-      <p class="bk-note bk-phoneonly">Il modulo di prenotazione ha bisogno di JavaScript. Chiamaci allo <a href="tel:+390687774778">06 8777 4778</a> e ti troviamo un tavolo.</p>
-    </noscript>
-
-    <p class="fresco__phone"><span data-en="Rather use the phone? Call us on">Preferisci il telefono? Chiamaci allo</span> <a class="tel" href="tel:+390687774778">06&nbsp;8777&nbsp;4778</a></p>
-  </div>
-</section>
-
-<!-- ──────────────────────────────────────────────── menu & consegna ── -->
-<section class="sec" id="menu">
-  <div class="wrap sec__grid sec__grid--even">
-    <div data-reveal>
-      <p class="eyebrow" data-en="Menu and delivery">Menù e consegna</p>
-      <h2 class="h2" data-en="The whole menu.">Il menù per intero.</h2>
-      <p class="lede" data-en="Pites, plates, desserts: the full list lives on its own page, so it stays quick to read on a phone.">Pite, piatti, dolci: la carta completa sta su una pagina a parte, così resta veloce da leggere al telefono.</p>
-      <p><a class="btn" href="menu.html" data-en="See the menu">Vedi il menù</a></p>
-    </div>
-    <div class="card card--quiet" data-reveal>
-      <p class="eyebrow" data-en="Delivery">Consegna</p>
-      <p class="lede" data-en="Rather stay in? We deliver with Just Eat.">Preferisci restare a casa? Consegniamo con Just Eat.</p>
-      <p class="fine" data-en="For a table, book here or call us — delivery orders go through Just Eat.">Per il tavolo prenota qui o chiamaci; gli ordini a domicilio passano da Just Eat.</p>
+    <div class="acts__card" data-reveal>
+      <p class="eyebrow" data-en="Menu">Menù</p>
+      <h2 class="h2" data-en="The whole carte.">La carta per intero.</h2>
+      <p class="lede" data-en="Pites, plates, meze and sweets: the full list lives on its own page, so it stays quick to read on a phone.">Pite, piatti, meze e dolci: la carta completa sta su una pagina a parte, così resta veloce da leggere al telefono.</p>
+      <a class="btn btn-ghost" href="menu.html" data-en="See the menu">Vedi il menù</a>
+      <p class="fine" data-en="Ordering in? Delivery goes through Just Eat.">Ordini a casa? Le consegne passano da Just Eat.</p>
     </div>
   </div>
 </section>
@@ -229,35 +216,35 @@ window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
 <!-- ──────────────────────────────────────────────────────── dove siamo ── -->
 <section class="sec sec--tight" id="dove">
   <div class="wrap">
-    <div class="sec__head" data-reveal>
-      <p class="eyebrow" data-en="Find us">Dove siamo</p>
-      <h2 class="h2">Via Tuscolana 596, Roma.</h2>
-      <p class="lede" data-en="Metro A, Arco di Travertino stop — then it's a short walk. Closed on Mondays; lunch and dinner the rest of the week.">Metro A, fermata Arco di Travertino: da lì sono due passi. Lunedì chiuso; il resto della settimana pranzo e cena.</p>
-    </div>
-
-    <div class="place" data-reveal>
-      <div class="place__pics">
-        <figure class="place__fig">
-          <img src="assets/img/room.webp" width="1200" height="900" loading="lazy" decoding="async" alt="La sala con le tovaglie blu e la parete di finestre">
-          <figcaption data-en="The dining room">La sala</figcaption>
-        </figure>
-        <figure class="place__fig">
-          <img src="assets/img/terrace.webp" width="1200" height="900" loading="lazy" decoding="async" alt="La veranda coperta con le sedie blu">
-          <figcaption data-en="The covered terrace">La veranda</figcaption>
-        </figure>
+    <div class="loc" data-reveal>
+      <div class="loc__lead">
+        <p class="eyebrow" data-en="Find us">Dove siamo</p>
+        <h2 class="loc__h">Via Tuscolana 596, Roma.</h2>
+        <p class="lede" data-en="Metro A, Arco di Travertino stop — then it's a short walk down Via Tuscolana.">Metro A, fermata Arco di Travertino: da lì sono due passi lungo la Tuscolana.</p>
       </div>
 
-      <div class="place__map">
-        <iframe
-          title="Mappa: Via Tuscolana 596, Roma"
-          src="https://www.google.com/maps?q=Via%20Tuscolana%20596%2C%20Roma&z=17&hl=it&output=embed"
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          width="600" height="450"></iframe>
-        <p class="place__links">
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=Via%20Tuscolana%20596%2C%20Roma" target="_blank" rel="noopener" data-en="Open in Google Maps">Apri in Google Maps</a>
-          <a class="tel" href="tel:+390687774778">06 8777 4778</a>
-        </p>
-      </div>
+      <ul class="loc__list">
+        <li>
+          <span class="loc__k" data-en="Address">Indirizzo</span>
+          <span class="loc__v">Via Tuscolana 596, Roma</span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Metro">Metro</span>
+          <span class="loc__v"><span class="linebadge" aria-hidden="true">A</span><span class="sr-only">Metro A, </span>Arco di Travertino</span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Phone">Telefono</span>
+          <span class="loc__v"><a class="tel" href="tel:+390687774778">06 8777 4778</a></span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Closed">Chiuso</span>
+          <span class="loc__v" data-en="Monday — lunch and dinner the rest of the week">Lunedì — pranzo e cena il resto della settimana</span>
+        </li>
+        <li>
+          <span class="loc__k" data-en="Map">Mappa</span>
+          <span class="loc__v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Mythos%20Cucina%20Greca%2C%20Via%20Tuscolana%20596%2C%20Roma" target="_blank" rel="noopener" data-en="Open in Google Maps">Apri in Google Maps</a></span>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
@@ -286,7 +273,7 @@ window.MYTHOS_CONFIG={functionsUrl:"",anonKey:"",turnstileSiteKey:""};</script>
     <div class="foot__col">
       <p class="foot__k" data-en="Pages">Pagine</p>
       <ul class="foot__list">
-        <li><a href="#prenota" data-en="Book a table">Prenota un tavolo</a></li>
+        <li><a href="prenota.html" data-en="Book a table">Prenota un tavolo</a></li>
         <li><a href="menu.html" data-en="Menu">Menù</a></li>
         <li><a href="#dove" data-en="Find us">Dove siamo</a></li>
         <li><a href="privacy.html">Privacy</a></li>
