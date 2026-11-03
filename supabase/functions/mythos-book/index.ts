@@ -8,7 +8,7 @@
  *   4. Cloudflare Turnstile verification
  *   5. per-IP rate limit through mythos.rate_hit()
  *   6. mythos.book() — the single source of truth for capacity
- *   7. owner notification, which can never fail the booking
+ *   7. owner notification + guest confirmation, which can never fail the booking
  *
  * Overbooking is prevented inside the database function, not here.
  *
@@ -35,8 +35,10 @@ import {
   romeDateLabel,
   romeTimeLabel,
   runBackground,
+  sendGuestEmail,
   sendOwnerEmail,
 } from '../_shared/util.ts';
+import { confirmationMail } from '../_shared/booking-mail.ts';
 
 const LABEL = 'mythos-book';
 const MAX_BODY_BYTES = 8192;
@@ -174,14 +176,14 @@ function decoyCode(): string {
 
 /**
  * Verify the Turnstile token. Fails closed on a network error or a bad token.
- * With TURNSTILE_SECRET unset the check is skipped so local development works —
+ * With MYTHOS_TURNSTILE_SECRET unset the check is skipped so local development works —
  * that path logs loudly, because in production it is a hole.
  */
 async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
-  const secret = Deno.env.get('TURNSTILE_SECRET');
+  const secret = Deno.env.get('MYTHOS_TURNSTILE_SECRET');
   if (!secret) {
     console.warn(
-      `[${LABEL}] TURNSTILE_SECRET is not set — CAPTCHA verification is DISABLED. ` +
+      `[${LABEL}] MYTHOS_TURNSTILE_SECRET is not set — CAPTCHA verification is DISABLED. ` +
         'This is acceptable only in local development.',
     );
     return true;
@@ -363,13 +365,26 @@ Deno.serve(async (req: Request): Promise<Response> => {
       `[${LABEL}] confirmed code=${result.code} party=${result.party} service=${result.service}`,
     );
 
-    // 7 — notify the owner without ever risking the confirmed booking
+    // 7 — notify the owner and the guest without ever risking the confirmed booking
     runBackground(
       (async () => {
         try {
           await sendOwnerEmail(buildOwnerEmail(result, input), LABEL);
         } catch (error) {
           console.error(`[${LABEL}] owner e-mail failed: ${describeError(error)}`);
+        }
+        if (!input.email) return;
+        try {
+          await sendGuestEmail(input.email, confirmationMail({
+            name: input.name,
+            code: result.code,
+            party: result.party,
+            startsAt: result.starts_at,
+            phoneTail: result.phone_tail,
+            notes: input.notes || null,
+          }), LABEL);
+        } catch (error) {
+          console.error(`[${LABEL}] guest e-mail failed: ${describeError(error)}`);
         }
       })(),
       LABEL,

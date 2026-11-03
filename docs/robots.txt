@@ -1,0 +1,9 @@
+# Mythos Cucina Greca — https://tavernamythos.com
+# Ristorante greco — Via Tuscolana 596, Roma (Metro A, Arco di Travertino)
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin
+
+Sitemap: https://tavernamythos.com/sitemap.xml

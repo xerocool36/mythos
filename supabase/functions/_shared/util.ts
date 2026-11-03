@@ -1,7 +1,7 @@
 /**
  * Shared helpers for the Mythos functions: JSON responses, the Italian error
  * vocabulary, salted IP hashing, body reading, Rome-timezone formatting and the
- * Resend notification call.
+ * Resend calls (owner notification, guest confirmation).
  *
  * Rule that applies to every function in this folder: no secret value, no raw
  * IP and no guest personal data is ever written to a log line or a response.
@@ -229,15 +229,22 @@ export async function fetchWithTimeout(
   }
 }
 
+// Every secret name carries the MYTHOS_ prefix: the Supabase project is shared
+// with masto and porca, and an unprefixed TURNSTILE_SECRET / RESEND_API_KEY set
+// for one of them silently applied here too (Aug-Nov 2026 every Mythos booking
+// was refused as captcha_failed because of MASTO's Turnstile secret).
+//
 // Sender is configurable because the Resend account belongs to the restaurant,
 // not to us. Two valid shapes:
-//   1. No domain yet — leave MYTHOS_MAIL_FROM unset. Resend's default sender
-//      only delivers to the account owner's own address, which is exactly who
-//      the booking notification goes to, so this works without buying a domain.
-//   2. Once they own a domain and verify it in Resend, set MYTHOS_MAIL_FROM to
-//      'Mythos Prenotazioni <prenotazioni@theirdomain.it>'. No code change.
-// There are no guest-facing emails, so nothing else depends on a verified domain.
-const MAIL_FROM = Deno.env.get('MYTHOS_MAIL_FROM') ?? 'Mythos <onboarding@resend.dev>';
+//   1. No verified domain yet — leave MYTHOS_MAIL_FROM unset. Resend's default
+//      sender only delivers to the account owner's own address, which is who the
+//      booking notification goes to, so owner mail works without a domain.
+//   2. Once the domain is verified in Resend, set MYTHOS_MAIL_FROM to
+//      'Mythos Cucina Greca <prenotazioni@tavernamythos.com>'. No code change.
+// Guest mail needs shape 2: the sandbox sender would bounce every guest address,
+// so sendGuestEmail() stays silent until MYTHOS_MAIL_FROM is set.
+const CONFIGURED_FROM = Deno.env.get('MYTHOS_MAIL_FROM') ?? '';
+const MAIL_FROM = CONFIGURED_FROM || 'Mythos <onboarding@resend.dev>';
 
 export interface OwnerEmail {
   subject: string;
@@ -246,20 +253,10 @@ export interface OwnerEmail {
   replyTo?: string;
 }
 
-/**
- * Notify the restaurant through Resend. Skips silently when RESEND_API_KEY or
- * MYTHOS_NOTIFY_EMAIL is unset. Throws on a bad response so the caller can log
- * it — callers must never let that failure change the booking outcome.
- */
-export async function sendOwnerEmail(mail: OwnerEmail, label: string): Promise<void> {
-  const apiKey = Deno.env.get('RESEND_API_KEY');
-  const recipients = (Deno.env.get('MYTHOS_NOTIFY_EMAIL') ?? '')
-    .split(',')
-    .map((value) => value.trim())
-    .filter((value) => value.length > 0);
-
-  if (!apiKey || recipients.length === 0) {
-    console.log(`[${label}] owner e-mail skipped: RESEND_API_KEY / MYTHOS_NOTIFY_EMAIL not set`);
+async function sendResend(to: string[], mail: OwnerEmail, label: string, who: string): Promise<void> {
+  const apiKey = Deno.env.get('MYTHOS_RESEND_API_KEY');
+  if (!apiKey) {
+    console.log(`[${label}] ${who} e-mail skipped: MYTHOS_RESEND_API_KEY not set`);
     return;
   }
 
@@ -273,7 +270,7 @@ export async function sendOwnerEmail(mail: OwnerEmail, label: string): Promise<v
       },
       body: JSON.stringify({
         from: MAIL_FROM,
-        to: recipients,
+        to,
         subject: mail.subject,
         html: mail.html,
         text: mail.text,
@@ -287,7 +284,39 @@ export async function sendOwnerEmail(mail: OwnerEmail, label: string): Promise<v
     const detail = await response.text().catch(() => '');
     throw new Error(`resend responded ${response.status}: ${detail.slice(0, 300)}`);
   }
-  console.log(`[${label}] owner e-mail queued for ${recipients.length} recipient(s)`);
+  console.log(`[${label}] ${who} e-mail queued for ${to.length} recipient(s)`);
+}
+
+/**
+ * Notify the restaurant through Resend. Skips silently when MYTHOS_RESEND_API_KEY or
+ * MYTHOS_NOTIFY_EMAIL is unset. Throws on a bad response so the caller can log
+ * it — callers must never let that failure change the booking outcome.
+ */
+export async function sendOwnerEmail(mail: OwnerEmail, label: string): Promise<void> {
+  const recipients = (Deno.env.get('MYTHOS_NOTIFY_EMAIL') ?? '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0);
+
+  if (recipients.length === 0) {
+    console.log(`[${label}] owner e-mail skipped: MYTHOS_NOTIFY_EMAIL not set`);
+    return;
+  }
+  await sendResend(recipients, mail, label, 'owner');
+}
+
+/**
+ * Mail one guest. Skips silently until MYTHOS_MAIL_FROM names a verified sender
+ * (see above). Same failure contract as sendOwnerEmail.
+ */
+export async function sendGuestEmail(to: string, mail: OwnerEmail, label: string): Promise<void> {
+  if (!CONFIGURED_FROM) {
+    console.log(`[${label}] guest e-mail skipped: MYTHOS_MAIL_FROM not set`);
+    return;
+  }
+  // The restaurant answers replies, not the noreply-shaped sender.
+  const replyTo = mail.replyTo ?? (Deno.env.get('MYTHOS_NOTIFY_EMAIL') ?? '').split(',')[0].trim();
+  await sendResend([to], { ...mail, replyTo: replyTo || undefined }, label, 'guest');
 }
 
 /**

@@ -22,6 +22,8 @@
   var ROME = 'Europe/Rome';
   var HORIZON = 45;
   var TEL = '+390687774778';
+  var TURNSTILE_WAIT_MS = 6000;
+  var TURNSTILE_POLL_MS = 150;
 
   var root = document.getElementById('prenota-app');
   if (!root) return;
@@ -310,10 +312,19 @@
 
     shell(h.join(''));
     S.flash = null;
-    if (window.turnstile && CFG.turnstileSiteKey) {
-      try { window.turnstile.render('.cf-turnstile'); } catch (e) { /* already rendered */ }
-    }
+    mountTurnstile();
   }
+
+  // The Cloudflare script is injected by prenota.html only when a site key is
+  // set, and may finish loading before or after this form exists: whichever
+  // happens second draws the widget.
+  function mountTurnstile() {
+    if (!CFG.turnstileSiteKey || !window.turnstile) return;
+    var box = root.querySelector('.cf-turnstile');
+    if (!box || box.childElementCount) return;
+    try { window.turnstile.render(box); } catch (e) { /* already rendered */ }
+  }
+  window.MYTHOS_ON_TURNSTILE = mountTurnstile;
 
   function renderPhoneOnly() {
     shell('<p class="bk-note bk-phoneonly">' + esc(t('phone_only')) +
@@ -342,17 +353,30 @@
     shell(h.join(''), 'is-done');
   }
 
-  function renderCancel() {
+  function renderCancel(prefill) {
+    var pre = prefill || {};
     var h = [];
     h.push('<form class="bk-form bk-cancelform" novalidate>');
     h.push('<fieldset class="bk-step"><legend>' + esc(t('cancel_title')) + '</legend>');
-    h.push('<label class="bk-f"><span>' + esc(t('cancel_code')) + '</span><input name="code" type="text" maxlength="16" autocomplete="off" required placeholder="MY-XXXXX"></label>');
-    h.push('<label class="bk-f"><span>' + esc(t('cancel_tail')) + '</span><input name="tail" type="text" inputmode="numeric" maxlength="4" autocomplete="off" required></label>');
+    h.push('<label class="bk-f"><span>' + esc(t('cancel_code')) + '</span><input name="code" type="text" maxlength="16" autocomplete="off" required placeholder="MY-XXXXX" value="' + esc(pre.code || '') + '"></label>');
+    h.push('<label class="bk-f"><span>' + esc(t('cancel_tail')) + '</span><input name="tail" type="text" inputmode="numeric" maxlength="4" autocomplete="off" required value="' + esc(pre.tail || '') + '"></label>');
     h.push('<p class="bk-error" role="alert" hidden></p>');
     h.push('<button type="submit" class="btn">' + esc(t('cancel_do')) + '</button> ');
     h.push('<button type="button" class="linkish" data-again>' + esc(t('back')) + '</button>');
     h.push('</fieldset></form>');
     shell(h.join(''), 'is-cancel');
+  }
+
+  // The confirmation e-mail links here as prenota.html?annulla=CODE&t=TAIL.
+  // Prefill only: the guest still presses the button, so a link preview bot
+  // fetching the URL can never cancel a table.
+  function cancelFromUrl() {
+    var q = new URLSearchParams(location.search);
+    var code = (q.get('annulla') || '').trim().toUpperCase();
+    if (!/^MY-[A-Z0-9]{4,10}$/.test(code)) return false;
+    var tail = (q.get('t') || '').replace(/\D/g, '').slice(-4);
+    renderCancel({ code: code, tail: tail });
+    return true;
   }
 
   /* ------------------------------------------------------------- events */
@@ -406,13 +430,14 @@
     if ((phone.match(/\d/g) || []).length < 6) return showErr(form, t('err_phone'));
     if (!d.get('consent')) return showErr(form, t('err_consent'));
 
-    var tf = form.querySelector('[name="cf-turnstile-response"]');
-    var token = tf ? tf.value : '';
-
     var btn = form.querySelector('.bk-submit');
     S.busy = true;
     if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = t('sending'); }
 
+    // Read the token after waiting for it, not the instant the guest presses
+    // send: a re-render destroys the Turnstile iframe and Cloudflare needs 1-3 s
+    // to issue a fresh one. Reading it straight away refused free tables (MASTO).
+    withTurnstileToken(form, function (token) {
     api('mythos-book', {
       party: S.party,
       date: S.date,
@@ -457,6 +482,19 @@
       showErr(form, r.message || t('err_generic'));
       if (window.turnstile) { try { window.turnstile.reset(); } catch (e) { /* noop */ } }
     });
+    });
+  }
+
+  function withTurnstileToken(form, cb) {
+    if (!CFG.turnstileSiteKey) return cb('');
+    var waited = 0;
+    (function poll() {
+      var tf = form.querySelector('[name="cf-turnstile-response"]');
+      var value = tf ? tf.value : '';
+      if (value || waited >= TURNSTILE_WAIT_MS) return cb(value);
+      waited += TURNSTILE_POLL_MS;
+      setTimeout(poll, TURNSTILE_POLL_MS);
+    })();
   }
 
   function submitCancel(form) {
@@ -495,7 +533,7 @@
       'DTSTART:' + icsStamp(b.starts_at),
       b.ends_at ? 'DTEND:' + icsStamp(b.ends_at) : '',
       'SUMMARY:Mythos — tavolo per ' + b.party,
-      'LOCATION:Via Tuscolana 596, 00178 Roma',
+      'LOCATION:Via Tuscolana 596\\, Roma',
       'DESCRIPTION:Codice prenotazione ' + b.code + '. Tel 06 8777 4778.',
       'END:VEVENT', 'END:VCALENDAR'
     ].filter(Boolean);
@@ -521,5 +559,5 @@
     return;
   }
 
-  loadAvailability();
+  if (!cancelFromUrl()) loadAvailability();
 })();

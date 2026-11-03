@@ -1,0 +1,13 @@
+# Netlify response headers (publish dir is docs/, so this file is picked up on deploy).
+#
+# The staff console must never load inside another site's frame: a page that
+# framed it invisibly could trick a logged-in member of staff into clicking
+# Annulla or Elimina (clickjacking). Header-only and frame-ancestors only — a
+# full script CSP broke admin.html once, so this deliberately restricts nothing
+# else. Both paths, because Netlify also serves the page at /admin.
+/admin
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'
+/admin.html
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'

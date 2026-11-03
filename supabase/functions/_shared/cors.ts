@@ -5,11 +5,17 @@
  * an unmatched origin receives NO CORS headers at all (and is refused), so a
  * random site cannot read a response even if it manages to issue the request.
  *
- * Extra origins (e.g. the future custom domain) come from the optional
- * MYTHOS_ALLOWED_ORIGINS env var as a comma-separated list.
+ * Extra origins come from the optional MYTHOS_ALLOWED_ORIGINS env var as a
+ * comma-separated list.
+ *
+ * github.io stays only until tavernamythos.com is serving: an origin is a whole
+ * host, so it also opens these endpoints to every other Pages site on that
+ * account. Remove it at cutover.
  */
 
 const STATIC_ORIGINS: readonly string[] = [
+  'https://tavernamythos.com',
+  'https://www.tavernamythos.com',
   'https://xerocool36.github.io',
   // Local preview ports: python http.server / `npx serve` (3000), Vite (5173), misc (8080).
   'http://localhost:8000',

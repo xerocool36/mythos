@@ -33,11 +33,12 @@ Names only — never commit a value, never print one in a log.
 
 ```bash
 supabase secrets set MYTHOS_DB_URL="postgres://USER:PASSWORD@HOST:6543/postgres"
-supabase secrets set TURNSTILE_SECRET="0x0000000000000000000000000000000000000000"
-supabase secrets set RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxx"
+supabase secrets set MYTHOS_TURNSTILE_SECRET="0x0000000000000000000000000000000000000000"
+supabase secrets set MYTHOS_RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxx"
 supabase secrets set MYTHOS_NOTIFY_EMAIL="owner@example.com,manager@example.com"
 supabase secrets set MYTHOS_IP_SALT="<32+ random chars, e.g. openssl rand -hex 24>"
-supabase secrets set MYTHOS_ALLOWED_ORIGINS="https://mythoscucinagreca.it,https://www.mythoscucinagreca.it"
+supabase secrets set MYTHOS_MAIL_FROM="Mythos Cucina Greca <prenotazioni@tavernamythos.com>"
+supabase secrets set MYTHOS_SITE_URL="https://tavernamythos.com"
 ```
 
 | Name | Required | Used by | If missing |
@@ -46,11 +47,13 @@ supabase secrets set MYTHOS_ALLOWED_ORIGINS="https://mythoscucinagreca.it,https:
 | `SUPABASE_DB_URL` | injected | all | function returns `server_error` |
 | `SUPABASE_URL` | injected | admin | admin returns `server_error` |
 | `SUPABASE_ANON_KEY` | injected | admin | admin returns `server_error` |
-| `TURNSTILE_SECRET` | **yes in prod** | book | CAPTCHA skipped + loud log warning |
-| `RESEND_API_KEY` | yes | book, cancel | owner e-mail skipped silently |
+| `MYTHOS_TURNSTILE_SECRET` | **yes in prod** | book | CAPTCHA skipped + loud log warning |
+| `MYTHOS_RESEND_API_KEY` | yes | book, cancel | owner e-mail skipped silently |
 | `MYTHOS_NOTIFY_EMAIL` | yes | book, cancel | owner e-mail skipped silently |
 | `MYTHOS_IP_SALT` | **yes in prod** | all | rate-limit keys are unsalted + warning |
-| `MYTHOS_ALLOWED_ORIGINS` | optional | all | only the built-in origins (GitHub Pages + local dev ports) are allowed |
+| `MYTHOS_MAIL_FROM` | yes for guest mail | book | owner mail uses Resend's sandbox sender; **guest confirmation skipped** |
+| `MYTHOS_SITE_URL` | optional | book | cancel links point at `https://tavernamythos.com` |
+| `MYTHOS_ALLOWED_ORIGINS` | optional | all | only the built-in origins (tavernamythos.com, GitHub Pages, local dev ports) are allowed |
 
 `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPABASE_DB_URL` are injected by the
 platform — do not set them by hand.
@@ -82,13 +85,13 @@ supabase functions deploy mythos-admin        --project-ref <REF>
 Pre-flight checklist:
 
 1. `deno task check` (from `supabase/functions/`) — type-checks all four entry points.
-2. Secrets set, above all `TURNSTILE_SECRET` and `MYTHOS_IP_SALT`.
+2. Secrets set, above all `MYTHOS_TURNSTILE_SECRET` and `MYTHOS_IP_SALT`.
 3. Production origin added to `MYTHOS_ALLOWED_ORIGINS` before the domain goes live.
 4. `prenotazioni@x3roautomations.it` verified as a Resend sender.
 5. Smoke test: availability → book → owner e-mail arrives → cancel.
 
 Local: `supabase functions serve --no-verify-jwt`, with the same names in
-`supabase/.env.local`. Without `TURNSTILE_SECRET` the CAPTCHA step is skipped and
+`supabase/.env.local`. Without `MYTHOS_TURNSTILE_SECRET` the CAPTCHA step is skipped and
 says so in the log on every request.
 
 ## Endpoints

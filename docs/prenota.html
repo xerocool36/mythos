@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Unapproved client preview. Stays out of the index until the owner signs off. -->
-<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://tavernamythos.com/prenota.html">
 
 <title>Prenota un tavolo — Mythos Cucina Greca, Via Tuscolana 596 Roma</title>
 <meta name="description" content="Prenota un tavolo da Mythos Cucina Greca, Via Tuscolana 596, Roma. Scegli il giorno e l'orario, ricevi subito il codice della prenotazione.">
@@ -18,7 +17,8 @@
 <meta property="og:site_name" content="Mythos Cucina Greca">
 <meta property="og:title" content="Prenota un tavolo — Mythos Cucina Greca, Roma">
 <meta property="og:description" content="Via Tuscolana 596, Roma. Scegli giorno e orario e ricevi subito il codice della prenotazione.">
-<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:url" content="https://tavernamythos.com/prenota.html">
+<meta property="og:image" content="https://tavernamythos.com/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -27,9 +27,7 @@
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/logo-disc-sm.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Martian+Mono:wght@600..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/core.css">
 
 <!-- Reveal styles hang off .js, so a page without JavaScript (or with a failed
@@ -39,7 +37,19 @@
 <script>/* Filled at deploy. Empty strings are deliberate: booking.js falls back to the
    phone card when unset, which is the correct pre-backend state. */
 window.MYTHOS_CONFIG={functionsUrl:"https://wednfenmftdlywrglhgj.supabase.co/functions/v1",anonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlZG5mZW5tZnRkbHl3cmdsaGdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkzODQsImV4cCI6MjA5MTk5NTM4NH0.iKXesGP9UJl2tLuYKupRkcrGGz0GR-NOPu6upR46YdU",turnstileSiteKey:""};</script>
-<script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
+<script>
+// Cloudflare Turnstile is fetched only when turnstileSiteKey is set, so an
+// unconfigured page makes no third-party request. The site key is half the
+// switch; the other half is the TURNSTILE_SECRET secret on Supabase. Set the
+// key FIRST: a secret without a key refuses every booking as captcha_failed.
+if (window.MYTHOS_CONFIG.turnstileSiteKey) {
+  var ts = document.createElement('script');
+  ts.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  ts.async = true;
+  ts.onload = function () { if (window.MYTHOS_ON_TURNSTILE) window.MYTHOS_ON_TURNSTILE(); };
+  document.head.appendChild(ts);
+}
+</script>
 <script defer src="assets/js/core.js"></script>
 <script defer src="assets/js/booking.js"></script>
 </head>
@@ -131,8 +141,8 @@ window.MYTHOS_CONFIG={functionsUrl:"https://wednfenmftdlywrglhgj.supabase.co/fun
           <span class="loc__v"><a class="tel" href="tel:+390687774778">06 8777 4778</a></span>
         </li>
         <li>
-          <span class="loc__k" data-en="Closed">Chiuso</span>
-          <span class="loc__v" data-en="Monday — lunch and dinner the rest of the week">Lunedì — pranzo e cena il resto della settimana</span>
+          <span class="loc__k" data-en="Hours">Orari</span>
+          <span class="loc__v"><span data-en="Tuesday to Sunday">Da martedì a domenica</span><br>12:30–16:30 · 18:30–23:45<br><span data-en="Closed on Mondays">Chiuso il lunedì</span></span>
         </li>
         <li>
           <span class="loc__k" data-en="Map">Mappa</span>
@@ -192,7 +202,7 @@ window.MYTHOS_CONFIG={functionsUrl:"https://wednfenmftdlywrglhgj.supabase.co/fun
   </div>
 
   <div class="wrap foot__end">
-    <p class="foot__note" data-en="Opening times are being updated — call us to confirm.">Orari in aggiornamento — chiamaci per conferma.</p>
+    <p class="foot__note" data-en="Tuesday to Sunday, 12:30–16:30 and 18:30–23:45. Closed on Mondays.">Da martedì a domenica, 12:30–16:30 e 18:30–23:45. Chiuso il lunedì.</p>
     <p class="foot__by">
       <span data-en="Site by">Sito realizzato da</span>
       <a class="byx3ro" href="https://x3roautomations.it" target="_blank" rel="noopener">
