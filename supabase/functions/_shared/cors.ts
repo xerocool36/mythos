@@ -16,6 +16,7 @@
 const STATIC_ORIGINS: readonly string[] = [
   'https://tavernamythos.com',
   'https://www.tavernamythos.com',
+  'https://tavernamythos.netlify.app',
   'https://xerocool36.github.io',
   // Local preview ports: python http.server / `npx serve` (3000), Vite (5173), misc (8080).
   'http://localhost:8000',
