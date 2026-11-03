@@ -11,3 +11,4 @@ supabase/.temp/
 # dev-only: symlinked playwright for tools/*.mjs
 node_modules/
 deliverables/
+.netlify/
