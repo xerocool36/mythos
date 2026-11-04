@@ -228,6 +228,82 @@ export function guestCancellation(b: BookingMailInput): OutboundMail {
   };
 }
 
+/** Groups above six: the table is asked for, not yet given. */
+export function guestRequestReceived(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
+  const startsAt = new Date(b.startsAt);
+  const p = parts(startsAt);
+  const name = firstName(b.name);
+  const cancel = cancelLink(b.code, b.phoneTail);
+
+  return {
+    subject: `Richiesta ricevuta · ${people(b.party)} · ${p.weekday} ${p.day} ${p.month} alle ${p.time}`,
+    text: [
+      `Ciao ${name},`,
+      '',
+      `abbiamo ricevuto la tua richiesta per ${people(b.party)}, ${p.dateLabel} alle ${p.time}.`,
+      'Per i gruppi controlliamo la sala a mano: ti scriviamo appena la confermiamo,',
+      'di solito entro poche ore. Fino ad allora il tavolo non è ancora confermato.',
+      '',
+      `Codice richiesta: ${b.code}`,
+      `Per qualsiasi cosa: ${VENUE.phone}`,
+      '',
+      'Se cambi idea, ritira la richiesta da qui:',
+      cancel,
+      '',
+      'A presto,',
+      'Lo staff di Mythos',
+    ].join('\n'),
+    html: shell({
+      preheader: `Richiesta per ${people(b.party)} ricevuta: ti confermiamo via email appena possibile.`,
+      eyebrow: 'Richiesta ricevuta',
+      title: `Grazie ${name}, ci pensiamo noi`,
+      intro: 'Per i gruppi controlliamo la sala a mano. Ti scriviamo appena confermiamo il tavolo, ' +
+        'di solito entro poche ore: fino ad allora la richiesta non è ancora una prenotazione.',
+      body: ticket(b, startsAt) + (b.notes ? notesBox(b.notes, 'Le tue note per la cucina') : ''),
+      buttons: [{ label: 'Chiamaci', href: `tel:${VENUE.phoneHref}` }],
+      notes: [
+        `Hai cambiato idea? <a href="${escapeHtml(cancel)}" style="color:${C.red}">Ritira la richiesta</a>.`,
+      ],
+      signoff: 'bye',
+    }),
+  };
+}
+
+/** The staff said no to a group request. Points at the phone, where a new date gets agreed. */
+export function guestRefusal(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
+  const startsAt = new Date(b.startsAt);
+  const p = parts(startsAt);
+  const name = firstName(b.name);
+
+  return {
+    subject: `Richiesta non accolta · ${p.weekday} ${p.day} ${p.month} · ${VENUE.name}`,
+    text: [
+      `Ciao ${name},`,
+      '',
+      `purtroppo ${p.dateLabel} alle ${p.time} non riusciamo ad accogliere un gruppo di ${people(b.party)}.`,
+      'Ci dispiace davvero. Chiamaci e troviamo insieme un altro giorno o un altro orario:',
+      VENUE.phone,
+      '',
+      'Lo staff di Mythos',
+    ].join('\n'),
+    html: shell({
+      preheader: `Per ${p.weekday} ${p.day} alle ${p.time} non abbiamo posto: chiamaci per un'altra data.`,
+      eyebrow: 'Richiesta non accolta',
+      title: `Ci dispiace, ${name}`,
+      intro: `Per ${p.weekday} ${p.day} ${p.month} alle ${p.time} non riusciamo ad accogliere un gruppo di ` +
+        `${people(b.party)}. Al telefono possiamo trovare insieme un altro giorno o un altro orario.`,
+      body: ticket(b, startsAt, true),
+      buttons: [
+        { label: `Chiama ${VENUE.phone}`, href: `tel:${VENUE.phoneHref}` },
+        { label: 'Scegli un altro giorno', href: `${siteUrl()}/prenota.html`, kind: 'ghost' },
+      ],
+      signoff: 'bye',
+    }),
+  };
+}
+
 /* ------------------------------------------------------------------ staff */
 
 function guestRows(b: BookingMailInput): string {
@@ -292,6 +368,47 @@ export function ownerNewBooking(b: BookingMailInput): OutboundMail {
         (b.email
           ? 'Il cliente ha ricevuto la conferma via email: rispondendo a questa mail scrivi direttamente a lui.'
           : 'Il cliente non ha lasciato l’email: ha solo il codice a schermo.'),
+      ],
+    }),
+  };
+}
+
+/** A group request waiting for a yes or no in the console. */
+export function ownerRequest(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
+  const startsAt = new Date(b.startsAt);
+  const p = parts(startsAt);
+
+  return {
+    subject: `Da approvare · gruppo di ${b.party} · ${p.weekday} ${p.day} ${p.month} ${p.time} · ${b.name}`,
+    replyTo: b.email || undefined,
+    text: [
+      'RICHIESTA DI GRUPPO DA APPROVARE — Mythos Cucina Greca',
+      '',
+      `Quando:    ${p.dateLabel}, ore ${p.time}`,
+      `Persone:   ${b.party}`,
+      `Nome:      ${b.name}`,
+      `Telefono:  ${b.phone || '—'}`,
+      `Email:     ${b.email || '—'}`,
+      `Note:      ${b.notes || '—'}`,
+      `Codice:    ${b.code}`,
+      '',
+      'I posti NON sono ancora occupati. Approva o rifiuta dalla console:',
+      `${siteUrl()}/admin.html`,
+    ].join('\n'),
+    html: shell({
+      internal: true,
+      preheader: `${b.name} chiede un tavolo per ${b.party}, ${p.weekday} ${p.day} alle ${p.time}. Approva o rifiuta.`,
+      eyebrow: 'Richiesta di gruppo — da approvare',
+      title: `${b.name} · ${people(b.party)}`,
+      intro: 'I posti non sono ancora occupati. Apri la console e premi Approva o Rifiuta: ' +
+        'il cliente riceve subito la risposta via email.',
+      body: ticket(b, startsAt) +
+        (b.notes ? notesBox(b.notes, 'Note del cliente') : '') +
+        SPACER + guestRows(b),
+      buttons: [
+        { label: 'Apri la console', href: `${siteUrl()}/admin.html` },
+        ...staffButtons(b).filter((x) => x.label !== 'Apri la console').map((x) => ({ ...x, kind: 'ghost' as const })),
       ],
     }),
   };

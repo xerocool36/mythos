@@ -33,13 +33,16 @@
   var STR = {
     it: {
       people: 'Quante persone', person: 'persona', people_n: 'persone',
-      more: 'Più di 10? Chiamaci', date: 'Quando', service: 'Servizio',
+      more: 'Più di 20? Chiamaci', more_sel: 'Gruppo più grande', date: 'Quando', service: 'Servizio',
       pranzo: 'Pranzo', cena: 'Cena', slot: 'A che ora',
       avail: 'disponibile', full: 'esaurito', closed: 'Chiuso',
       you: 'I tuoi dati', name: 'Nome e cognome', phone: 'Telefono',
-      email: 'Email (facoltativa)', notes: 'Allergie, seggiolone, altro (facoltativo)',
+      email: 'Email', notes: 'Allergie, seggiolone, altro (facoltativo)',
       consent: 'Ho letto la <a href="privacy.html">privacy policy</a> e acconsento al trattamento dei dati per la prenotazione.',
-      submit: 'Prenota il tavolo', sending: 'Un attimo…',
+      submit: 'Prenota il tavolo', submit_req: 'Invia la richiesta', sending: 'Un attimo…',
+      group_note: 'Per gruppi oltre {n} persone la prenotazione è una richiesta: controlliamo la sala e ti confermiamo via email, di solito entro poche ore.',
+      req_done: 'Richiesta inviata', req_keep: 'Non è ancora una prenotazione: ti scriviamo via email appena confermiamo il tavolo. Il codice serve per ritirare la richiesta.',
+      err_email: 'Serve un indirizzo email valido: ti mandiamo lì la conferma.',
       done: 'Tavolo prenotato', code: 'Il tuo codice',
       keep: 'Tienilo da parte: serve per annullare.',
       ics: 'Aggiungi al calendario', cancel_link: 'Devi annullare?',
@@ -62,13 +65,16 @@
     },
     en: {
       people: 'How many', person: 'guest', people_n: 'guests',
-      more: 'More than 10? Call us', date: 'When', service: 'Service',
+      more: 'More than 20? Call us', more_sel: 'Larger group', date: 'When', service: 'Service',
       pranzo: 'Lunch', cena: 'Dinner', slot: 'What time',
       avail: 'available', full: 'full', closed: 'Closed',
       you: 'Your details', name: 'Full name', phone: 'Phone',
-      email: 'Email (optional)', notes: 'Allergies, high chair, anything else (optional)',
+      email: 'Email', notes: 'Allergies, high chair, anything else (optional)',
       consent: 'I have read the <a href="privacy.html">privacy policy</a> and agree to my data being used for this booking.',
-      submit: 'Book the table', sending: 'One moment…',
+      submit: 'Book the table', submit_req: 'Send the request', sending: 'One moment…',
+      group_note: 'For groups of more than {n} the booking is a request: we check the room and confirm by email, usually within a few hours.',
+      req_done: 'Request sent', req_keep: 'This is not a booking yet: we will email you as soon as we confirm the table. Keep the code to withdraw the request.',
+      err_email: 'Please enter a valid email: the confirmation is sent there.',
       done: 'Table booked', code: 'Your code',
       keep: 'Keep it — you need it to cancel.',
       ics: 'Add to calendar', cancel_link: 'Need to cancel?',
@@ -159,9 +165,9 @@
     }).then(function (r) {
       return r.json()
         .catch(function () { return { ok: false, error: 'server_error' }; })
-        .then(function (j) { j.status = r.status; return j; });
+        .then(function (j) { j.httpStatus = r.status; return j; });
     }).catch(function () {
-      return { ok: false, error: 'network', status: 0 };
+      return { ok: false, error: 'network', httpStatus: 0 };
     });
   }
 
@@ -240,12 +246,26 @@
     /* party ----------------------------------------------------------- */
     h.push('<fieldset class="bk-step"><legend>' + esc(t('people')) + '</legend>');
     h.push('<div class="bk-party" role="group">');
-    var maxP = (S.meta && S.meta.max_party) || 10;
-    for (var n = 1; n <= maxP; n++) {
+    var reqMax = (S.meta && (S.meta.request_party_max || S.meta.max_party)) || 10;
+    var chips = Math.min(8, reqMax);
+    for (var n = 1; n <= chips; n++) {
       h.push('<button type="button" class="bk-chip' + (n === S.party ? ' is-on' : '') +
         '" data-party="' + n + '" aria-pressed="' + (n === S.party) + '">' + n + '</button>');
     }
+    if (reqMax > chips) {
+      var big = S.party > chips;
+      h.push('<label class="bk-more' + (big ? ' is-on' : '') + '"><span class="sr-only">' + esc(t('more_sel')) + '</span>' +
+        '<select name="party_more" data-party-more aria-label="' + esc(t('more_sel')) + '">' +
+        '<option value="">' + esc(t('more_sel')) + '</option>');
+      for (var m = chips + 1; m <= reqMax; m++) {
+        h.push('<option value="' + m + '"' + (m === S.party ? ' selected' : '') + '>' + m + ' ' + esc(t('people_n')) + '</option>');
+      }
+      h.push('</select></label>');
+    }
     h.push('</div>');
+    if (isRequest()) {
+      h.push('<p class="bk-group-note">' + esc(t('group_note').replace('{n}', S.meta.max_party)) + '</p>');
+    }
     h.push('<p class="bk-hint">' + esc(t('more')) + ' <a href="tel:' + TEL + '">06 8777 4778</a></p>');
     h.push('</fieldset>');
 
@@ -314,7 +334,7 @@
     h.push('<fieldset class="bk-step bk-you"><legend>' + esc(t('you')) + '</legend>');
     h.push('<label class="bk-f"><span>' + esc(t('name')) + '</span><input name="name" type="text" autocomplete="name" maxlength="80" required></label>');
     h.push('<label class="bk-f"><span>' + esc(t('phone')) + '</span><input name="phone" type="tel" autocomplete="tel" maxlength="32" required></label>');
-    h.push('<label class="bk-f"><span>' + esc(t('email')) + '</span><input name="email" type="email" autocomplete="email" maxlength="120"></label>');
+    h.push('<label class="bk-f"><span>' + esc(t('email')) + '</span><input name="email" type="email" autocomplete="email" maxlength="120" required></label>');
     h.push('<label class="bk-f"><span>' + esc(t('notes')) + '</span><textarea name="notes" rows="2" maxlength="400"></textarea></label>');
     // Honeypot. Positioned off-screen rather than display:none — some bots skip hidden fields.
     h.push('<div class="bk-hp" aria-hidden="true"><label>Azienda<input name="company" type="text" tabindex="-1" autocomplete="off"></label></div>');
@@ -323,7 +343,7 @@
       h.push('<div class="cf-turnstile" data-sitekey="' + esc(CFG.turnstileSiteKey) + '" data-theme="auto"></div>');
     }
     h.push('<p class="bk-error" role="alert"' + (S.flash ? '' : ' hidden') + '>' + esc(S.flash || '') + '</p>');
-    h.push('<button type="submit" class="btn bk-submit">' + esc(t('submit')) + '</button>');
+    h.push('<button type="submit" class="btn bk-submit">' + esc(submitLabel()) + '</button>');
     h.push('</fieldset>');
 
     h.push('</form>');
@@ -350,12 +370,22 @@
       ' <a href="tel:' + TEL + '">06 8777 4778</a>.</p>');
   }
 
+  // Above settings.max_party a booking is a request the staff approve.
+  function isRequest() {
+    return !!(S.meta && S.meta.max_party && S.party > S.meta.max_party);
+  }
+
+  // One source for the button text, so an error retry never repaints
+  // "Prenota il tavolo" over a group that can only send a request (MASTO).
+  function submitLabel() { return t(isRequest() ? 'submit_req' : 'submit'); }
+
   function renderDone() {
     var b = S.booking;
     var day = { date: b.service_date, utc_offset: b.utc_offset };
     var h = [];
     h.push('<div class="bk-done" role="status">');
-    h.push('<p class="bk-done-k">' + esc(t('done')) + '</p>');
+    var pending = b.status === 'pending';
+    h.push('<p class="bk-done-k">' + esc(t(pending ? 'req_done' : 'done')) + '</p>');
     h.push('<p class="bk-done-l">' + esc(dayLong(b.service_date)) + ' · ' + esc(b.slot_time) + ' · ' +
       esc(b.party) + ' ' + esc(b.party === 1 ? t('person') : t('people_n')) + '</p>');
     if (otherZone && b.utc_offset) {
@@ -364,9 +394,10 @@
     }
     h.push('<p class="bk-code-k">' + esc(t('code')) + '</p>');
     h.push('<p class="bk-code">' + esc(b.code) + '</p>');
-    h.push('<p class="bk-hint">' + esc(t('keep')) + '</p>');
+    h.push('<p class="bk-hint">' + esc(t(pending ? 'req_keep' : 'keep')) + '</p>');
     h.push('<div class="bk-done-act">');
-    h.push('<button type="button" class="btn btn-ghost" data-ics>' + esc(t('ics')) + '</button>');
+    // No calendar file for a request: it is not a table until the staff say yes.
+    if (!pending) h.push('<button type="button" class="btn btn-ghost" data-ics>' + esc(t('ics')) + '</button>');
     h.push('<button type="button" class="linkish" data-again>' + esc(t('another')) + '</button>');
     h.push('</div></div>');
     shell(h.join(''), 'is-done');
@@ -423,6 +454,14 @@
     if (f && !f.value) f.focus({ preventScroll: true });
   }
 
+  root.addEventListener('change', function (e) {
+    var sel = e.target;
+    if (!sel.hasAttribute || !sel.hasAttribute('data-party-more') || S.busy || !sel.value) return;
+    S.party = +sel.value;
+    S.time = null;
+    loadAvailability();
+  });
+
   root.addEventListener('submit', function (e) {
     e.preventDefault();
     if (S.busy) return;
@@ -447,6 +486,8 @@
     if (!S.time) return showErr(form, t('err_slot'));
     if (name.length < 2) return showErr(form, t('err_name'));
     if ((phone.match(/\d/g) || []).length < 6) return showErr(form, t('err_phone'));
+    var email = (d.get('email') || '').toString().trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showErr(form, t('err_email'));
     if (!d.get('consent')) return showErr(form, t('err_consent'));
 
     var btn = form.querySelector('.bk-submit');
@@ -463,18 +504,19 @@
       time: S.time,
       name: name,
       phone: phone,
-      email: (d.get('email') || '').toString().trim(),
+      email: email,
       notes: (d.get('notes') || '').toString().trim(),
       company: (d.get('company') || '').toString(),
       consent: true,
       token: token
     }).then(function (r) {
       S.busy = false;
-      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || t('submit'); }
+      if (btn) { btn.disabled = false; btn.textContent = submitLabel(); }
 
       if (r.ok) {
         var day = currentDay();
         S.booking = {
+          status: r.status === 'pending' ? 'pending' : 'confirmed',
           code: r.code,
           service_date: S.date,
           slot_time: S.time,
@@ -489,6 +531,7 @@
       }
 
       if (r.error === 'network') return showErr(form, t('err_network'));
+      if (r.error === 'invalid_body' && r.field === 'email') return showErr(form, t('err_email'));
 
       // A rejection usually means the room filled up while the form sat open,
       // so refresh the grid rather than leaving stale seat counts on screen.

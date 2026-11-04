@@ -27,21 +27,73 @@ import {
   json,
   readJsonBody,
   romeToday,
+  runBackground,
+  sendGuestEmail,
 } from '../_shared/util.ts';
+import { type BookingMailInput, guestConfirmation, guestRefusal } from '../_shared/booking-mail.ts';
 
 const LABEL = 'mythos-admin';
 const MAX_BODY_BYTES = 32_768;
 const UUID_SHAPE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-type AdminAction = 'day' | 'set_status' | 'block' | 'settings' | 'windows';
+type AdminAction = 'day' | 'pending' | 'set_status' | 'block' | 'settings' | 'windows';
 
 const ACTIONS: ReadonlySet<string> = new Set<AdminAction>([
   'day',
+  'pending',
   'set_status',
   'block',
   'settings',
   'windows',
 ]);
+
+interface SetStatusResult {
+  ok: boolean;
+  changed?: boolean;
+  status?: string;
+  previous?: string;
+  guest?: {
+    code: string;
+    name: string;
+    phone: string;
+    email: string | null;
+    party: number;
+    service: string;
+    starts_at: string;
+    phone_tail: string;
+    notes: string | null;
+  };
+}
+
+/**
+ * A group request answered from the console: approval sends the normal
+ * confirmation, refusal sends the refusal. Nothing else mails the guest from
+ * here — moving a table to "seated" or "no-show" is staff bookkeeping.
+ */
+function mailAnswer(r: SetStatusResult): void {
+  const g = r.guest;
+  if (!r.ok || !r.changed || r.previous !== 'pending' || !g?.email) return;
+  const build = r.status === 'confirmed' ? guestConfirmation : r.status === 'refused' ? guestRefusal : null;
+  if (!build) return;
+  const mail: BookingMailInput = {
+    name: g.name,
+    code: g.code,
+    party: g.party,
+    startsAt: g.starts_at,
+    service: g.service,
+    phone: g.phone,
+    email: g.email,
+    phoneTail: g.phone_tail,
+    notes: g.notes,
+  };
+  const to = g.email;
+  runBackground(
+    sendGuestEmail(to, build(mail), LABEL).catch((error) => {
+      console.error(`[${LABEL}] guest e-mail failed: ${describeError(error)}`);
+    }),
+    LABEL,
+  );
+}
 
 /** Resolve the caller's user id from the bearer token, or null. */
 async function authenticate(req: Request): Promise<string | null> {
@@ -116,9 +168,18 @@ Deno.serve(async (req: Request): Promise<Response> => {
         if (status.length < 2 || status.length > 32) {
           return fail('invalid_body', 400, cors.headers, { field: 'status' });
         }
-        const rows = await sql<{ data: unknown }[]>`
+        const rows = await sql<{ data: SetStatusResult }[]>`
           select mythos.admin_set_status(${id}::uuid, ${status}::text) as data
         `;
+        const data = rows[0]?.data ?? null;
+        if (data) mailAnswer(data);
+        // The guest block exists for the mail only; the console already has the row.
+        const { guest: _guest, ...visible } = data ?? { ok: false };
+        return json({ ok: true, action, data: data ? visible : null }, 200, cors.headers);
+      }
+
+      case 'pending': {
+        const rows = await sql<{ data: unknown }[]>`select mythos.admin_pending() as data`;
         return json({ ok: true, action, data: rows[0]?.data ?? null }, 200, cors.headers);
       }
 

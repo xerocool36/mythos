@@ -35,7 +35,13 @@ import {
   sendGuestEmail,
   sendOwnerEmail,
 } from '../_shared/util.ts';
-import { guestConfirmation, ownerNewBooking, type BookingMailInput } from '../_shared/booking-mail.ts';
+import {
+  type BookingMailInput,
+  guestConfirmation,
+  guestRequestReceived,
+  ownerNewBooking,
+  ownerRequest,
+} from '../_shared/booking-mail.ts';
 
 const LABEL = 'mythos-book';
 const MAX_BODY_BYTES = 8192;
@@ -84,6 +90,8 @@ export type BookErrorSlug =
 
 export interface BookSuccess {
   ok: true;
+  /** 'pending' for groups above settings.max_party: a request, not a table yet. */
+  status: 'confirmed' | 'pending';
   code: string;
   starts_at: string;
   ends_at: string;
@@ -127,8 +135,10 @@ function validate(body: Record<string, unknown>): Validation {
   const digits = phone.replace(/\D/g, '').length;
   if (phone.length < 6 || phone.length > 32 || digits < 6) return { ok: false, field: 'phone' };
 
+  // Required since 2026-11-04: the confirmation, the cancel link and every
+  // reply about a group request travel by e-mail.
   const email = asString(body.email);
-  if (email.length > 0 && (email.length > 120 || !EMAIL_SHAPE.test(email))) {
+  if (email.length < 5 || email.length > 120 || !EMAIL_SHAPE.test(email)) {
     return { ok: false, field: 'email' };
   }
 
@@ -242,6 +252,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const now = new Date();
     return json({
       ok: true,
+      status: 'confirmed',
       code: decoyCode(),
       starts_at: now.toISOString(),
       ends_at: new Date(now.getTime() + 90 * 60_000).toISOString(),
@@ -303,10 +314,11 @@ Deno.serve(async (req: Request): Promise<Response> => {
     }
 
     console.log(
-      `[${LABEL}] confirmed code=${result.code} party=${result.party} service=${result.service}`,
+      `[${LABEL}] ${result.status} code=${result.code} party=${result.party} service=${result.service}`,
     );
 
     // 7 — notify the owner and the guest without ever risking the confirmed booking
+    const isRequest = result.status === 'pending';
     const mail: BookingMailInput = {
       name: input.name,
       code: result.code,
@@ -321,13 +333,17 @@ Deno.serve(async (req: Request): Promise<Response> => {
     runBackground(
       (async () => {
         try {
-          await sendOwnerEmail(ownerNewBooking(mail), LABEL);
+          await sendOwnerEmail(isRequest ? ownerRequest(mail) : ownerNewBooking(mail), LABEL);
         } catch (error) {
           console.error(`[${LABEL}] owner e-mail failed: ${describeError(error)}`);
         }
         if (!input.email) return;
         try {
-          await sendGuestEmail(input.email, guestConfirmation(mail), LABEL);
+          await sendGuestEmail(
+            input.email,
+            isRequest ? guestRequestReceived(mail) : guestConfirmation(mail),
+            LABEL,
+          );
         } catch (error) {
           console.error(`[${LABEL}] guest e-mail failed: ${describeError(error)}`);
         }

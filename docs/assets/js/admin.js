@@ -161,6 +161,8 @@ function romeTime(iso, fallback) {
 /* --- labels ------------------------------------------------------------- */
 
 const STATUS_LABEL = {
+  pending: 'Da approvare',
+  refused: 'Rifiutata',
   confirmed: 'Confermata',
   seated: 'Seduti',
   cancelled: 'Annullata',
@@ -325,6 +327,7 @@ function enterApp(session) {
   state.date = state.today;
   selectTab('servizio');
   loadDay(state.date);
+  loadRequests();
   startPoll();
 }
 
@@ -589,6 +592,55 @@ dayInput.addEventListener('change', () => {
 });
 dayReload.addEventListener('click', () => loadDay(state.date, { btn: dayReload }));
 
+/* --- group requests inbox --------------------------------------------- */
+
+const reqBox = $('#req-box');
+
+// Every open group request, whatever the day on screen: a request that waits
+// unseen is a table the guest thinks they asked for and nobody answered.
+async function loadRequests() {
+  let data;
+  try {
+    data = await callApi('pending', {});
+  } catch {
+    return;                                   // the day view still works; retried on the next load
+  }
+  const list = (data && data.requests) || [];
+  if (!list.length) { reqBox.replaceChildren(); return; }
+
+  const box = h('section', { class: 'reqbox', 'aria-label': 'Richieste di gruppo da approvare' },
+    h('div', { class: 'reqbox-h' },
+      h('h2', { text: list.length === 1 ? '1 richiesta di gruppo da approvare' : `${list.length} richieste di gruppo da approvare` }),
+      h('p', { text: 'I posti non sono ancora occupati. Approva o rifiuta: il cliente riceve la risposta via email.' })));
+
+  for (const r of list) {
+    const b = { ...r, status: 'pending' };
+    const errBox = h('p', { class: 'bk-err', role: 'alert', hidden: true });
+    const acts = h('div', { class: 'bk-act' });
+    const buttons = [];
+    for (const a of actionsFor('pending')) {
+      const btn = h('button', { type: 'button', class: 'btn ' + a.cls, text: a.label });
+      btn.addEventListener('click', () => setStatus(b, a, btn, buttons, errBox));
+      buttons.push(btn);
+      acts.append(btn);
+    }
+    const open = h('button', { type: 'button', class: 'btn btn-ghost', text: 'Vedi la giornata' });
+    open.addEventListener('click', () => loadDay(r.date));
+    acts.append(open);
+
+    box.append(h('article', { class: 'req' },
+      h('div', { class: 'req-when', text: `${dayLong(r.date)} · ${r.time}` }),
+      h('div', { class: 'req-who', text: `${r.name || '—'} · ${people(num(r.party) || 0)}` }),
+      h('span', {
+        class: 'req-fit ' + (r.fits ? 'ok' : 'no'),
+        text: r.fits ? 'C’è posto in sala' : 'Sala piena a quell’ora: approvando non entra'
+      }),
+      r.notes ? h('p', { class: 'bk-notes', text: r.notes }) : null,
+      acts, errBox));
+  }
+  reqBox.replaceChildren(box);
+}
+
 function relativeBadge(ymd) {
   if (ymd === state.today) return 'Oggi';
   if (ymd === ymdShift(state.today, -1)) return 'Ieri';
@@ -711,6 +763,14 @@ function telHref(b) {
 }
 
 function actionsFor(status) {
+  if (status === 'pending') {
+    // A group request holds no seats: approving re-checks the room server-side
+    // and can come back `full`. Either answer mails the guest.
+    return [
+      { to: 'confirmed', label: 'Approva', cls: 'btn-ok', confirm: 'approve' },
+      { to: 'refused', label: 'Rifiuta', cls: 'btn-danger', confirm: 'refuse' }
+    ];
+  }
   if (status === 'confirmed') {
     return [
       { to: 'seated', label: 'Seduti', cls: 'btn-ok' },
@@ -731,10 +791,13 @@ function actionsFor(status) {
 
 function bookingRow(b) {
   const status = STATUS_LABEL[b.status] ? b.status : 'confirmed';
-  const off = status === 'cancelled' || status === 'noshow';
+  const off = status === 'cancelled' || status === 'noshow' || status === 'refused';
   const party = num(b.party) || 0;
 
-  const row = h('article', { class: 'bk' + (off ? ' is-off' : ''), dataset: { id: String(b.id || '') } });
+  const row = h('article', {
+    class: 'bk' + (off ? ' is-off' : '') + (status === 'pending' ? ' is-pending' : ''),
+    dataset: { id: String(b.id || '') }
+  });
 
   row.append(h('div', { class: 'bk-l1' },
     h('span', { class: 'bk-time', text: romeTime(b.starts_at, b.time) }),
@@ -775,7 +838,11 @@ function setStatus(b, action, btn, group, errBox) {
       ? { title: 'Segnare no-show?', body: `${who} risulterà come no-show e i posti tornano liberi.`, yes: 'Sì, no-show' }
       : action.confirm === 'cancel'
         ? { title: 'Annullare la prenotazione?', body: `${who} verrà annullata e i posti tornano liberi.`, yes: 'Sì, annulla' }
-        : null;
+        : action.confirm === 'approve'
+          ? { title: 'Approvare la richiesta?', body: `${who} diventa una prenotazione confermata e occupa i posti. Il cliente riceve subito la conferma via email.`, yes: 'Sì, approva' }
+          : action.confirm === 'refuse'
+            ? { title: 'Rifiutare la richiesta?', body: `${who} viene rifiutata. Il cliente riceve un'email che lo invita a chiamarvi per un'altra data.`, yes: 'Sì, rifiuta' }
+            : null;
 
   run('status:' + b.id, {
     btn, group, label: '…',
@@ -794,8 +861,10 @@ function setStatus(b, action, btn, group, errBox) {
     if (ask && !(await confirmDlg(ask.title, ask.body, ask.yes))) return;
 
     await callApi('set_status', { id: b.id, status: action.to });
-    flash('ok', `${b.name || 'Prenotazione'} · ${STATUS_LABEL[action.to].toLowerCase()}.`);
-    await loadDay(state.date, { silent: true });   // peak and totals both move
+    const answered = b.status === 'pending';
+    const word = answered && action.to === 'confirmed' ? 'approvata' : STATUS_LABEL[action.to].toLowerCase();
+    flash('ok', `${b.name || 'Prenotazione'} · ${word}.${answered && b.email ? ' Email inviata al cliente.' : ''}`);
+    await Promise.all([loadDay(state.date, { silent: true }), loadRequests()]);   // peak, totals and the inbox all move
   });
 }
 
@@ -822,6 +891,7 @@ function startPoll() {
     if (document.visibilityState !== 'visible') return;
     if (inflight.size || (dlg && dlg.open)) return;      // never fight a pending action
     loadDay(state.date, { silent: true });
+    loadRequests();
   }, 90000);
 }
 document.addEventListener('visibilitychange', () => {
@@ -829,6 +899,7 @@ document.addEventListener('visibilitychange', () => {
   if (elApp.hidden || state.tab !== 'servizio') return;
   if (inflight.size || (dlg && dlg.open)) return;
   loadDay(state.date, { silent: true });
+  loadRequests();
 });
 
 /* ===================================================== 8. impostazioni */

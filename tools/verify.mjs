@@ -11,7 +11,9 @@ for (const pg of PAGES) {
     p.on('console', m => m.type()==='error' && errs.push(m.text()));
     p.on('pageerror', e => errs.push(String(e)));
     p.on('requestfailed', r => errs.push('REQ FAIL '+r.url().split('/').pop()));
-    await p.goto(`http://localhost:3000/${pg}.html`, {waitUntil:'networkidle'});
+    // Not networkidle: the Turnstile widget on prenota polls Cloudflare forever.
+    await p.goto(`http://localhost:3000/${pg}.html`, {waitUntil:'load'});
+    await p.waitForTimeout(1500);
     await p.evaluate(async()=>{document.documentElement.style.scrollBehavior='auto';const s=innerHeight*.8;for(let y=0;y<document.body.scrollHeight;y+=s){scrollTo(0,y);await new Promise(r=>setTimeout(r,60));}scrollTo(0,0);await new Promise(r=>setTimeout(r,250));});
     const r = await p.evaluate(async () => {
       const bad = [];
@@ -38,7 +40,10 @@ for (const pg of PAGES) {
       return { bad, overflow, small: [...new Set(small)], stuck, w: document.documentElement.scrollWidth };
     });
     const problems = [];
-    if (errs.length) problems.push('ERR '+errs.join(' | '));
+    // Turnstile only accepts the production hostnames, so on localhost Cloudflare
+    // answers 400 / error 110200 by design. Its noise is not ours to fix.
+    const ours = errs.filter(e => !/Turnstile|110200|challenges\.cloudflare|status of 400/.test(e));
+    if (ours.length) problems.push('ERR '+ours.join(' | '));
     if (r.bad.length) problems.push('UNDECODED '+r.bad);
     if (r.overflow) problems.push(`H-OVERFLOW scrollWidth=${r.w} vs ${w}`);
     if (r.small.length) problems.push('SMALL TAP '+r.small.join(', '));

@@ -479,6 +479,24 @@ h2 { font-weight: 600; font-size: 1.15rem; }
 .card > h2 { color: var(--accent); }
 .killbox h2 { font-family: var(--sans); }
 
+/* group requests */
+.pill-pending { color: #8a5a00; background: var(--gold-bg); border-color: var(--gold); }
+.pill-refused { color: var(--dim); }
+.bk.is-pending { background: var(--gold-bg); }
+.reqbox { border: 2px solid var(--gold); background: var(--card); border-radius: 12px;
+  box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden; }
+.reqbox-h { background: var(--gold-bg); padding: 11px var(--pad); border-bottom: 1px solid var(--line); }
+.reqbox-h h2 { font-size: 1.1rem; color: var(--ink); }
+.reqbox-h p { font-size: .82rem; color: var(--dim); margin-top: 2px; }
+.req { padding: 11px var(--pad) 12px; border-bottom: 1px solid var(--line-2); }
+.req:last-child { border-bottom: 0; }
+.req-when { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--accent); text-transform: capitalize; }
+.req-who { font-weight: 600; margin-top: 2px; }
+.req-fit { display: inline-block; margin-top: 5px; font-size: .78rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.req-fit.ok { color: var(--ok); background: var(--ok-bg); }
+.req-fit.no { color: var(--danger); background: var(--danger-bg); }
+@media (prefers-color-scheme: dark) { .pill-pending { color: var(--gold); } }
+
 /* footer credit */
 .credit { max-width: 720px; margin: 26px auto 0; padding: 18px 12px 6px; text-align: center;
   border-top: 1px solid var(--line); color: var(--dim); font-size: .78rem; }
@@ -575,6 +593,7 @@ h2 { font-weight: 600; font-size: 1.15rem; }
         </label>
         <button id="day-reload" type="button" class="btn btn-ghost btn-sm">Aggiorna</button>
       </div>
+      <div id="req-box"></div>
       <div id="day-head"></div>
       <div id="day-body"></div>
     </section>
