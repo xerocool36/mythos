@@ -17,17 +17,16 @@ import {
   asString,
   clientIp,
   describeError,
-  escapeHtml,
   fail,
   ipTag,
   json,
   rateKey,
   readJsonBody,
-  romeDateLabel,
-  romeTimeLabel,
   runBackground,
+  sendGuestEmail,
   sendOwnerEmail,
 } from '../_shared/util.ts';
+import { type BookingMailInput, guestCancellation, ownerCancellation } from '../_shared/booking-mail.ts';
 
 const LABEL = 'mythos-cancel';
 const MAX_BODY_BYTES = 2048;
@@ -43,6 +42,17 @@ const MAX_PER_DAY = 40;
 export interface CancelSuccess {
   ok: true;
   freed: number;
+  /** For the mails only — never forwarded to the browser. */
+  guest: {
+    code: string;
+    name: string;
+    phone: string;
+    email: string | null;
+    party: number;
+    service: string;
+    starts_at: string;
+    phone_tail: string;
+  };
 }
 
 export interface CancelFailure {
@@ -65,38 +75,6 @@ function validate(body: Record<string, unknown>): CancelInput | null {
   if (phoneTail.length < 2 || phoneTail.length > 8) return null;
 
   return { code, phoneTail };
-}
-
-function buildOwnerEmail(code: string, freed: number) {
-  const now = new Date();
-  const when = `${romeDateLabel(now)} alle ${romeTimeLabel(now)}`;
-  const safeCode = escapeHtml(code);
-
-  return {
-    subject: `Prenotazione annullata · ${code} · ${freed} coperti liberati`,
-    text: [
-      'PRENOTAZIONE ANNULLATA — Mythos Cucina Greca',
-      '',
-      `Codice:            ${code}`,
-      `Coperti liberati:  ${freed}`,
-      `Annullata il:      ${when}`,
-      '',
-      "L'annullamento è stato fatto dal cliente dalla pagina di gestione prenotazione.",
-    ].join('\n'),
-    html: `
-      <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;color:#1b1b1b;line-height:1.55">
-        <h2 style="margin:0 0 4px;font-size:18px">Prenotazione annullata</h2>
-        <p style="margin:0 0 16px;color:#666">Mythos Cucina Greca — Via Tuscolana 596, Roma</p>
-        <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">
-          <tr><td style="padding:3px 14px 3px 0;color:#666">Codice</td><td style="padding:3px 0"><code>${safeCode}</code></td></tr>
-          <tr><td style="padding:3px 14px 3px 0;color:#666">Coperti liberati</td><td style="padding:3px 0"><strong>${freed}</strong></td></tr>
-          <tr><td style="padding:3px 14px 3px 0;color:#666">Annullata il</td><td style="padding:3px 0">${
-      escapeHtml(when)
-    }</td></tr>
-        </table>
-        <p style="margin:16px 0 0;color:#666">Annullamento effettuato dal cliente.</p>
-      </div>`,
-  };
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
@@ -139,12 +117,29 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
     console.log(`[${LABEL}] cancelled code=${input.code} freed=${result.freed}`);
 
+    const g = result.guest;
+    const mail: BookingMailInput = {
+      name: g.name,
+      code: g.code,
+      party: g.party,
+      startsAt: g.starts_at,
+      service: g.service,
+      phone: g.phone,
+      email: g.email,
+      phoneTail: g.phone_tail,
+    };
     runBackground(
       (async () => {
         try {
-          await sendOwnerEmail(buildOwnerEmail(input.code, result.freed), LABEL);
+          await sendOwnerEmail(ownerCancellation(mail), LABEL);
         } catch (error) {
           console.error(`[${LABEL}] owner e-mail failed: ${describeError(error)}`);
+        }
+        if (!g.email) return;
+        try {
+          await sendGuestEmail(g.email, guestCancellation(mail), LABEL);
+        } catch (error) {
+          console.error(`[${LABEL}] guest e-mail failed: ${describeError(error)}`);
         }
       })(),
       LABEL,

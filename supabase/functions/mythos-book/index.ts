@@ -22,7 +22,6 @@ import {
   asString,
   clientIp,
   describeError,
-  escapeHtml,
   fail,
   fetchWithTimeout,
   ipTag,
@@ -32,13 +31,11 @@ import {
   MESSAGES,
   rateKey,
   readJsonBody,
-  romeDateLabel,
-  romeTimeLabel,
   runBackground,
   sendGuestEmail,
   sendOwnerEmail,
 } from '../_shared/util.ts';
-import { confirmationMail } from '../_shared/booking-mail.ts';
+import { guestConfirmation, ownerNewBooking, type BookingMailInput } from '../_shared/booking-mail.ts';
 
 const LABEL = 'mythos-book';
 const MAX_BODY_BYTES = 8192;
@@ -220,62 +217,6 @@ async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Owner notification                                                          */
-/* -------------------------------------------------------------------------- */
-
-function buildOwnerEmail(booking: BookSuccess, input: BookingInput) {
-  const startsAt = new Date(booking.starts_at);
-  const dateLabel = romeDateLabel(startsAt);
-  const timeLabel = romeTimeLabel(startsAt);
-
-  const name = escapeHtml(input.name);
-  const phone = escapeHtml(input.phone);
-  const telHref = escapeHtml(input.phone.replace(/[^\d+]/g, ''));
-  const email = input.email ? escapeHtml(input.email) : '—';
-  const notes = input.notes ? escapeHtml(input.notes) : '—';
-  const service = escapeHtml(booking.service);
-
-  const subject =
-    `Nuova prenotazione · ${dateLabel} ${timeLabel} · ${booking.party} pax · ${input.name}`;
-
-  const text = [
-    'NUOVA PRENOTAZIONE — Mythos Cucina Greca',
-    '',
-    `Data:      ${dateLabel}`,
-    `Ora:       ${timeLabel} (${booking.service})`,
-    `Coperti:   ${booking.party}`,
-    `Nome:      ${input.name}`,
-    `Telefono:  ${input.phone}`,
-    `Email:     ${input.email || '—'}`,
-    `Note:      ${input.notes || '—'}`,
-    '',
-    `Codice prenotazione: ${booking.code}`,
-  ].join('\n');
-
-  const html = `
-    <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;color:#1b1b1b;line-height:1.55">
-      <h2 style="margin:0 0 4px;font-size:18px">Nuova prenotazione</h2>
-      <p style="margin:0 0 16px;color:#666">Mythos Cucina Greca — Via Tuscolana 596, Roma</p>
-      <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Data</td><td style="padding:3px 0"><strong>${
-    escapeHtml(dateLabel)
-  }</strong></td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Ora</td><td style="padding:3px 0"><strong>${timeLabel}</strong> (${service})</td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Coperti</td><td style="padding:3px 0"><strong>${booking.party}</strong></td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Nome</td><td style="padding:3px 0">${name}</td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Telefono</td><td style="padding:3px 0"><a href="tel:${telHref}">${phone}</a></td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Email</td><td style="padding:3px 0">${email}</td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Note</td><td style="padding:3px 0">${notes}</td></tr>
-        <tr><td style="padding:3px 14px 3px 0;color:#666">Codice</td><td style="padding:3px 0"><code>${
-    escapeHtml(booking.code)
-  }</code></td></tr>
-      </table>
-    </div>`;
-
-  return { subject, text, html, replyTo: input.email || undefined };
-}
-
-/* -------------------------------------------------------------------------- */
 /* Handler                                                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -366,23 +307,27 @@ Deno.serve(async (req: Request): Promise<Response> => {
     );
 
     // 7 — notify the owner and the guest without ever risking the confirmed booking
+    const mail: BookingMailInput = {
+      name: input.name,
+      code: result.code,
+      party: result.party,
+      startsAt: result.starts_at,
+      service: result.service,
+      phone: input.phone,
+      email: input.email || null,
+      phoneTail: result.phone_tail,
+      notes: input.notes || null,
+    };
     runBackground(
       (async () => {
         try {
-          await sendOwnerEmail(buildOwnerEmail(result, input), LABEL);
+          await sendOwnerEmail(ownerNewBooking(mail), LABEL);
         } catch (error) {
           console.error(`[${LABEL}] owner e-mail failed: ${describeError(error)}`);
         }
         if (!input.email) return;
         try {
-          await sendGuestEmail(input.email, confirmationMail({
-            name: input.name,
-            code: result.code,
-            party: result.party,
-            startsAt: result.starts_at,
-            phoneTail: result.phone_tail,
-            notes: input.notes || null,
-          }), LABEL);
+          await sendGuestEmail(input.email, guestConfirmation(mail), LABEL);
         } catch (error) {
           console.error(`[${LABEL}] guest e-mail failed: ${describeError(error)}`);
         }
