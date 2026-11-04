@@ -35,7 +35,7 @@
       people: 'Quante persone', person: 'persona', people_n: 'persone',
       more: 'Più di 10? Chiamaci', date: 'Quando', service: 'Servizio',
       pranzo: 'Pranzo', cena: 'Cena', slot: 'A che ora',
-      left: 'posti', full: 'esaurito', closed: 'Chiuso',
+      avail: 'disponibile', full: 'esaurito', closed: 'Chiuso',
       you: 'I tuoi dati', name: 'Nome e cognome', phone: 'Telefono',
       email: 'Email (facoltativa)', notes: 'Allergie, seggiolone, altro (facoltativo)',
       consent: 'Ho letto la <a href="privacy.html">privacy policy</a> e acconsento al trattamento dei dati per la prenotazione.',
@@ -64,7 +64,7 @@
       people: 'How many', person: 'guest', people_n: 'guests',
       more: 'More than 10? Call us', date: 'When', service: 'Service',
       pranzo: 'Lunch', cena: 'Dinner', slot: 'What time',
-      left: 'seats', full: 'full', closed: 'Closed',
+      avail: 'available', full: 'full', closed: 'Closed',
       you: 'Your details', name: 'Full name', phone: 'Phone',
       email: 'Email (optional)', notes: 'Allergies, high chair, anything else (optional)',
       consent: 'I have read the <a href="privacy.html">privacy policy</a> and agree to my data being used for this booking.',
@@ -196,13 +196,28 @@
       // day that is actually open.
       var still = S.date && S.days.some(function (d) { return d.date === S.date && !d.closed; });
       if (!still) {
-        var open = S.days.filter(function (d) { return !d.closed; })[0];
+        // First day with a slot still worth showing: late in the evening today
+        // has none left, so the form opens on tomorrow instead of a dead day.
+        var open = S.days.filter(function (d) { return !d.closed && liveServices(d).length; })[0] ||
+          S.days.filter(function (d) { return !d.closed; })[0];
         S.date = open ? open.date : (S.days[0] && S.days[0].date) || null;
       }
       S.service = null;
       S.time = null;
       render();
     });
+  }
+
+  // A slot is shown when it can be booked, or when it is genuinely full for this
+  // party ("esaurito"). Slots refused for any other reason — already past, or
+  // inside the online-booking cutoff — are hidden: labelling them "esaurito"
+  // told guests the room was sold out when it was only too late to book.
+  function liveSlots(sv) {
+    return (sv.slots || []).filter(function (sl) { return sl.ok || sl.remaining < S.party; });
+  }
+
+  function liveServices(day) {
+    return (day && !day.closed ? (day.services || []) : []).filter(function (sv) { return liveSlots(sv).length; });
   }
 
   function currentDay() {
@@ -215,7 +230,8 @@
     if (S.meta && S.meta.accepting === false) return renderPhoneOnly();
 
     var day = currentDay();
-    var services = day && !day.closed ? (day.services || []) : [];
+    var services = liveServices(day);
+    if (S.service && !services.some(function (sv) { return sv.service === S.service; })) S.service = null;
     if (!S.service && services.length) S.service = services[0].service;
 
     var h = [];
@@ -251,6 +267,8 @@
     /* service + slots -------------------------------------------------- */
     if (day && day.closed) {
       h.push('<p class="bk-note">' + esc(day.note || t('closed_day')) + '</p>');
+    } else if (day && !services.length) {
+      h.push('<p class="bk-note">' + esc(t('no_slots')) + '</p>');
     } else if (services.length) {
       if (services.length > 1) {
         h.push('<fieldset class="bk-step"><legend>' + esc(t('service')) + '</legend><div class="bk-serv" role="group">');
@@ -263,7 +281,7 @@
       }
 
       var slots = [];
-      services.forEach(function (sv) { if (sv.service === S.service) slots = sv.slots || []; });
+      services.forEach(function (sv) { if (sv.service === S.service) slots = liveSlots(sv); });
 
       h.push('<fieldset class="bk-step"><legend>' + esc(t('slot')) + '</legend>');
       if (!slots.length) {
@@ -272,7 +290,8 @@
         h.push('<div class="bk-slots" role="group">');
         slots.forEach(function (sl) {
           var on = sl.time === S.time;
-          var sub = sl.ok ? (sl.remaining + ' ' + t('left')) : (sl.remaining <= 0 ? t('full') : '—');
+          // Occupancy stays private: guests see only whether the slot can be booked.
+          var sub = sl.ok ? t('avail') : t('full');
           h.push('<button type="button" class="bk-slot' + (on ? ' is-on' : '') + '" data-time="' + esc(sl.time) + '"' +
             (sl.ok ? '' : ' disabled') + ' aria-pressed="' + on + '">' +
             '<span class="bk-slot-t">' + esc(sl.time) + '</span>' +
