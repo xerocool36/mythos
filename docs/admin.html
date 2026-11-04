@@ -7,15 +7,17 @@
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <title>Mythos — Console</title>
-<link rel="icon" href="data:,">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="stylesheet" href="assets/css/fonts.css">
 
 <!-- =====================================================================
      Mythos — console di servizio (area riservata).
 
      SELF-CONTAINED ON PURPOSE. This page shares nothing with the public
-     site's design system: no core.css, no core.js, no fonts, no images.
-     It is a tool, not a showpiece — the only goals are "readable at arm's
-     length on a phone in a busy dining room" and "never lies about state".
+     site's design system except the self-hosted fonts and the two logos:
+     no core.css, no core.js. It is a tool first — "readable at arm's
+     length on a phone in a busy dining room" and "never lies about state"
+     — dressed in the Mythos palette so it feels like theirs.
 
      Auth is Supabase Auth (email + password). There is no PIN and there
      must never be one: a client-side PIN is decoration, not access
@@ -34,57 +36,67 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* ------------------------------------------------------------ tokens */
 :root {
-  --bg:      #f2f3f5;
+  --bg:      #eef0f6;
   --card:    #ffffff;
-  --ink:     #14161a;
-  --dim:     #585e69;
-  --line:    #d6d9de;
-  --line-2:  #eaecef;
-  --accent:  #14508f;
+  --ink:     #131851;
+  --dim:     #5d6290;
+  --line:    #d9dcea;
+  --line-2:  #eef0f7;
+  --accent:  #0b14a0;
+  --gold:    #c4922e;
+  --gold-bg: #fbf5ea;
+  --head:    #0b14a0;
+  --head-ink:#f5f6f8;
   --ok:      #10662f;
   --ok-bg:   #e4f4e9;
   --warn:    #7a4d00;
   --warn-bg: #fdf0d8;
-  --danger:  #a01c17;
-  --danger-bg:#fce9e8;
-  --shadow:  0 1px 2px rgba(16,18,22,.10), 0 1px 8px rgba(16,18,22,.05);
+  --danger:  #a3241b;
+  --danger-bg:#fcebe9;
+  --shadow:  0 1px 2px rgba(19,24,81,.08), 0 6px 18px rgba(19,24,81,.06);
 
-  --btn-fg:      #14161a;
+  --btn-fg:      #131851;
   --btn-bg:      #ffffff;
-  --btn-bd:      #b9bec6;
+  --btn-bd:      #c3c7de;
   --pri-fg:      #ffffff;
-  --pri-bg:      #14508f;
+  --pri-bg:      #0b14a0;
   --dan-fg:      #ffffff;
-  --dan-bg:      #a01c17;
+  --dan-bg:      #a3241b;
   --ok-btn-fg:   #ffffff;
   --ok-btn-bg:   #10662f;
 
   --tap: 44px;
   --r:   10px;
-  --pad: 14px;
+  --pad: 16px;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans:  "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:      #0f1114;
-    --card:    #191c21;
-    --ink:     #f0f1f4;
-    --dim:     #a7adb8;
-    --line:    #333941;
-    --line-2:  #23272d;
-    --accent:  #7fb2ff;
+    --bg:      #0a0d2a;
+    --card:    #141a45;
+    --ink:     #eef0fb;
+    --dim:     #a6abd6;
+    --line:    #2a3170;
+    --line-2:  #1b2257;
+    --accent:  #9aa8ff;
+    --gold:    #e0b45c;
+    --gold-bg: #2a2440;
+    --head:    #070a24;
+    --head-ink:#eef0fb;
     --ok:      #6fd694;
-    --ok-bg:   #16301f;
+    --ok-bg:   #12301f;
     --warn:    #f0c46a;
     --warn-bg: #33280f;
     --danger:  #ff9c93;
-    --danger-bg:#3a1a18;
+    --danger-bg:#3a1a20;
     --shadow:  0 1px 2px rgba(0,0,0,.5);
 
-    --btn-fg:      #f0f1f4;
-    --btn-bg:      #232830;
-    --btn-bd:      #454c56;
-    --pri-fg:      #08121f;
-    --pri-bg:      #7fb2ff;
+    --btn-fg:      #eef0fb;
+    --btn-bg:      #1b2257;
+    --btn-bd:      #3a438a;
+    --pri-fg:      #0a0d2a;
+    --pri-bg:      #9aa8ff;
     --dan-fg:      #2a0c0a;
     --dan-bg:      #ff9c93;
     --ok-btn-fg:   #06200f;
@@ -95,7 +107,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ------------------------------------------------------------- base */
 body {
   margin: 0;
-  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font: 16px/1.45 var(--sans);
   background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -414,6 +426,70 @@ main { max-width: 720px; margin: 0 auto; padding: 12px 12px 0; }
 .dlg menu { display: flex; gap: 8px; margin-top: 20px; }
 .dlg menu .btn { flex: 1 1 0; }
 
+
+/* ======================================================= Mythos skin
+   Brand layer over the tool above: palette, the dolphin roundel, serif
+   numerals, a gold rule. Nothing here changes layout or tap sizes. */
+h1, h2, .dh-date, .peak-n strong, .bk-time, .kill-state { font-family: var(--serif); }
+h2 { font-weight: 600; font-size: 1.15rem; }
+
+/* login */
+.login { flex-direction: column; min-height: 100svh; background:
+  radial-gradient(circle at 50% -10%, rgba(11,20,160,.16), transparent 60%), var(--bg); }
+.login-box { max-width: 400px; padding: 0 0 calc(18px + env(safe-area-inset-bottom)); overflow: hidden; text-align: center; }
+.login-hero { background: var(--head); padding: 26px 18px 18px; border-bottom: 4px solid var(--gold); }
+.login-hero img { display: block; width: 92px; height: 92px; margin: 0 auto; border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255,255,255,.95), 0 8px 24px rgba(0,0,0,.25); background: #fff; }
+.login-hero p { margin-top: 12px; color: var(--gold); font-size: .72rem; font-weight: 600;
+  letter-spacing: .28em; text-transform: uppercase; }
+.login-body { padding: 18px 20px 0; text-align: left; }
+.login-box h1 { font-size: 1.7rem; letter-spacing: 0; text-align: center; }
+.login-box h1 span { font-style: italic; color: var(--gold); font-weight: 400; }
+.login-sub { text-align: center; }
+.login-foot { text-align: center; padding: 0 20px; }
+
+/* top bar */
+.bar { background: var(--card); border-bottom: 0; box-shadow: var(--shadow); }
+.bar-top { background: var(--head); color: var(--head-ink); padding: 8px 12px;
+  border-bottom: 3px solid var(--gold); }
+.brand { display: inline-flex; align-items: center; gap: 9px; font-family: var(--serif);
+  font-size: 1.2rem; font-weight: 600; letter-spacing: .14em; }
+.brand img { width: 34px; height: 34px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.9); }
+.brand small { font-family: var(--sans); font-size: .62rem; font-weight: 600; letter-spacing: .24em;
+  color: var(--gold); align-self: center; }
+.who { color: rgba(245,246,248,.72); text-align: right; }
+@media (max-width: 520px) { .who { visibility: hidden; } .brand small { display: none; } }
+.bar-top .btn-ghost { color: var(--head-ink); border-color: rgba(245,246,248,.45); }
+.tab { font-family: var(--sans); letter-spacing: .02em; }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--gold); }
+
+/* day */
+.btn-day.is-on { box-shadow: inset 0 -3px 0 var(--gold); }
+.dayhead { border-left: 5px solid var(--accent); }
+.dh-date { font-size: 1.35rem; font-weight: 600; }
+.dh-badge { background: var(--gold); color: #fff; }
+.peak-n strong { font-size: 2.4rem; font-weight: 600; color: var(--accent); }
+.peak-bar { height: 12px; }
+.svc-h { background: var(--gold-bg); border-bottom: 1px solid var(--line); }
+.svc-h h2 { font-family: var(--serif); text-transform: none; letter-spacing: .01em; font-size: 1.15rem; color: var(--accent); }
+.bk-time { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+.bk-party { background: var(--gold-bg); border-color: var(--gold); color: var(--ink); }
+.bk-notes { border-left: 3px solid var(--gold); }
+.card > h2 { color: var(--accent); }
+.killbox h2 { font-family: var(--sans); }
+
+/* footer credit */
+.credit { max-width: 720px; margin: 26px auto 0; padding: 18px 12px 6px; text-align: center;
+  border-top: 1px solid var(--line); color: var(--dim); font-size: .78rem; }
+.credit a { display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
+  color: var(--dim); text-decoration: none; }
+.credit img { width: 84px; height: auto; }
+.login .credit { border-top: 0; margin-top: 18px; padding-top: 0; }
+@media (prefers-color-scheme: dark) {
+  .credit img { background: #fff; border-radius: 8px; padding: 4px 6px; }
+}
+
 /* ------------------------------------------------- reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -434,6 +510,11 @@ main { max-width: 720px; margin: 0 auto; padding: 12px 12px 0; }
 <!-- =========================================================== login -->
 <section id="login" class="login" hidden>
   <div class="login-box">
+    <div class="login-hero">
+      <img src="assets/img/mail/mythos-logo.png" width="192" height="192" alt="Mythos Cucina Greca">
+      <p>Cucina greca · Roma</p>
+    </div>
+    <div class="login-body">
     <h1>Mythos <span>Console</span></h1>
     <p class="login-sub">Area riservata al personale.</p>
     <form id="login-form" novalidate>
@@ -447,11 +528,15 @@ main { max-width: 720px; margin: 0 auto; padding: 12px 12px 0; }
       <p id="login-msg" class="msg msg-err" role="alert" hidden></p>
       <button id="login-btn" type="submit" class="btn btn-primary">Entra</button>
     </form>
+    </div>
     <p class="login-foot">
       Mythos Cucina Greca · Via Tuscolana 596, Roma<br>
       <a href="tel:+390687774778">06 8777 4778</a>
     </p>
   </div>
+  <p class="credit"><a href="https://x3roautomations.it" target="_blank" rel="noopener">
+      <img src="assets/img/mail/x3ro-logo.png" width="240" height="150" alt="">
+      <span>Console realizzata da x3ro Automations · assistenza su WhatsApp</span></a></p>
 </section>
 
 <!-- ============================================================= app -->
@@ -459,7 +544,7 @@ main { max-width: 720px; margin: 0 auto; padding: 12px 12px 0; }
 
   <header class="bar">
     <div class="bar-top">
-      <strong class="brand">Mythos</strong>
+      <strong class="brand"><img src="assets/img/mail/mythos-logo.png" width="192" height="192" alt="">Mythos <small>CONSOLE</small></strong>
       <span id="who" class="who"></span>
       <button id="logout" type="button" class="btn btn-ghost btn-sm">Esci</button>
     </div>
@@ -592,6 +677,10 @@ main { max-width: 720px; margin: 0 auto; padding: 12px 12px 0; }
     </section>
 
   </main>
+
+  <p class="credit"><a href="https://x3roautomations.it" target="_blank" rel="noopener">
+      <img src="assets/img/mail/x3ro-logo.png" width="240" height="150" alt="">
+      <span>Console realizzata da x3ro Automations · assistenza su WhatsApp</span></a></p>
 </div>
 
 <!-- ======================================================== confirm -->

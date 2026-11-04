@@ -986,7 +986,9 @@ async function fetchTemplate() {
 
   const tpl = Object.create(null);
   const seenDows = new Set();
+  const closedSeen = Object.create(null);
   for (const d of body.days) {
+    if (d && d.closed) closedSeen[d.dow] = (closedSeen[d.dow] || 0) + 1;
     if (!d || d.closed) continue;
     seenDows.add(d.dow);
     for (const sv of (Array.isArray(d.services) ? d.services : [])) {
@@ -1003,6 +1005,12 @@ async function fetchTemplate() {
         active: true
       };
     }
+  }
+  // A weekday closed on every occurrence in the 3-week probe is a weekly
+  // closing day (Mythos: Monday), not unreadable data. One-off closures only
+  // hit a single occurrence, so they still fall through to the warning.
+  for (const dow in closedSeen) {
+    if (closedSeen[dow] >= 2 && !seenDows.has(Number(dow))) seenDows.add(Number(dow));
   }
   return { tpl, seenDows };
 }
