@@ -45,9 +45,15 @@ export function cancelLink(code: string, phoneTail: string): string {
   return `${siteUrl()}/prenota.html?${params.toString()}`;
 }
 
+/** "giulia DE rossi" -> "Giulia De Rossi": guests type names any old way. */
+function properName(name: string): string {
+  return name.trim().split(/\s+/)
+    .map((w) => w.charAt(0).toLocaleUpperCase('it-IT') + w.slice(1).toLocaleLowerCase('it-IT'))
+    .join(' ');
+}
+
 function firstName(name: string): string {
-  const first = name.trim().split(/\s+/)[0] ?? '';
-  return first ? first.charAt(0).toLocaleUpperCase('it-IT') + first.slice(1) : name;
+  return properName(name).split(' ')[0] || name;
 }
 
 function people(party: number): string {
@@ -134,6 +140,7 @@ const SPACER = '<div style="height:16px;line-height:16px;font-size:0">&nbsp;</di
 /* ------------------------------------------------------------------ guest */
 
 export function guestConfirmation(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
   const startsAt = new Date(b.startsAt);
   const p = parts(startsAt);
   const name = firstName(b.name);
@@ -189,6 +196,7 @@ export function guestConfirmation(b: BookingMailInput): OutboundMail {
 }
 
 export function guestCancellation(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
   const startsAt = new Date(b.startsAt);
   const p = parts(startsAt);
   const name = firstName(b.name);
@@ -215,6 +223,7 @@ export function guestCancellation(b: BookingMailInput): OutboundMail {
       intro: 'La tua prenotazione è annullata e il tavolo è di nuovo libero. Speriamo di vederti presto.',
       body: ticket(b, startsAt, true),
       buttons: [{ label: 'Prenota un altro giorno', href: again }],
+      signoff: 'bye',
     }),
   };
 }
@@ -248,6 +257,7 @@ function staffButtons(b: BookingMailInput) {
 }
 
 export function ownerNewBooking(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
   const startsAt = new Date(b.startsAt);
   const p = parts(startsAt);
   const service = serviceWord(b.service, startsAt);
@@ -288,6 +298,7 @@ export function ownerNewBooking(b: BookingMailInput): OutboundMail {
 }
 
 export function ownerCancellation(b: BookingMailInput): OutboundMail {
+  b = { ...b, name: properName(b.name) };
   const startsAt = new Date(b.startsAt);
   const p = parts(startsAt);
 

@@ -69,6 +69,8 @@ export interface ShellInput {
   notes?: string[];
   /** Staff mail: drops the guest sign-off, keeps the x3ro footer. */
   internal?: boolean;
+  /** Guest sign-off: 'meal' (default) wishes buon appetito, 'bye' just says a presto. */
+  signoff?: 'meal' | 'bye';
 }
 
 function buttonCell(b: Button): string {
@@ -104,14 +106,19 @@ export function rowsTable(rows: Row[]): string {
 }
 
 export function codeChip(code: string): string {
-  return `<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;font-weight:bold;letter-spacing:.1em;color:${C.blue};background:${C.plaster};padding:3px 8px;border-radius:4px">${escapeHtml(code)}</span>`;
+  return `<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;font-weight:bold;letter-spacing:.1em;color:${C.blue};background:${C.plaster};padding:3px 8px;border-radius:4px;white-space:nowrap">${escapeHtml(code)}</span>`;
 }
 
 export function shell(input: ShellInput): string {
   const base = siteUrl();
-  const { preheader, eyebrow, title, intro, body, buttons, notes, internal } = input;
+  const { preheader, eyebrow, title, intro, body, buttons, notes, internal, signoff: farewell } = input;
 
-  const signoff = internal ? '' : `
+  const signoff = internal ? '' : farewell === 'bye'
+    ? `
+          <tr><td style="padding:4px 32px 28px">
+            <p style="margin:0;font-family:${SANS};font-size:14px;color:${C.soft};line-height:1.6">A presto,<br>lo staff di Mythos</p>
+          </td></tr>`
+    : `
           <tr><td style="padding:4px 32px 28px">
             <p style="margin:0 0 4px;font-family:${SERIF};font-size:20px;font-style:italic;color:${C.blue}">Kalí órexi!</p>
             <p style="margin:0;font-family:${SANS};font-size:14px;color:${C.soft};line-height:1.6">Buon appetito, e a presto.<br>Lo staff di Mythos</p>
@@ -137,7 +144,7 @@ export function shell(input: ShellInput): string {
             <a href="${base}/" style="text-decoration:none">
               <img src="${base}/assets/img/mail/mythos-logo.png" width="76" height="76" alt="Mythos" style="display:block;border:0;width:76px;height:76px;margin:0 auto">
             </a>
-            <div style="padding-top:10px;font-family:${SANS};font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:${C.gold}">Cucina greca &middot; Via Tuscolana &middot; Roma</div>
+            <div style="padding-top:10px;font-family:${SANS};font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:${C.gold}">Cucina greca &middot; Roma</div>
           </td></tr>
           <tr><td style="height:3px;line-height:3px;font-size:0;background:${C.gold}">&nbsp;</td></tr>
           <tr><td style="height:6px;line-height:6px;font-size:0;background:${C.blue}">&nbsp;</td></tr>
@@ -165,7 +172,7 @@ export function shell(input: ShellInput): string {
 
           <tr><td align="center" style="padding:16px 24px 18px;background:${C.card};border-top:1px solid ${C.hair}">
             <a href="https://x3roautomations.it" style="text-decoration:none">
-              <img src="${base}/assets/img/mail/x3ro-logo.png" width="72" height="45" alt="x3ro Automations" style="display:block;border:0;width:72px;height:45px;margin:0 auto">
+              <img src="${base}/assets/img/mail/x3ro-logo.png" width="96" height="60" alt="x3ro Automations" style="display:block;border:0;width:96px;height:60px;margin:0 auto">
             </a>
             <p style="margin:6px 0 0;font-family:${SANS};font-size:11px;color:${C.dim}">Sito e prenotazioni online realizzati da <a href="https://x3roautomations.it" style="color:${C.dim}">x3ro Automations</a></p>
           </td></tr>
