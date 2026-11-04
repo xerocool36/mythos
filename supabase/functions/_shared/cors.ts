@@ -8,16 +8,15 @@
  * Extra origins come from the optional MYTHOS_ALLOWED_ORIGINS env var as a
  * comma-separated list.
  *
- * github.io stays only until tavernamythos.com is serving: an origin is a whole
- * host, so it also opens these endpoints to every other Pages site on that
- * account. Remove it at cutover.
+ * No github.io: an origin is a whole host, so the old Pages preview opened these
+ * endpoints to every other Pages site on that account. Removed at cutover
+ * (2026-11-04), when tavernamythos.com went live.
  */
 
 const STATIC_ORIGINS: readonly string[] = [
   'https://tavernamythos.com',
   'https://www.tavernamythos.com',
   'https://tavernamythos.netlify.app',
-  'https://xerocool36.github.io',
   // Local preview ports: python http.server / `npx serve` (3000), Vite (5173), misc (8080).
   'http://localhost:8000',
   'http://127.0.0.1:8000',
