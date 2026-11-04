@@ -141,7 +141,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
           return fail('invalid_body', 400, cors.headers, { field: 'patch' });
         }
         const rows = await sql<{ data: unknown }[]>`
-          select mythos.admin_settings(${JSON.stringify(patch)}::jsonb) as data
+          select mythos.admin_settings(${sql.json(patch)}::jsonb) as data
         `;
         return json({ ok: true, action, data: rows[0]?.data ?? null }, 200, cors.headers);
       }
@@ -152,7 +152,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
           return fail('invalid_body', 400, cors.headers, { field: 'rows' });
         }
         const rows = await sql<{ data: unknown }[]>`
-          select mythos.admin_windows(${JSON.stringify(windowRows)}::jsonb) as data
+          select mythos.admin_windows(${sql.json(windowRows)}::jsonb) as data
         `;
         return json({ ok: true, action, data: rows[0]?.data ?? null }, 200, cors.headers);
       }

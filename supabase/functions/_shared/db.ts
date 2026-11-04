@@ -23,6 +23,13 @@ export interface SqlClient {
     ...values: readonly unknown[]
   ): Promise<T>;
   end(options?: { timeout?: number }): Promise<void>;
+  /**
+   * Bind a value as a json parameter. Required for anything jsonb:
+   * `${JSON.stringify(x)}::jsonb` makes the driver encode it a second time, so
+   * the function receives a jsonb *string* and every jsonb_typeof guard fires
+   * (settings -> bad_patch, windows -> bad_rows). Same trap MASTO hit.
+   */
+  json(value: unknown): unknown;
 }
 
 let client: SqlClient | null = null;
