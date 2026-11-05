@@ -641,6 +641,72 @@ async function loadRequests() {
   reqBox.replaceChildren(box);
 }
 
+/* --- manual entry (phone / walk-in) ------------------------------------ */
+
+const addCard = $('#add-card');
+const addForm = $('#add-form');
+const addBtn = $('#add-btn');
+const addMsg = $('#add-msg');
+
+const WARN_IT = {
+  past: 'l’orario è già passato',
+  closed: 'quel giorno è segnato come chiuso',
+  off_hours: 'l’orario è fuori dagli orari di apertura',
+  full: 'la sala supera i posti disponibili a quell’ora'
+};
+
+// Opening the card pre-fills the day on screen, so "Domani → +" just works.
+addCard.addEventListener('toggle', () => {
+  if (!addCard.open) return;
+  if (!$('#add-date').value) $('#add-date').value = state.date || state.today;
+  addMsg.hidden = true;
+});
+
+addForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = new FormData(addForm);
+  const payload = {
+    date: String(f.get('date') || ''),
+    time: String(f.get('time') || '').slice(0, 5),
+    party: num(f.get('party')),
+    name: String(f.get('name') || '').trim(),
+    phone: String(f.get('phone') || '').trim(),
+    email: String(f.get('email') || '').trim(),
+    notes: String(f.get('notes') || '').trim()
+  };
+  if (!payload.date || !payload.time) return panelMsg(addMsg, 'err', 'Indica data e ora.');
+  if (!payload.party || payload.party < 1) return panelMsg(addMsg, 'err', 'Indica quante persone.');
+
+  run('add', {
+    btn: addBtn, label: 'Salvo…',
+    onError: (err) => {
+      const text = err instanceof AdminError && err.extra && err.extra.message
+        ? err.extra.message : errText(err);
+      panelMsg(addMsg, 'err', text + ' La prenotazione non è stata salvata.');
+    }
+  }, async () => {
+    addMsg.hidden = true;
+    let out;
+    try {
+      out = await callApi('add_booking', payload);
+    } catch (err) {
+      // Off-rule cases: say exactly why, let staff decide, resend forced.
+      if (!(err instanceof AdminError) || err.slug !== 'needs_force') throw err;
+      const why = (err.extra.warnings || []).map((w) => WARN_IT[w] || w);
+      const ok = await confirmDlg('Salvare comunque?',
+        `Attenzione: ${why.join('; ')}. Vuoi salvarla lo stesso?`, 'Sì, salva', false);
+      if (!ok) return;
+      out = await callApi('add_booking', Object.assign({}, payload, { force: true }));
+    }
+    const mailed = payload.email ? ' Il cliente riceve la conferma via email.' : '';
+    flash('ok', `${payload.name} · ${people(payload.party)} · ${payload.time} salvata (${out.code}).${mailed}`);
+    addForm.reset();
+    $('#add-party').value = '2';
+    addCard.open = false;
+    await loadDay(payload.date);
+  });
+});
+
 function relativeBadge(ymd) {
   if (ymd === state.today) return 'Oggi';
   if (ymd === ymdShift(state.today, -1)) return 'Ieri';
@@ -804,6 +870,10 @@ function bookingRow(b) {
     h('span', { class: 'bk-party', text: `${party} pers.` }),
     h('span', { class: 'pill pill-' + status, text: STATUS_LABEL[status] })
   ));
+  if (b.source === 'telefono') {
+    row.querySelector('.bk-l1').insertBefore(
+      h('span', { class: 'pill pill-src', text: 'Telefono' }), row.querySelector('.pill'));
+  }
 
   row.append(h('div', { class: 'bk-name' },
     b.name || '—',

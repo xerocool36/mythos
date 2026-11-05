@@ -36,11 +36,12 @@ const LABEL = 'mythos-admin';
 const MAX_BODY_BYTES = 32_768;
 const UUID_SHAPE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-type AdminAction = 'day' | 'pending' | 'set_status' | 'block' | 'settings' | 'windows';
+type AdminAction = 'day' | 'pending' | 'add_booking' | 'set_status' | 'block' | 'settings' | 'windows';
 
 const ACTIONS: ReadonlySet<string> = new Set<AdminAction>([
   'day',
   'pending',
+  'add_booking',
   'set_status',
   'block',
   'settings',
@@ -75,6 +76,15 @@ function mailAnswer(r: SetStatusResult): void {
   if (!r.ok || !r.changed || r.previous !== 'pending' || !g?.email) return;
   const build = r.status === 'confirmed' ? guestConfirmation : r.status === 'refused' ? guestRefusal : null;
   if (!build) return;
+  mailGuest(g, build);
+}
+
+/** Send one guest mail in the background; a mail failure never fails the action. */
+function mailGuest(
+  g: NonNullable<SetStatusResult['guest']>,
+  build: (b: BookingMailInput) => ReturnType<typeof guestConfirmation>,
+): void {
+  if (!g.email) return;
   const mail: BookingMailInput = {
     name: g.name,
     code: g.code,
@@ -174,6 +184,27 @@ Deno.serve(async (req: Request): Promise<Response> => {
         const data = rows[0]?.data ?? null;
         if (data) mailAnswer(data);
         // The guest block exists for the mail only; the console already has the row.
+        const { guest: _guest, ...visible } = data ?? { ok: false };
+        return json({ ok: true, action, data: data ? visible : null }, 200, cors.headers);
+      }
+
+      case 'add_booking': {
+        // Phone / walk-in table typed by staff. Validation lives in the SQL
+        // function (it answers in Italian); here only shapes are checked.
+        if (!isIsoDate(body.date)) return fail('invalid_body', 400, cors.headers, { field: 'date' });
+        const time = asString(body.time);
+        if (!/^\d{2}:\d{2}$/.test(time)) return fail('invalid_body', 400, cors.headers, { field: 'time' });
+        const party = Number(body.party);
+        if (!Number.isInteger(party)) return fail('invalid_body', 400, cors.headers, { field: 'party' });
+        const rows = await sql<{ data: SetStatusResult & { code?: string } }[]>`
+          select mythos.admin_add_booking(
+            ${body.date}::date, ${time}::time, ${party}::int,
+            ${asString(body.name)}::text, ${asString(body.phone)}::text,
+            ${asString(body.email) || null}::text, ${asString(body.notes) || null}::text,
+            ${body.force === true}::boolean) as data
+        `;
+        const data = rows[0]?.data ?? null;
+        if (data?.ok && data.guest?.email) mailGuest(data.guest, guestConfirmation);
         const { guest: _guest, ...visible } = data ?? { ok: false };
         return json({ ok: true, action, data: data ? visible : null }, 200, cors.headers);
       }

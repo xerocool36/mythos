@@ -479,6 +479,21 @@ h2 { font-weight: 600; font-size: 1.15rem; }
 .card > h2 { color: var(--accent); }
 .killbox h2 { font-family: var(--sans); }
 
+/* manual entry */
+.addbk { padding: 0; overflow: hidden; }
+.addbk-sum { list-style: none; cursor: pointer; padding: 13px var(--pad); font-weight: 700; color: var(--accent);
+  min-height: var(--tap); display: flex; align-items: center; gap: 8px; }
+.addbk-sum::-webkit-details-marker { display: none; }
+.addbk-sum span { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 1.1rem; line-height: 1; }
+.addbk-sum em { font-style: normal; font-weight: 500; color: var(--dim); font-size: .85rem; }
+.addbk[open] .addbk-sum { border-bottom: 1px solid var(--line); background: var(--gold-bg); }
+.addbk form { padding: 4px var(--pad) var(--pad); }
+.addbk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+.addbk-grid .f:last-child { grid-column: 1 / -1; }
+@media (min-width: 560px) { .addbk-grid { grid-template-columns: 1.4fr 1fr 1fr; } .addbk-grid .f:last-child { grid-column: auto; } }
+.pill-src { margin-left: 0; color: var(--dim); border-style: dashed; }
+
 /* group requests */
 .pill-pending { color: #8a5a00; background: var(--gold-bg); border-color: var(--gold); }
 .pill-refused { color: var(--dim); }
@@ -593,6 +608,24 @@ h2 { font-weight: 600; font-size: 1.15rem; }
         </label>
         <button id="day-reload" type="button" class="btn btn-ghost btn-sm">Aggiorna</button>
       </div>
+      <details id="add-card" class="card addbk">
+        <summary class="addbk-sum"><span aria-hidden="true">+</span> Aggiungi prenotazione <em>telefono o di persona</em></summary>
+        <form id="add-form" novalidate>
+          <p class="hint">Così i posti presi al telefono contano anche per il sito, che non li rivende.
+            Se lasci l’email, il cliente riceve la conferma con il codice.</p>
+          <div class="addbk-grid">
+            <label class="f"><span>Data</span><input id="add-date" name="date" type="date" required></label>
+            <label class="f"><span>Ora</span><input id="add-time" name="time" type="time" step="900" required></label>
+            <label class="f"><span>Persone</span><input id="add-party" name="party" type="number" min="1" max="40" inputmode="numeric" value="2" required></label>
+          </div>
+          <label class="f"><span>Nome e cognome</span><input name="name" type="text" maxlength="80" autocomplete="off" required></label>
+          <label class="f"><span>Telefono</span><input name="phone" type="tel" maxlength="32" autocomplete="off" required></label>
+          <label class="f"><span>Email (facoltativa)</span><input name="email" type="email" maxlength="120" autocomplete="off"></label>
+          <label class="f"><span>Note (facoltative)</span><input name="notes" type="text" maxlength="400" autocomplete="off" placeholder="Es. allergie, seggiolone, tavolo fuori"></label>
+          <p id="add-msg" class="msg" hidden></p>
+          <button id="add-btn" type="submit" class="btn btn-primary">Salva prenotazione</button>
+        </form>
+      </details>
       <div id="req-box"></div>
       <div id="day-head"></div>
       <div id="day-body"></div>
