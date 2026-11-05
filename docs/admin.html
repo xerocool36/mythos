@@ -486,7 +486,9 @@ h2 { font-weight: 600; font-size: 1.15rem; }
 .addbk-sum::-webkit-details-marker { display: none; }
 .addbk-sum span { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
   background: var(--accent); color: #fff; font-size: 1.1rem; line-height: 1; }
-.addbk-sum em { font-style: normal; font-weight: 500; color: var(--dim); font-size: .85rem; }
+.addbk-sum { flex-wrap: wrap; }
+.addbk-sum em { font-style: normal; font-weight: 500; color: var(--dim); font-size: .85rem; flex-basis: 100%; padding-left: 34px; margin-top: -4px; }
+@media (min-width: 560px) { .addbk-sum em { flex-basis: auto; padding-left: 0; margin-top: 0; } }
 .addbk[open] .addbk-sum { border-bottom: 1px solid var(--line); background: var(--gold-bg); }
 .addbk form { padding: 4px var(--pad) var(--pad); }
 .addbk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
