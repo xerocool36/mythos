@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Mythos Cucina Greca — Guida al sito e alle prenotazioni</title>
+<link rel="stylesheet" href="../docs/assets/css/fonts.css">
+<style>
+@page { size: A4; margin: 0; }
+
+:root {
+  --blue:  #0B14A0;
+  --navy:  #131851;
+  --ink:   #131851;
+  --soft:  #4A4F7A;
+  --dim:   #7A7FA3;
+  --gold:  #C4922E;
+  --gold-bg: #FBF5EA;
+  --plaster: #F5F6F8;
+  --line:  #DCDEEA;
+  --red:   #A3241B;
+  --green: #10662F;
+  --serif: "Newsreader", Georgia, serif;
+  --sans:  "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  font-size: 10.2pt;
+  line-height: 1.58;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  height: 297mm;
+  padding: 20mm 19mm 24mm;
+  page-break-after: always;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.page:last-child { page-break-after: auto; }
+
+/* ----------------------------------------------------------------- cover */
+.cover {
+  background: var(--blue);
+  color: var(--plaster);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cover-key {
+  height: 9mm;
+  background:
+    repeating-linear-gradient(90deg, var(--gold) 0 2mm, transparent 2mm 6mm) top/100% 1.4mm no-repeat,
+    repeating-linear-gradient(90deg, var(--gold) 0 2mm, transparent 2mm 6mm) bottom/100% 1.4mm no-repeat;
+  margin: 12mm 19mm 0;
+  opacity: .9;
+}
+.cover-main { flex: 1; padding: 22mm 19mm 0; }
+.cover-disc {
+  width: 46mm; height: 46mm; border-radius: 50%;
+  background: #fff; padding: 2.2mm;
+  box-shadow: 0 0 0 1.4mm rgba(255,255,255,.18);
+}
+.cover-disc img { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.cover .kicker {
+  margin: 16mm 0 4mm; font-size: 8.5pt; font-weight: 600;
+  letter-spacing: .32em; text-transform: uppercase; color: var(--gold);
+}
+.cover h1 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: 38pt; line-height: 1.04; letter-spacing: -.01em;
+  margin: 0 0 7mm; max-width: 150mm;
+}
+.cover h1 em { font-style: italic; color: #fff; opacity: .82; }
+.cover .sub { font-size: 11.5pt; line-height: 1.55; max-width: 132mm; opacity: .86; margin: 0; }
+.cover .version {
+  display: inline-block; margin-top: 9mm; padding: 1.6mm 3.6mm;
+  border: 1px solid rgba(245,246,248,.45); border-radius: 99px;
+  font-size: 8pt; letter-spacing: .18em; text-transform: uppercase;
+}
+.cover .version.full { border-color: var(--gold); color: var(--gold); }
+.cover-foot {
+  background: #fff; color: var(--ink);
+  padding: 9mm 19mm; display: flex; align-items: center; justify-content: space-between;
+  border-top: 2mm solid var(--gold);
+}
+.cover-foot .who { font-size: 8.6pt; line-height: 1.55; color: var(--soft); margin: 0; }
+.cover-foot .who b { color: var(--ink); }
+.cover-foot img { width: 34mm; height: auto; display: block; }
+
+/* --------------------------------------------------------------- content */
+.top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 9mm; padding-bottom: 3.2mm; border-bottom: 1px solid var(--line);
+}
+.top .brand { display: flex; align-items: center; gap: 2.6mm; font-family: var(--serif);
+  font-size: 11pt; letter-spacing: .16em; font-weight: 600; color: var(--blue); }
+.top .brand img { width: 8mm; height: 8mm; border-radius: 50%; }
+.top .sec { font-size: 7.6pt; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+
+.eyebrow { font-size: 8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin: 0 0 2.4mm; }
+h2 { font-family: var(--serif); font-weight: 500; font-size: 23pt; line-height: 1.12; letter-spacing: -.008em; margin: 0 0 4mm; color: var(--navy); }
+h3 { font-family: var(--serif); font-weight: 600; font-size: 13pt; margin: 5mm 0 2mm; color: var(--blue); }
+p { margin: 0 0 3.4mm; }
+.lead { font-size: 10.8pt; color: var(--soft); margin-bottom: 5mm; max-width: 165mm; }
+strong { font-weight: 700; }
+ul { margin: 0 0 4mm; padding-left: 5mm; }
+li { margin-bottom: 1.6mm; }
+li::marker { color: var(--gold); }
+code, .mono { font-family: ui-monospace, Menlo, monospace; font-size: 9pt; }
+
+.steps { list-style: none; padding: 0; counter-reset: s; margin: 0 0 5mm; }
+.steps li { counter-increment: s; position: relative; padding-left: 10mm; margin-bottom: 3mm; }
+.steps li::before {
+  content: counter(s); position: absolute; left: 0; top: .2mm;
+  width: 6.4mm; height: 6.4mm; border-radius: 50%;
+  background: var(--blue); color: #fff; font-size: 8.4pt; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+table { width: 100%; border-collapse: collapse; margin: 0 0 5mm; }
+th { text-align: left; font-size: 7.6pt; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dim); font-weight: 600; padding: 0 3mm 2mm 0; border-bottom: 1.4px solid var(--navy); }
+td { padding: 1.9mm 3mm 1.9mm 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.k { width: 40mm; font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+.url { font-family: ui-monospace, Menlo, monospace; font-size: 8.4pt; color: var(--blue); white-space: nowrap; width: 62mm; }
+
+.note { background: var(--gold-bg); border-left: 1.2mm solid var(--gold); padding: 4mm 5mm; margin: 0 0 5mm; font-size: 9.6pt; }
+.note.blue { background: #EEF0F8; border-left-color: var(--blue); }
+.note.red { background: #FCEBE9; border-left-color: var(--red); }
+.note p:last-child { margin-bottom: 0; }
+.note .tag { display: block; font-size: 7.6pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 1.4mm; }
+.note.blue .tag { color: var(--blue); }
+.note.red .tag { color: var(--red); }
+
+/* text + phone screenshot */
+.split { display: flex; gap: 8mm; align-items: flex-start; margin-bottom: 4mm; }
+.split > .txt { flex: 1; min-width: 0; }
+.shot { flex: none; border: 1px solid var(--line); border-radius: 3mm; overflow: hidden;
+  box-shadow: 0 1.4mm 4mm rgba(19,24,81,.10); background: #fff; }
+.shot img { display: block; width: 100%; height: auto; }
+.shot.w46 { width: 46mm; } .shot.w56 { width: 56mm; } .shot.w60 { width: 60mm; } .shot.w66 { width: 66mm; }
+.shot.w72 { width: 72mm; } .shot.w80 { width: 80mm; }
+.cap { font-size: 7.6pt; color: var(--dim); text-align: center; margin-top: 1.6mm; }
+
+.btnlist { display: grid; grid-template-columns: 27mm 1fr; gap: 2.2mm 5mm; margin: 0 0 5mm; align-items: start; }
+.chip { display: inline-block; text-align: center; padding: 1.3mm 2.6mm; border-radius: 1.6mm;
+  font-size: 8.6pt; font-weight: 700; border: 1.2px solid var(--blue); color: var(--blue); background: #fff; }
+.chip.green { background: var(--green); border-color: var(--green); color: #fff; }
+.chip.red { background: var(--red); border-color: var(--red); color: #fff; }
+.chip.blue { background: var(--blue); color: #fff; }
+
+/* credentials */
+.cred { border: 1.4px solid var(--navy); border-radius: 3mm; margin: 0 0 3.2mm; overflow: hidden; }
+.cred-h { background: var(--navy); color: #fff; padding: 2.4mm 5mm; display: flex; justify-content: space-between; align-items: center; }
+.cred-h b { font-family: var(--serif); font-size: 12pt; font-weight: 600; }
+.cred-h span { font-size: 7.4pt; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.cred-b { padding: 1.6mm 5mm; }
+.cred-row { display: flex; gap: 5mm; padding: 1.1mm 0; border-bottom: 1px dashed var(--line); }
+.cred-row:last-child { border-bottom: 0; }
+.cred-row .k { width: 30mm; flex: none; font-size: 7.8pt; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); padding-top: .5mm; }
+.cred-row .v { font-weight: 700; word-break: break-word; }
+.cred-row .v.pw { font-family: ui-monospace, Menlo, monospace; font-size: 11pt; letter-spacing: .04em; color: var(--blue); }
+.cred-row .v.plain { font-weight: 400; }
+.blank { display: inline-block; min-width: 70mm; border-bottom: 1px solid var(--ink); height: 4.6mm; }
+.reserved { position: absolute; top: 9mm; right: 19mm; font-size: 7.4pt; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); border: 1.2px solid var(--red); padding: 1mm 2.4mm; border-radius: 1mm; font-weight: 700; }
+
+.qa div { margin-bottom: 3.4mm; }
+.qa .q { font-weight: 700; margin: 0 0 .6mm; color: var(--navy); }
+.qa .a { margin: 0; color: var(--soft); }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3.6mm; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+.box { border: 1px solid var(--line); border-radius: 2.4mm; padding: 2.8mm 4.2mm; }
+.box h4 { margin: 0 0 1.2mm; font-size: 9.6pt; color: var(--blue); }
+.box p { margin: 0; font-size: 9.2pt; color: var(--soft); }
+.big { font-family: var(--serif); font-size: 19pt; line-height: 1; color: var(--blue); font-weight: 600; display: block; margin-bottom: 1mm; }
+
+.check { list-style: none; padding: 0; }
+.check li { padding-left: 8mm; position: relative; margin-bottom: 1.6mm; }
+.check li::before { content: ""; position: absolute; left: 0; top: .6mm; width: 4.2mm; height: 4.2mm; border: 1.3px solid var(--navy); border-radius: .8mm; }
+
+.sign { display: grid; grid-template-columns: 1fr 1fr; gap: 12mm; margin-top: 7mm; }
+.sign div { border-top: 1px solid var(--ink); padding-top: 2mm; font-size: 8.6pt; color: var(--soft); }
+
+.foot {
+  position: absolute; left: 19mm; right: 19mm; bottom: 10mm;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 7.6pt; color: var(--dim); border-top: 1px solid var(--line); padding-top: 2.6mm;
+}
+.foot img { width: 17mm; height: auto; }
+.foot .pg { font-weight: 700; color: var(--navy); }
+</style>
+</head>
+<body>
+
+<!-- ================================================================ cover -->
+<section class="page cover">
+  <div class="cover-key"></div>
+  <div class="cover-main">
+    <div class="cover-disc"><img src="IMG:mythos-logo" alt="Mythos"></div>
+    <p class="kicker">Mythos Cucina Greca · Via Tuscolana 596</p>
+    <h1>Il vostro sito<br>e le prenotazioni <em>online</em></h1>
+    <p class="sub">Guida all’uso e documento di consegna: dove sono le cose, come prenotano
+      i clienti, come si gestisce la sala dalla console, a chi chiedere aiuto.
+      Dieci minuti di lettura, poi si fa tutto dal telefono.</p>
+    <!--FULL--><span class="version full">Copia completa · contiene credenziali riservate</span><!--/FULL-->
+    <!--STAFF--><span class="version">Copia per il personale</span><!--/STAFF-->
+  </div>
+  <div class="cover-foot">
+    <p class="who"><b>tavernamythos.com</b> · consegnato il {{DATE}}<br>
+      Realizzato e gestito da x3ro Automations — Sihab Haque</p>
+    <img src="IMG:x3ro-logo" alt="x3ro Automations">
+  </div>
+</section>
+
+<!-- ============================================================ in breve -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">In breve</span></div>
+  <p class="eyebrow">Tutto in una pagina</p>
+  <h2>Cosa avete, e dove si trova</h2>
+  <p class="lead">Il sito è online su <strong>tavernamythos.com</strong> con il suo certificato di
+    sicurezza (il lucchetto nel browser). Le prenotazioni arrivano direttamente a voi, senza
+    commissioni e senza piattaforme di mezzo.</p>
+
+  <table>
+    <tr><th>Pagina</th><th>Indirizzo</th><th>A cosa serve</th></tr>
+    <tr><td class="k">Sito</td><td class="url">tavernamythos.com</td><td>La vetrina: chi siete, i piatti, dove siete, gli orari.</td></tr>
+    <tr><td class="k">Prenotazioni</td><td class="url">tavernamythos.com/prenota.html</td><td>Il modulo per prenotare: il link da mettere su Google e sui social.</td></tr>
+    <tr><td class="k">Menù</td><td class="url">tavernamythos.com/menu.html</td><td>Il menù digitale da tavolo, aperto dal QR code.</td></tr>
+    <tr><td class="k">Console</td><td class="url">tavernamythos.com/admin.html</td><td>L’area riservata al personale.</td></tr>
+    <tr><td class="k">Privacy</td><td class="url">tavernamythos.com/privacy.html</td><td>L’informativa sui dati dei clienti.</td></tr>
+  </table>
+
+  <h3>Le regole delle prenotazioni online</h3>
+  <div class="grid4">
+    <div class="box"><span class="big">28</span><h4>coperti</h4><p>Mai più di 28 persone sedute nello stesso momento.</p></div>
+    <div class="box"><span class="big">90′</span><h4>per tavolo</h4><p>Ogni tavolo resta occupato 90 minuti.</p></div>
+    <div class="box"><span class="big">1–6</span><h4>persone</h4><p>Confermata subito, con codice ed email.</p></div>
+    <div class="box"><span class="big">7–20</span><h4>persone</h4><p>Richiesta da approvare in console. Oltre 20: telefono.</p></div>
+  </div>
+
+  <h3>Orari</h3>
+  <table>
+    <tr><td class="k">Apertura</td><td>Da martedì a domenica, 12:30–16:30 e 18:30–23:45. Lunedì chiuso.</td></tr>
+    <tr><td class="k">Prenotabili online</td><td>Pranzo dalle 12:45 alle 15:30, cena dalle 19:00 alle 22:30, ogni 15 minuti.</td></tr>
+    <tr><td class="k">Preavviso</td><td>Si prenota online fino a 60 minuti prima, e fino a 45 giorni in anticipo.</td></tr>
+  </table>
+
+  <div class="foot"><span>Mythos Cucina Greca · Guida al sito e alle prenotazioni</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!--FULL-->
+<!-- ========================================================= credenziali -->
+<section class="page">
+  <span class="reserved">Riservato</span>
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Credenziali</span></div>
+  <p class="eyebrow">Solo per il titolare</p>
+  <h2>Accessi e credenziali</h2>
+  <p class="lead">Contiene password: conservatela in un luogo sicuro e non inoltratela. Il personale
+    ha una copia della guida senza questa pagina.</p>
+
+  <div class="cred">
+    <div class="cred-h"><b>Console prenotazioni</b><span>Uso quotidiano</span></div>
+    <div class="cred-b">
+      <div class="cred-row"><span class="k">Indirizzo</span><span class="v">tavernamythos.com/admin.html</span></div>
+      <div class="cred-row"><span class="k">Email</span><span class="v">mythos.tuscolana@gmail.com</span></div>
+      <div class="cred-row"><span class="k">Password</span><span class="v pw">{{CONSOLE_PW}}</span></div>
+    </div>
+  </div>
+
+  <div class="cred">
+    <div class="cred-h"><b>Email del ristorante (Gmail)</b><span>Di vostra proprietà</span></div>
+    <div class="cred-b">
+      <div class="cred-row"><span class="k">Indirizzo</span><span class="v">mythos.tuscolana@gmail.com</span></div>
+      <div class="cred-row"><span class="k">Password</span><span class="v">la vostra — <span style="color:var(--red)">da cambiare subito, vedi sotto</span></span></div>
+    </div>
+  </div>
+
+  <div class="cred">
+    <div class="cred-h"><b>Resend — invio delle email</b><span>resend.com · intestato al ristorante</span></div>
+    <div class="cred-b">
+      <div class="cred-row"><span class="k">Accesso</span><span class="v">mythos.tuscolana@gmail.com</span></div>
+      <div class="cred-row"><span class="k">Password</span><span class="v"><span class="blank"></span></span></div>
+      <div class="cred-row"><span class="k">Mittente</span><span class="v">prenotazioni@tavernamythos.com</span></div>
+    </div>
+  </div>
+
+  <div class="cred">
+    <div class="cred-h"><b>Dominio tavernamythos.com</b><span>IONOS · il vostro account</span></div>
+    <div class="cred-b">
+      <div class="cred-row"><span class="k">Scadenza</span><span class="v">2 novembre 2027 — lasciate attivo il rinnovo automatico</span></div>
+      <div class="cred-row"><span class="k">DNS</span><span class="v plain">Non modificate i record <code>@</code>, <code>www</code>, <code>send</code>, <code>rsend</code>, <code>resend._domainkey</code>: tengono in piedi sito ed email.</span></div>
+    </div>
+  </div>
+
+  <div class="note red">
+    <span class="tag">Da fare subito</span>
+    <p>La password della Gmail è stata condivisa durante la configurazione: <strong>cambiatela</strong>
+      e attivate la <strong>verifica in due passaggi</strong>. Hosting, database, anti-bot e backup sono
+      gestiti da x3ro e inclusi nel canone: non vi serve nessun altro accesso.</p>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Credenziali riservate</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+<!--/FULL-->
+
+<!-- ===================================================== come prenota -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Il cliente</span></div>
+  <p class="eyebrow">Dal lato del cliente</p>
+  <h2>Come prenota un cliente</h2>
+  <p class="lead">Tutto avviene su <strong>tavernamythos.com/prenota.html</strong>, dal telefono o dal
+    computer, in italiano o in inglese. Il sistema mostra solo gli orari davvero liberi.</p>
+
+  <div class="split">
+    <div class="txt">
+      <ol class="steps">
+        <li><strong>Quante persone.</strong> Da 1 a 8 con i pulsanti, da 9 a 20 dal menù “Gruppo più grande”.</li>
+        <li><strong>Il giorno.</strong> I giorni chiusi (lunedì, ferie) non si possono scegliere.</li>
+        <li><strong>Pranzo o cena, poi l’orario.</strong> Ogni orario dice <em>disponibile</em> oppure
+          <em>esaurito</em>. Gli orari già passati o troppo vicini non compaiono.</li>
+        <li><strong>I dati:</strong> nome, telefono, <strong>email (obbligatoria)</strong> e, se vuole,
+          note su allergie o esigenze. Spunta la privacy.</li>
+        <li><strong>Il controllo anti-bot</strong> di Cloudflare diventa verde da solo in un secondo.</li>
+        <li><strong>Prenota il tavolo.</strong> Compare il codice (es. <span class="mono">MY-7KQ2P</span>)
+          e parte l’email di conferma.</li>
+      </ol>
+      <div class="note blue">
+        <span class="tag">Gruppi da 7 a 20</span>
+        <p>Il pulsante diventa <strong>“Invia la richiesta”</strong>. Il cliente riceve “Richiesta ricevuta”,
+          voi un’email “Da approvare”. I posti non sono occupati finché non premete <strong>Approva</strong>
+          in console.</p>
+      </div>
+      <h3>Annullare</h3>
+      <p>Nell’email di conferma c’è il pulsante <strong>Annulla la prenotazione</strong>. In alternativa,
+        su prenota.html → “Devi annullare?” con il codice e le ultime 4 cifre del telefono.
+        I posti tornano liberi subito e voi ricevete un’email.</p>
+    </div>
+    <div>
+      <div class="shot w56"><img src="IMG:shots/sito-orari" alt=""></div>
+      <p class="cap">Gli orari: disponibile o esaurito</p>
+      <div class="shot w56" style="margin-top:3mm"><img src="IMG:shots/sito-dati" alt=""></div>
+      <p class="cap">I dati del cliente</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Come prenota un cliente</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- =========================================================== le email -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Le email</span></div>
+  <p class="eyebrow">Automatiche</p>
+  <h2>Le email che partono da sole</h2>
+  <p class="lead">Tutte partono da <strong>prenotazioni@tavernamythos.com</strong>, con il vostro logo.
+    Quelle per il ristorante arrivano a <strong>mythos.tuscolana@gmail.com</strong>: premendo
+    “Rispondi” scrivete direttamente al cliente.</p>
+
+  <table>
+    <tr><th>Quando</th><th>Al cliente</th><th>Al ristorante</th></tr>
+    <tr><td class="k">Prenotazione 1–6 persone</td><td>“Il tuo tavolo è confermato”: codice, calendario, mappa, link per annullare</td><td>“Nuova prenotazione” con nome, telefono, note e pulsanti Chiama / WhatsApp</td></tr>
+    <tr><td class="k">Richiesta 7–20 persone</td><td>“Richiesta ricevuta”: non è ancora confermata</td><td>“Da approvare”: aprite la console</td></tr>
+    <tr><td class="k">Premete Approva</td><td>“Il tuo tavolo è confermato”</td><td>—</td></tr>
+    <tr><td class="k">Premete Rifiuta</td><td>“Richiesta non accolta”, con l’invito a chiamarvi per un’altra data</td><td>—</td></tr>
+    <tr><td class="k">Il cliente annulla</td><td>“Prenotazione annullata”</td><td>“Annullata”: i posti sono di nuovo liberi</td></tr>
+    <tr><td class="k">Prenotazione al telefono</td><td>Conferma, solo se avete inserito la sua email</td><td>—</td></tr>
+  </table>
+
+  <div class="note">
+    <span class="tag">Se un’email non arriva</span>
+    <p>Fate controllare al cliente la cartella <strong>Spam</strong> o <strong>Promozioni</strong>.
+      La prenotazione è comunque valida: il codice compare a schermo e voi la vedete in console.
+      Un problema con le email non blocca mai una prenotazione.</p>
+  </div>
+
+  <h3>Il QR code del menù</h3>
+  <p>Il file <span class="mono">qr-menu.png</span>, consegnato insieme a questa guida, porta a
+    tavernamythos.com/menu.html. Stampatelo sui segnatavolo o sul retro dei menù cartacei:
+    il cliente inquadra e sfoglia il menù dal telefono.</p>
+  <div style="display:flex;gap:6mm;align-items:center;margin-top:3mm">
+    <img src="IMG:qr-menu" alt="" style="width:25mm;height:25mm;border:1px solid var(--line);padding:1.2mm;background:#fff">
+    <p style="margin:0;color:var(--soft);font-size:9.4pt">Inquadratelo ora con la fotocamera del telefono
+      per provarlo. Per la stampa usate il file originale, non questa immagine.</p>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Le email automatiche</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- ========================================================= la console -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Console</span></div>
+  <p class="eyebrow">Area riservata</p>
+  <h2>Entrare nella console</h2>
+
+  <div class="split">
+    <div class="txt">
+      <ol class="steps">
+        <li>Aprite <strong>tavernamythos.com/admin.html</strong> dal telefono o dal computer della cassa.</li>
+        <li>Inserite email e password (il titolare le trova nella copia completa di questa guida) e premete <strong>Entra</strong>.</li>
+        <li>Restate collegati: la console non vi fa uscire finché non premete <strong>Esci</strong>.</li>
+      </ol>
+      <h3>Mettetela sulla schermata Home</h3>
+      <p><strong>iPhone</strong> (Safari): tasto Condividi → <em>Aggiungi alla schermata Home</em>.<br>
+        <strong>Android</strong> (Chrome): menù ⋮ → <em>Aggiungi a schermata Home</em>.<br>
+        Comparirà l’icona Mythos: si apre con un tocco, come un’app.</p>
+      <h3>Le tre sezioni</h3>
+      <table>
+        <tr><td class="k">Servizio</td><td>La giornata: chi arriva, a che ora, quanti posti sono occupati. Le richieste di gruppo. Aggiungere una prenotazione al telefono.</td></tr>
+        <tr><td class="k">Impostazioni</td><td>Fermare le prenotazioni online, posti in sala, durata dei tavoli, orari della settimana.</td></tr>
+        <tr><td class="k">Chiusure</td><td>Ferie, festività, eventi privati: chiudere o riaprire una data.</td></tr>
+      </table>
+      <p>La console si aggiorna da sola ogni minuto e mezzo, e funziona anche con il telefono in modalità scura.</p>
+    </div>
+    <div>
+      <div class="shot w60"><img src="IMG:shots/console-login" alt=""></div>
+      <p class="cap">La schermata di accesso</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · La console</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- ========================================================== servizio -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Servizio</span></div>
+  <p class="eyebrow">Ogni giorno</p>
+  <h2>Servizio: la giornata in sala</h2>
+
+  <div class="split">
+    <div class="txt">
+      <p>In alto scegliete il giorno: <strong>Ieri</strong>, <strong>Oggi</strong>, <strong>Domani</strong>
+        o una data qualsiasi dal calendario. <strong>Aggiorna</strong> ricarica subito.</p>
+      <h3>Il riquadro del giorno</h3>
+      <p>Il numero grande è la <strong>punta di sala</strong>: il massimo di persone sedute nello stesso
+        momento, su 28. La barra diventa gialla quando la sala si riempie e rossa quando è piena.
+        Sotto trovate i coperti di pranzo, cena e il totale della giornata.</p>
+      <h3>Ogni prenotazione</h3>
+      <p>Orario, persone, stato, nome, codice, il telefono (toccatelo per chiamare) e le note
+        del cliente in giallo: <strong>leggetele prima del servizio</strong>, spesso sono allergie.</p>
+    </div>
+    <div>
+      <div class="shot w72"><img src="IMG:shots/console-giornata" alt=""></div>
+      <p class="cap">Il riquadro del giorno</p>
+      <div class="shot w72" style="margin-top:3mm"><img src="IMG:shots/console-riga-confermata" alt=""></div>
+      <p class="cap">Una prenotazione confermata</p>
+    </div>
+  </div>
+
+  <h3>I pulsanti</h3>
+  <div class="btnlist">
+    <span class="chip green">Seduti</span><span>Il tavolo è arrivato. Utile per sapere a colpo d’occhio chi manca.</span>
+    <span class="chip">No-show</span><span>Non si è presentato: i posti tornano liberi per il resto della serata.</span>
+    <span class="chip red">Annulla</span><span>Il cliente vi ha chiamato per disdire: i posti tornano liberi subito sul sito.</span>
+    <span class="chip blue">Riattiva</span><span>Avete annullato per errore: la prenotazione torna valida, se c’è ancora posto.</span>
+  </div>
+  <p>Ogni azione importante chiede conferma prima di procedere. Le prenotazioni annullate restano
+    visibili, barrate, così sapete sempre chi era in lista.</p>
+
+  <div class="foot"><span>Mythos Cucina Greca · Servizio</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- ============================================== richieste + telefono -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Gruppi e telefono</span></div>
+  <p class="eyebrow">Servizio</p>
+  <h2>Le richieste di gruppo</h2>
+
+  <div class="split">
+    <div class="txt">
+      <p>Quando qualcuno chiede un tavolo per 7–20 persone, in cima a <strong>Servizio</strong>
+        compare il riquadro dorato <strong>“Richieste di gruppo da approvare”</strong>, qualunque
+        giorno stiate guardando. Arriva anche un’email.</p>
+      <p>Ogni richiesta vi dice se <strong>c’è posto in sala</strong> a quell’ora oppure no.</p>
+      <div class="btnlist">
+        <span class="chip green">Approva</span><span>Diventa una prenotazione confermata, occupa i posti e il cliente riceve la conferma.</span>
+        <span class="chip red">Rifiuta</span><span>Il cliente riceve un’email gentile che lo invita a chiamarvi per un’altra data.</span>
+      </div>
+      <p><strong>Rispondete presto:</strong> finché non approvate, quei posti possono essere presi da altri sul sito.</p>
+    </div>
+    <div class="shot w80"><img src="IMG:shots/console-richieste" alt=""></div>
+  </div>
+
+  <h2 style="margin-top:2mm">Prenotazioni al telefono</h2>
+  <div class="split">
+    <div class="txt">
+      <p>Quando un cliente prenota <strong>per telefono o di persona</strong>, inseritelo in console:
+        così quei posti contano anche per il sito, che <strong>non li rivende</strong>.</p>
+      <ol class="steps">
+        <li>In <strong>Servizio</strong> toccate <strong>+ Aggiungi prenotazione</strong>.</li>
+        <li>Data (già impostata sul giorno che state guardando), ora e persone.</li>
+        <li>Nome e telefono. L’email è facoltativa: se la mettete, il cliente riceve la conferma.</li>
+        <li><strong>Salva prenotazione.</strong> Compare nella giornata con l’etichetta <em>Telefono</em>.</li>
+      </ol>
+      <p>Se l’orario è passato, il giorno è chiuso, siete fuori orario o la sala è piena, la console
+        vi avvisa e vi chiede se salvare comunque: decidete voi.</p>
+    </div>
+    <div class="shot w46"><img src="IMG:shots/console-aggiungi" alt=""></div>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Gruppi e prenotazioni al telefono</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- ======================================================= impostazioni -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Impostazioni</span></div>
+  <p class="eyebrow">Ogni tanto</p>
+  <h2>Impostazioni</h2>
+
+  <div class="split">
+    <div class="txt">
+      <h3 style="margin-top:0">Fermare le prenotazioni online</h3>
+      <p>Il riquadro verde in alto dice se le prenotazioni online sono <strong>attive</strong>.
+        <strong>Ferma le prenotazioni online</strong> le sospende all’istante (un imprevisto, una
+        serata piena): il sito mostra il vostro numero di telefono. Quelle già confermate
+        restano valide. Lo stesso pulsante le riattiva.</p>
+      <h3>Sala e turni</h3>
+      <table>
+        <tr><td class="k">Posti in sala</td><td>28. Il massimo di persone sedute insieme.</td></tr>
+        <tr><td class="k">Durata turno</td><td>90 minuti, per tavoli piccoli e grandi.</td></tr>
+        <tr><td class="k">Massimo persone</td><td>6: oltre, la prenotazione diventa una richiesta.</td></tr>
+        <tr><td class="k">Preavviso minimo</td><td>60 minuti prima dell’orario.</td></tr>
+        <tr><td class="k">Si prenota fino a</td><td>45 giorni in anticipo.</td></tr>
+      </table>
+      <p>Cambiate un valore e premete <strong>Salva impostazioni</strong>: vale per le nuove
+        prenotazioni, quelle esistenti non cambiano.</p>
+    </div>
+    <div>
+      <div class="shot w66"><img src="IMG:shots/console-stop" alt=""></div>
+    </div>
+  </div>
+
+  <h3>Orari della settimana</h3>
+  <div class="split">
+    <div class="txt">
+      <p>Per ogni giorno, pranzo e cena: la spunta accende il servizio, poi <strong>primo e ultimo orario
+        prenotabile</strong> e ogni quanti minuti (15 o 30). Senza spunta quel servizio non si prenota:
+        per questo il lunedì è senza spunte.</p>
+      <p><strong>Salva orari</strong> sostituisce tutta la settimana e vi chiede conferma, elencando i
+        giorni che resteranno aperti.</p>
+      <p><strong>Per un singolo giorno di chiusura</strong> non togliete la spunta: usate <strong>Chiusure</strong>.</p>
+    </div>
+    <div class="shot w66"><img src="IMG:shots/console-orari" alt=""></div>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Impostazioni</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- ========================================================== chiusure -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Chiusure</span></div>
+  <p class="eyebrow">Ferie, festività, eventi</p>
+  <h2>Chiusure</h2>
+
+  <div class="split">
+    <div class="txt">
+      <ol class="steps">
+        <li>Aprite <strong>Chiusure</strong> e scegliete la data.</li>
+        <li>Se volete, una nota (es. <em>Ferie</em>, <em>Evento privato</em>): la vedrà il cliente sul sito.</li>
+        <li><strong>Chiudi la data</strong>: da quel momento il giorno non si può più prenotare online.</li>
+        <li>Per tornare indietro: stessa data, <strong>Riapri la data</strong>.</li>
+      </ol>
+      <div class="note red"><span class="tag">Le prenotazioni già fatte restano</span>
+        <p>Chiudere una data <strong>non annulla</strong> chi aveva già prenotato: la console vi dice
+          quanti sono. Chiamateli, poi annullateli uno per uno da <strong>Servizio</strong>.</p></div>
+    </div>
+    <div class="shot w72"><img src="IMG:shots/console-chiusure" alt=""></div>
+  </div>
+
+  <h2 style="margin-top:6mm">Domande rapide</h2>
+  <div class="qa">
+    <div><p class="q">Un cliente dice che non riesce a prenotare.</p>
+      <p class="a">Forse il giorno è pieno, chiuso o troppo vicino (meno di 60 minuti), oppure ha fatto
+        troppi tentativi in poco tempo. Prendete la prenotazione al telefono e inseritela da
+        <strong>+ Aggiungi prenotazione</strong>.</p></div>
+    <div><p class="q">Cos’è il riquadro “Verifica che tu sia umano”?</p>
+      <p class="a">La protezione anti-bot di Cloudflare: blocca i programmi automatici che riempirebbero
+        la sala di prenotazioni false. Per le persone diventa verde da sola.</p></div>
+    <div><p class="q">Il cliente ha perso il codice.</p>
+      <p class="a">Lo trovate in console accanto al suo nome. Oppure annullate voi da Servizio.</p></div>
+    <div><p class="q">Siamo pieni stasera, voglio fermare il sito subito.</p>
+      <p class="a">Impostazioni → <strong>Ferma le prenotazioni online</strong>. Ricordatevi di riattivarle.</p></div>
+    <div><p class="q">Ho annullato per sbaglio.</p>
+      <p class="a">Servizio → sulla prenotazione barrata premete <strong>Riattiva</strong>.</p></div>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Chiusure e domande rapide</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+<!-- ========================================================= assistenza -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Assistenza</span></div>
+  <p class="eyebrow">Siamo qui</p>
+  <h2>Assistenza e manutenzione</h2>
+
+  <div class="split">
+    <div class="txt">
+      <div class="cred">
+        <div class="cred-h"><b>x3ro Automations</b><span>Sihab Haque</span></div>
+        <div class="cred-b">
+          <div class="cred-row"><span class="k">WhatsApp</span><span class="v">+39 389 001 7640</span></div>
+          <div class="cred-row"><span class="k">Email</span><span class="v">x3roautomations@gmail.com</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="width:34mm;padding-top:4mm"><img src="IMG:x3ro-logo" alt="" style="width:34mm"></div>
+  </div>
+
+  <table>
+    <tr><td class="k">Risposta</td><td>Entro 1 giorno lavorativo per le richieste normali.</td></tr>
+    <tr><td class="k">Sistema bloccato</td><td>Se le prenotazioni non funzionano, intervento prioritario entro 4 ore lavorative.</td></tr>
+    <tr><td class="k">Incluso nel canone</td><td>Hosting, database, email automatiche, protezione anti-bot, backup, sicurezza, aggiornamenti
+      e 1 ora al mese di piccole modifiche: orari, chiusure, testi, prezzi del menù, foto che ci mandate.</td></tr>
+    <tr><td class="k">Cosa mandarci</td><td>Per il menù: nome del piatto e prezzo nuovo. Per le foto: l’originale dal telefono, inviato come <em>documento</em> su WhatsApp, così non perde qualità.</td></tr>
+  </table>
+
+  <h3>Privacy dei clienti</h3>
+  <p>I dati delle prenotazioni restano in un database in Europa e vengono <strong>resi anonimi
+    automaticamente dopo 120 giorni</strong>. Nessuna pubblicità, nessuna profilazione.</p>
+
+  <h3>Da completare insieme</h3>
+  <ul class="check">
+    <li>Cambiare la password della Gmail del ristorante e attivare la verifica in due passaggi.</li>
+    <li>Google Business Profile: sito <span class="mono">https://tavernamythos.com</span> e link prenotazioni <span class="mono">https://tavernamythos.com/prenota.html</span>.</li>
+    <li>Mettere il link prenotazioni nella bio di Instagram e su Facebook.</li>
+    <li>Mandarci le vostre foto (la sala, i piatti): sostituiscono quelle provvisorie.</li>
+    <li>Confermare i prezzi del menù ancora mancanti e il CAP corretto dell’indirizzo.</li>
+    <li>Stampare il QR code del menù per i tavoli.</li>
+  </ul>
+
+  <!--FULL-->
+  <div class="sign">
+    <div>Per Giulsi s.r.l.s. — Mythos Cucina Greca<br>firma e data</div>
+    <div>Per x3ro Automations — Sihab Haque<br>firma e data</div>
+  </div>
+  <!--/FULL-->
+
+  <div class="foot"><span>Mythos Cucina Greca · Assistenza</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+
+</body>
+</html>
