@@ -39,14 +39,17 @@ E-mail is required online. Staff can add phone / walk-in bookings from the conso
 
 ## Handover guide
 
-`bash tools/guida/build-guida.sh` builds `deliverables/MYTHOS-guida-completa.pdf`
-(owner, with credentials) and `MYTHOS-guida-staff.pdf`. `deliverables/` is gitignored
-because it holds the console password.
+`bash tools/guida/build-guida.sh` builds `deliverables/MYTHOS-guida.pdf` (how-to,
+nothing confidential, for owner and staff) and `MYTHOS-riservato.pdf` (accounts, console
+password, all links, handover signatures). `deliverables/` is gitignored because it holds
+the console password.
 
 ## Open
 
 - Owner: change the restaurant Gmail password; Google Business Profile website +
   booking link; own photos to replace the provisional ones; the menu prices still
   blank; confirm the postcode.
-- Resend key in use has full access: swap for a sending-only key.
+- Resend: functions + `.env` now use a sending-only key scoped to tavernamythos.com
+  ("mythos booking functions (sending only)", 2026-11-05). Old full-access key
+  "mythos site config" deleted.
 - Optional: an English version of the booking e-mails.

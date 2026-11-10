@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
-# Rebuild the Mythos handover guide, two editions from one template:
+# Rebuild the Mythos handover documents, two PDFs from one template:
 #
-#   guida.template.html → MYTHOS-guida-completa.pdf  (owner: credentials page + signatures)
-#                       → MYTHOS-guida-staff.pdf     (staff: no credentials)
+#   guida.template.html → MYTHOS-guida.pdf      (<!--G--> pages: how-to, nothing confidential,
+#                                                 safe to give to all staff)
+#                       → MYTHOS-riservato.pdf  (<!--R--> pages: accounts, console password,
+#                                                 every link, handover signatures)
+#
+# Pages outside both markers (the cover shell) appear in both.
 #
 # Sources live here in tools/guida (template, screenshots of sample data — no
 # secrets, safe in the public repo). Output goes to deliverables/, which is
 # gitignored: the console password is read from deliverables/credenziali-console.txt
-# and only ever lands in the FULL edition.
+# and only ever lands in the riservato document.
 #
 # Images are inlined as data URIs (logos from docs/assets/img/mail, screenshots
 # from tools/guida/shots, the menu QR).
@@ -55,19 +59,19 @@ def edition(keep, drop, password):
     n = iter(range(2, 99))
     return re.sub(r"\{\{P\}\}", lambda _: str(next(n)), html)
 
-full = edition("FULL", "STAFF", pw)
-staff = edition("STAFF", "FULL", "")
-assert pw not in staff
-(d / "guida-completa.html").write_text(full)
-(d / "guida-staff.html").write_text(staff)
-print(f"html: completa {len(full) // 1024} KB, staff {len(staff) // 1024} KB")
+riservato = edition("R", "G", pw)
+guida = edition("G", "R", "")
+assert pw not in guida and "admin.html" not in guida and "{{" not in guida + riservato
+(d / "guida.html").write_text(guida)
+(d / "riservato.html").write_text(riservato)
+print(f"html: guida {len(guida) // 1024} KB, riservato {len(riservato) // 1024} KB")
 PY
 
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-for ed in completa staff; do
+for ed in guida riservato; do
   "$CHROME" --headless --disable-gpu --no-pdf-header-footer --virtual-time-budget=4000 \
-    --print-to-pdf="$DIR/MYTHOS-guida-$ed.pdf" "file://$DIR/guida-$ed.html" 2>/dev/null
-  echo "pdf:  $DIR/MYTHOS-guida-$ed.pdf"
+    --print-to-pdf="$DIR/MYTHOS-$ed.pdf" "file://$DIR/$ed.html" 2>/dev/null
+  echo "pdf:  $DIR/MYTHOS-$ed.pdf"
 done
 cp "$BASE/docs/assets/img/qr-menu.png" "$DIR/MYTHOS-qr-menu.png"
 echo "qr:   $DIR/MYTHOS-qr-menu.png"

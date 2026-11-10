@@ -208,12 +208,18 @@ tr:last-child td { border-bottom: 0; }
   <div class="cover-main">
     <div class="cover-disc"><img src="IMG:mythos-logo" alt="Mythos"></div>
     <p class="kicker">Mythos Cucina Greca · Via Tuscolana 596</p>
+    <!--G-->
     <h1>Il vostro sito<br>e le prenotazioni <em>online</em></h1>
-    <p class="sub">Guida all’uso e documento di consegna: dove sono le cose, come prenotano
-      i clienti, come si gestisce la sala dalla console, a chi chiedere aiuto.
-      Dieci minuti di lettura, poi si fa tutto dal telefono.</p>
-    <!--FULL--><span class="version full">Copia completa · contiene credenziali riservate</span><!--/FULL-->
-    <!--STAFF--><span class="version">Copia per il personale</span><!--/STAFF-->
+    <p class="sub">Guida all’uso: come prenotano i clienti, come si gestisce la sala dalla
+      console, a chi chiedere aiuto. Dieci minuti di lettura, poi si fa tutto dal telefono.</p>
+    <span class="version">Guida per il titolare e il personale</span>
+    <!--/G-->
+    <!--R-->
+    <h1>Accessi<br>e <em>consegna</em></h1>
+    <p class="sub">Gli indirizzi, gli accessi e i conti a nome del ristorante, in un solo posto.
+      Per l’uso quotidiano c’è la guida, che si può dare a tutto il personale.</p>
+    <span class="version full">Documento riservato · solo per il titolare</span>
+    <!--/R-->
   </div>
   <div class="cover-foot">
     <p class="who"><b>tavernamythos.com</b> · consegnato il {{DATE}}<br>
@@ -222,6 +228,7 @@ tr:last-child td { border-bottom: 0; }
   </div>
 </section>
 
+<!--G-->
 <!-- ============================================================ in breve -->
 <section class="page">
   <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">In breve</span></div>
@@ -236,8 +243,8 @@ tr:last-child td { border-bottom: 0; }
     <tr><td class="k">Sito</td><td class="url">tavernamythos.com</td><td>La vetrina: chi siete, i piatti, dove siete, gli orari.</td></tr>
     <tr><td class="k">Prenotazioni</td><td class="url">tavernamythos.com/prenota.html</td><td>Il modulo per prenotare: il link da mettere su Google e sui social.</td></tr>
     <tr><td class="k">Menù</td><td class="url">tavernamythos.com/menu.html</td><td>Il menù digitale da tavolo, aperto dal QR code.</td></tr>
-    <tr><td class="k">Console</td><td class="url">tavernamythos.com/admin.html</td><td>L’area riservata al personale.</td></tr>
     <tr><td class="k">Privacy</td><td class="url">tavernamythos.com/privacy.html</td><td>L’informativa sui dati dei clienti.</td></tr>
+    <tr><td class="k">Console</td><td class="url">—</td><td>L’area riservata al personale. Indirizzo e accesso ve li dà il titolare.</td></tr>
   </table>
 
   <h3>Le regole delle prenotazioni online</h3>
@@ -258,15 +265,16 @@ tr:last-child td { border-bottom: 0; }
   <div class="foot"><span>Mythos Cucina Greca · Guida al sito e alle prenotazioni</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
 </section>
 
-<!--FULL-->
-<!-- ========================================================= credenziali -->
+<!--/G-->
+<!--R-->
+<!-- ============================================================ accessi -->
 <section class="page">
   <span class="reserved">Riservato</span>
-  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Credenziali</span></div>
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Accessi</span></div>
   <p class="eyebrow">Solo per il titolare</p>
-  <h2>Accessi e credenziali</h2>
-  <p class="lead">Contiene password: conservatela in un luogo sicuro e non inoltratela. Il personale
-    ha una copia della guida senza questa pagina.</p>
+  <h2>Accessi e account</h2>
+  <p class="lead">Tenete questo foglio in un posto sicuro. Al personale basta la guida: l’accesso
+    alla console glielo date voi.</p>
 
   <div class="cred">
     <div class="cred-h"><b>Console prenotazioni</b><span>Uso quotidiano</span></div>
@@ -281,7 +289,7 @@ tr:last-child td { border-bottom: 0; }
     <div class="cred-h"><b>Email del ristorante (Gmail)</b><span>Di vostra proprietà</span></div>
     <div class="cred-b">
       <div class="cred-row"><span class="k">Indirizzo</span><span class="v">mythos.tuscolana@gmail.com</span></div>
-      <div class="cred-row"><span class="k">Password</span><span class="v">la vostra — <span style="color:var(--red)">da cambiare subito, vedi sotto</span></span></div>
+      <div class="cred-row"><span class="k">Ruolo</span><span class="v plain">Riceve le email delle prenotazioni ed è l’accesso a Resend.</span></div>
     </div>
   </div>
 
@@ -289,7 +297,6 @@ tr:last-child td { border-bottom: 0; }
     <div class="cred-h"><b>Resend — invio delle email</b><span>resend.com · intestato al ristorante</span></div>
     <div class="cred-b">
       <div class="cred-row"><span class="k">Accesso</span><span class="v">mythos.tuscolana@gmail.com</span></div>
-      <div class="cred-row"><span class="k">Password</span><span class="v"><span class="blank"></span></span></div>
       <div class="cred-row"><span class="k">Mittente</span><span class="v">prenotazioni@tavernamythos.com</span></div>
     </div>
   </div>
@@ -302,16 +309,56 @@ tr:last-child td { border-bottom: 0; }
     </div>
   </div>
 
-  <div class="note red">
-    <span class="tag">Da fare subito</span>
-    <p>La password della Gmail è stata condivisa durante la configurazione: <strong>cambiatela</strong>
-      e attivate la <strong>verifica in due passaggi</strong>. Hosting, database, anti-bot e backup sono
-      gestiti da x3ro e inclusi nel canone: non vi serve nessun altro accesso.</p>
+  <div class="note blue">
+    <span class="tag">Un consiglio</span>
+    <p>Durante la configurazione abbiamo usato la password della Gmail: quando avete un momento,
+      cambiatela e attivate la verifica in due passaggi. Hosting, database, anti-bot e backup li
+      gestiamo noi, inclusi nel canone: non vi serve nessun altro accesso.</p>
   </div>
 
-  <div class="foot"><span>Mythos Cucina Greca · Credenziali riservate</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+  <div class="foot"><span>Mythos Cucina Greca · Documento riservato</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
 </section>
-<!--/FULL-->
+
+<!-- ======================================================= link e firme -->
+<section class="page">
+  <span class="reserved">Riservato</span>
+  <div class="top"><span class="brand"><img src="IMG:mythos-logo" alt="">MYTHOS</span><span class="sec">Link e consegna</span></div>
+  <p class="eyebrow">Da tenere a portata di mano</p>
+  <h2>Tutti i link</h2>
+
+  <table>
+    <tr><th>Pagina</th><th>Indirizzo</th><th>Dove usarlo</th></tr>
+    <tr><td class="k">Sito</td><td class="url">https://tavernamythos.com</td><td>Google Business Profile (campo “Sito web”), Instagram, Facebook, biglietti da visita.</td></tr>
+    <tr><td class="k">Prenotazioni</td><td class="url">https://tavernamythos.com/prenota.html</td><td>Google Business Profile (link “Prenota”), bio di Instagram, Facebook, WhatsApp.</td></tr>
+    <tr><td class="k">Menù</td><td class="url">https://tavernamythos.com/menu.html</td><td>Il QR code sui tavoli porta qui.</td></tr>
+    <tr><td class="k">Console</td><td class="url">https://tavernamythos.com/admin.html</td><td>Solo per voi e il personale: non pubblicatelo.</td></tr>
+    <tr><td class="k">Privacy</td><td class="url">https://tavernamythos.com/privacy.html</td><td>Già collegata in fondo a ogni pagina del sito.</td></tr>
+  </table>
+
+  <h3>Assistenza x3ro Automations</h3>
+  <table>
+    <tr><td class="k">WhatsApp</td><td>+39 389 001 7640</td></tr>
+    <tr><td class="k">Email</td><td>x3roautomations@gmail.com</td></tr>
+  </table>
+
+  <h3>Cosa vi consegniamo</h3>
+  <ul class="check">
+    <li>Il sito tavernamythos.com, online con le prenotazioni attive.</li>
+    <li>La console prenotazioni, con l’accesso riportato nella pagina precedente.</li>
+    <li>La guida all’uso (<span class="mono">MYTHOS-guida.pdf</span>), da dare anche al personale.</li>
+    <li>Il QR code del menù (<span class="mono">MYTHOS-qr-menu.png</span>), pronto per la stampa.</li>
+    <li>Questo documento riservato.</li>
+  </ul>
+
+  <div class="sign">
+    <div>Per Giulsi s.r.l.s. — Mythos Cucina Greca<br>firma e data</div>
+    <div>Per x3ro Automations — Sihab Haque<br>firma e data</div>
+  </div>
+
+  <div class="foot"><span>Mythos Cucina Greca · Documento riservato</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
+</section>
+<!--/R-->
+<!--G-->
 
 <!-- ===================================================== come prenota -->
 <section class="page">
@@ -362,7 +409,7 @@ tr:last-child td { border-bottom: 0; }
   <p class="eyebrow">Automatiche</p>
   <h2>Le email che partono da sole</h2>
   <p class="lead">Tutte partono da <strong>prenotazioni@tavernamythos.com</strong>, con il vostro logo.
-    Quelle per il ristorante arrivano a <strong>mythos.tuscolana@gmail.com</strong>: premendo
+    Quelle per il ristorante arrivano alla <strong>Gmail del ristorante</strong>: premendo
     “Rispondi” scrivete direttamente al cliente.</p>
 
   <table>
@@ -404,8 +451,8 @@ tr:last-child td { border-bottom: 0; }
   <div class="split">
     <div class="txt">
       <ol class="steps">
-        <li>Aprite <strong>tavernamythos.com/admin.html</strong> dal telefono o dal computer della cassa.</li>
-        <li>Inserite email e password (il titolare le trova nella copia completa di questa guida) e premete <strong>Entra</strong>.</li>
+        <li>Aprite l’indirizzo della console (ve lo dà il titolare) dal telefono o dal computer della cassa.</li>
+        <li>Inserite email e password che vi ha dato il titolare e premete <strong>Entra</strong>.</li>
         <li>Restate collegati: la console non vi fa uscire finché non premete <strong>Esci</strong>.</li>
       </ol>
       <h3>Mettetela sulla schermata Home</h3>
@@ -628,23 +675,17 @@ tr:last-child td { border-bottom: 0; }
 
   <h3>Da completare insieme</h3>
   <ul class="check">
-    <li>Cambiare la password della Gmail del ristorante e attivare la verifica in due passaggi.</li>
-    <li>Google Business Profile: sito <span class="mono">https://tavernamythos.com</span> e link prenotazioni <span class="mono">https://tavernamythos.com/prenota.html</span>.</li>
+      <li>Google Business Profile: sito <span class="mono">https://tavernamythos.com</span> e link prenotazioni <span class="mono">https://tavernamythos.com/prenota.html</span>.</li>
     <li>Mettere il link prenotazioni nella bio di Instagram e su Facebook.</li>
     <li>Mandarci le vostre foto (la sala, i piatti): sostituiscono quelle provvisorie.</li>
     <li>Confermare i prezzi del menù ancora mancanti e il CAP corretto dell’indirizzo.</li>
     <li>Stampare il QR code del menù per i tavoli.</li>
   </ul>
 
-  <!--FULL-->
-  <div class="sign">
-    <div>Per Giulsi s.r.l.s. — Mythos Cucina Greca<br>firma e data</div>
-    <div>Per x3ro Automations — Sihab Haque<br>firma e data</div>
-  </div>
-  <!--/FULL-->
 
   <div class="foot"><span>Mythos Cucina Greca · Assistenza</span><span class="pg">{{P}}</span><img src="IMG:x3ro-logo" alt=""></div>
 </section>
+<!--/G-->
 
 </body>
 </html>
