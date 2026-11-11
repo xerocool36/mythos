@@ -1,6 +1,6 @@
 # Mythos Cucina Greca — project status
 
-Last updated 2026-11-05. **Live in production** on <https://tavernamythos.com>.
+Last updated 2026-11-11. **Live in production** on <https://tavernamythos.com>.
 
 ## What is live
 
@@ -47,8 +47,10 @@ the console password.
 ## Open
 
 - Owner: change the restaurant Gmail password; Google Business Profile website +
-  booking link; own photos to replace the provisional ones; the menu prices still
-  blank; confirm the postcode.
+  booking link; the menu prices still blank; confirm the postcode. (Own photos are
+  live since 2026-11-10.)
+- Monthly fee: Stripe subscription link sent; once paid, anchor billing to the 5th and
+  cap at 12 payments (tools in the client-management repo).
 - Resend: functions + `.env` now use a sending-only key scoped to tavernamythos.com
   ("mythos booking functions (sending only)", 2026-11-05). Old full-access key
   "mythos site config" deleted.
