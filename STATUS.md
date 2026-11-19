@@ -49,8 +49,9 @@ the console password.
 - Owner: change the restaurant Gmail password; Google Business Profile website +
   booking link; the menu prices still blank; confirm the postcode. (Own photos are
   live since 2026-11-10.)
-- Monthly fee: Stripe subscription link sent; once paid, anchor billing to the 5th and
-  cap at 12 payments (tools in the client-management repo).
+- Monthly fee: DONE 2026-11-19. Owner paid #1 on 2026-11-19 (sub_1UdIhU053nyXUuquAkSQWk5t).
+  Billing moved to the 5th (next charge 2026-12-05 10:00 Rome, no proration); cancel_at
+  2027-11-04 10:00 Rome so the last charge is #12 on 2027-10-05.
 - Resend: functions + `.env` now use a sending-only key scoped to tavernamythos.com
   ("mythos booking functions (sending only)", 2026-11-05). Old full-access key
   "mythos site config" deleted.
